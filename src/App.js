@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import ReactDOM from "react-dom";
+import React, { useState } from "react";
+import SettingsPage from "./components/SettingsPage";
+import StudentHomepage from "./components/StudentHomepage";
 
 function App() {
+  const [showSettings, setShowSettings] = useState(false);
+
+  const openSettings = () => {
+    setShowSettings(true);
+  };
+
+  const closeSettings = () => {
+    setShowSettings(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <StudentHomepage SettingsButton={openSettings} />
+      {showSettings && (
+        <div className="centersettings">
+          <div
+            className="settingswindow"
+            style={{ width: "20%", height: "60" }}
+          >
+            <SettingsPage />
+            <button onClick={closeSettings}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
