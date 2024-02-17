@@ -1,10 +1,20 @@
-@import url('https://fonts.googleapis.com/css?family=Times+New+Roman');
-.title {
-  font-family: 'Times New Roman', Times, serif;
-  font-weight: bold;
+h1 {
+  font-size: 7em;
+  margin-bottom: 0.01em;
 }
 
-.Button {
-  margin-top: 3;
-  color: #ee9191;
+h1.paget {
+  font-size: 5em;
+  margin-top: 0.5em;
+}
+
+h2 {
+  margin-top: 0.01em;
+}
+
+.Ctn {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
