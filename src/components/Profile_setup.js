@@ -9,34 +9,22 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Grid from '@mui/material/Grid';
+import Checkbox from '@mui/material/Checkbox';
+import Autocomplete from '@mui/material/Autocomplete';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import major_data from '../json/majors.json';
 import minor_data from '../json/minors.json';
 import '../css/Profile.css';
 
 const Profile_setup = () => {
-  // const readFiles = (fileName, arr) => {
-  //   const fs = require('fs');
-  //   fs.readFile(fileName, 'utf8', (err, data) => {
-  //     if (err) {
-  //       console.log('err');
-  //       return;
-  //     }
-  //     arr = data.split('\n')
-  //   });
-  // }
-  // const majors = {};
-  // const minors = {};
-  // readFiles('../txt/majors.txt',majors);
-  // readFiles('../txt/minors.txt', minors);
-  // module.exports = {majors, minors};
-  // const { majors } = require('../index.js');
-  // const majors = [ 'Computer Science', 'Economics', 'Mathematics' ];
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+  const checkedIcon = <CheckBoxIcon fontSize="small" />;
   return (
     <div>
       <h1 className="paget">Profile Setup</h1>
       <Box className="Ctn" style={{ height: "30vh" }}>
-      <FormControl display="flex" style={{width: 400}}>
+      {/* <FormControl display="flex" style={{width: 400}}>
       <h3 align="left" className="Question">Choose your major:</h3>
         <InputLabel sx={{mt: "4.8em"}} id="major">Select one or more</InputLabel>
         <Select
@@ -70,6 +58,30 @@ const Profile_setup = () => {
             <MenuItem value={minor.name} key={minor.name}>{minor.name}</MenuItem>
           ))}
         </Select>
+      </FormControl> */}
+      <FormControl display="flex" style={{width: 400}}>
+        <Autocomplete
+        multiple
+        id="majors"
+        options={major_data}
+        disableCloseOnSelect
+        getOptionLabel={(option) => option.name}
+        renderOption={(props, option, { selected }) => (
+          <li {...props}>
+            <Checkbox
+              icon={icon}
+              checkedIcon={checkedIcon}
+              style={{ marginRight: 8 }}
+              checked={selected}
+            />
+            {option.name}
+          </li>
+        )}
+        style={{ width: 500 }}
+        renderInput={(params) => (
+          <TextField {...params} label="Select one or more" placeholder="Select one or more" />
+        )}
+      />
       </FormControl>
       <FormControl display="flex" style={{width: 400}}>
         <h3 align="left" className="Question">When did you start school at Purdue?</h3>
