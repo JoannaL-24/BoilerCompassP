@@ -4,12 +4,17 @@ h1 {
 }
 
 h1.paget {
-  font-size: 5em;
+  font-size: 4.5em;
   margin-top: 0.5em;
+  margin-bottom: 2.3em;
 }
 
 h2 {
   margin-top: 0.01em;
+}
+
+h3 {
+  text-align: "left";
 }
 
 .Ctn {
@@ -17,4 +22,14 @@ h2 {
   align-items: center;
   display: flex;
   flex-direction: column;
+}
+
+.Input{
+  margin-top: 1em;
+  margin-bottom: 2em;
+}
+
+.Question {
+  margin-bottom: 0em;
+  margin-top: 2em;
 }
