@@ -17,6 +17,35 @@
   align-self: flex-end;
 }
 
+.settingsContainer {
+  display: flex;
+  flex-direction: row; /* Arrange items horizontally */
+}
+
+.settingsColumn {
+  display: flex;
+  flex-direction: column; /* Arrange items vertically */
+  margin-right: 20px; /* Add margin to create space between columns */
+  margin-left: -200px;
+}
+
+.settingsTitle {
+  position: absolute;
+  top: 10;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.settingsContent {
+  flex-grow: 1; /* Allow content to expand to fill remaining space */
+}
+
 .settingsTitle {
   margin-top: -30px;
+}
+
+.settingsColumn button {
+  width: 90px;
+  height: 25px;
+  font-size: 14px;
 }
