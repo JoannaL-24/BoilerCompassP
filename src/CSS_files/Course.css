@@ -1,0 +1,8 @@
+.course{
+    margin: 10px;
+    border: 3px soild #333;
+    width: 200px;
+    min-height: 30px;
+    box-shadow: 3px 3px 3px #555;
+    background-color: #b59eeb;
+}
