@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import React, { useState } from "react";
 import SettingsPage from "./components/SettingsPage";
 import StudentHomepage from "./components/StudentHomepage";
+import CoverPage from "./components/CoverPage";
 
 function App() {
   const [showSettings, setShowSettings] = useState(false);
