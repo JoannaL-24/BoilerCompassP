@@ -1,10 +1,10 @@
 import React from 'react'
 import '../CSS_files/Course.css'
 
-const Course = () => {
+const Course = (props) => {
   return (
     <div className='course'>
-        <div className='number_name'>course number and name</div>
+        <div className='number_name'>{props.title}</div>
     </div>
   )
 }
