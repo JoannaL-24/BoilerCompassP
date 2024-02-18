@@ -1,0 +1,598 @@
+{
+  "majors": [
+    {
+        "name": "Accounting"
+    },
+    {
+        "name": "Actuarial Science"
+    },
+    {
+        "name": "Aeronautical and Astronautical Engineering"
+    },
+    {
+        "name": "Aeronautical Engineering Technology"
+    },
+    {
+        "name": "Aerospace Financial Analysis"
+    },
+    {
+        "name": "African American Studies"
+    },
+    {
+        "name": "Agribusiness (multiple concentrations)"
+    },
+    {
+        "name": "Agricultural Communication"
+    },
+    {
+        "name": "Agricultural Economics (multiple concentrations)"
+    },
+    {
+        "name": "Agricultural Education"
+    },
+    {
+        "name": "Agricultural Engineering (College of Agriculture)"
+    },
+    {
+        "name": "Agricultural Engineering (College of Engineering)"
+    },
+    {
+        "name": "Agricultural Systems Management"
+    },
+    {
+        "name": "AgronomyAirline Management and Operations"
+    },
+    {
+        "name": "Airport Management and Operations"
+    },
+    {
+        "name": "American Studies"
+    },
+    {
+        "name": "Animal Sciences (multiple concentrations)"
+    },
+    {
+        "name": "Animation and Visual Effects"
+    },
+    {
+        "name": "AnthropologyApplied Meteorology and Climatology"
+    },
+    {
+        "name": "Aquatic Sciences"
+    },
+    {
+        "name": "Art HistoryArtificial Intelligence"
+    },
+    {
+        "name": "Artificial Intelligence (College of Science)"
+    },
+    {
+        "name": "Asian StudiesAtmospheric Science/Meteorology"
+    },
+    {
+        "name": "Audio Engineering Technology"
+    },
+    {
+        "name": "Automation and Systems Integration Engineering Technology"
+    },
+    {
+        "name": "Aviation Management"
+    },
+    {
+        "name": "BiochemistryBiochemistry (Chemistry)"
+    },
+    {
+        "name": "Biological Engineering (College of Agriculture)"
+    },
+    {
+        "name": "Biological Engineering (College of Engineering)"
+    },
+    {
+        "name": "BiologyBiomedical Engineering"
+    },
+    {
+        "name": "Biomedical Health Sciences"
+    },
+    {
+        "name": "Brain and Behavioral Sciences"
+    },
+    {
+        "name": "Building Information Modeling"
+    },
+    {
+        "name": "Business Analytics and Information Management"
+    },
+    {
+        "name": "Cell, Molecular, and Developmental Biology"
+    },
+    {
+        "name": "Chemical Biology and Biochemistry"
+    },
+    {
+        "name": "Chemical Engineering"
+    },
+    {
+        "name": "ChemistryChemistry - American Chemical Society"
+    },
+    {
+        "name": "Chinese StudiesCivil Engineering"
+    },
+    {
+        "name": "Classical Studies"
+    },
+    {
+        "name": "Communication (multiple concentrations)"
+    },
+    {
+        "name": "Comparative Literature"
+    },
+    {
+        "name": "Computer and Information Technology"
+    },
+    {
+        "name": "Computer Engineering"
+    },
+    {
+        "name": "Computer Engineering Technology"
+    },
+    {
+        "name": "Computer Infrastructure & Network Engineering Technology"
+    },
+    {
+        "name": "Computer Science"
+    },
+    {
+        "name": "Computing Systems Analysis and Design"
+    },
+    {
+        "name": "Construction Engineering and Management"
+    },
+    {
+        "name": "Construction Management Technology"
+    },
+    {
+        "name": "Creative Writing"
+    },
+    {
+        "name": "Crop Science"
+    },
+    {
+        "name": "Cybersecurity"
+    },
+    {
+        "name": "Data Analytics, Technologies and Applications"
+    },
+    {
+        "name": "Data Science"
+    },
+    {
+        "name": "Data Visualization"
+    },
+    {
+        "name": "Design and Construction Integration"
+    },
+    {
+        "name": "Developmental and Family Science"
+    },
+    {
+        "name": "Digital Criminology"
+    },
+    {
+        "name": "Digital Enterprise Systems"
+    },
+    {
+        "name": "Early Childhood Education and Exceptional Needs"
+    },
+    {
+        "name": "Ecology, Evolution, and Environmental Sciences"
+    },
+    {
+        "name": "Economics (Pre) (College of Liberal Arts)"
+    },
+    {
+        "name": "Economics (Daniels School of Business)"
+    },
+    {
+        "name": "Electrical Engineering"
+    },
+    {
+        "name": "Electrical Engineering Technology"
+    },
+    {
+        "name": "Elementary Education"
+    },
+    {
+        "name": "Energy Engineering Technology"
+    },
+    {
+        "name": "Engineering (First Year)"
+    },
+    {
+        "name": "Engineering / Technology Teacher Education"
+    },
+    {
+        "name": "English"
+    },
+    {
+        "name": "English Education"
+    },
+    {
+        "name": "Environmental and Ecological Engineering"
+    },
+    {
+        "name": "Environmental & Natural Resources Engineering (College of Agriculture)"
+    },
+    {
+        "name": "Environmental & Natural Resources Engineering (College of Engineering)"
+    },
+    {
+        "name": "Environmental Geosciences"
+    },
+    {
+        "name": "Exploratory Studies (for undecided students)"
+    },
+    {
+        "name": "Family and Consumer Sciences Education"
+    },
+    {
+        "name": "Farm Management"
+    },
+    {
+        "name": "Fermentation Science"
+    },
+    {
+        "name": "Film and Video"
+    },
+    {
+        "name": "Finance"
+    },
+    {
+        "name": "Financial Counseling and Planning"
+    },
+    {
+        "name": "Flight (Professional Flight Technology)"
+    },
+    {
+        "name": "Food Science"
+    },
+    {
+        "name": "Forestry"
+    },
+    {
+        "name": "French"
+    },
+    {
+        "name": "Game Development and Design"
+    },
+    {
+        "name": "General Education: Curriculum and Instruction (non-licensure)"
+    },
+    {
+        "name": "General Education: Educational Studies (non-licensure)"
+    },
+    {
+        "name": "Genetics"
+    },
+    {
+        "name": "Geology and Geophysics"
+    },
+    {
+        "name": "German"
+    },
+    {
+        "name": "Global Studies"
+    },
+    {
+        "name": "Health and Disease"
+    },
+    {
+        "name": "History"
+    },
+    {
+        "name": "Horticulture (multiple concentrations)"
+    },
+    {
+        "name": "Hospitality and Tourism Management"
+    },
+    {
+        "name": "Human Resource Development"
+    },
+    {
+        "name": "Human Services"
+    },
+    {
+        "name": "Inclusion: Dual License in Special Education (K-6) & Elementary Education"
+    },
+    {
+        "name": "Industrial Design"
+    },
+    {
+        "name": "Industrial Engineering"
+    },
+    {
+        "name": "Industrial Engineering Technology"
+    },
+    {
+        "name": "Insect Biology"
+    },
+    {
+        "name": "Integrated Business and Engineering"
+    },
+    {
+        "name": "Integrated Studio Arts, BFA (Portfolio Required)"
+    },
+    {
+        "name": "Interdisciplinary Engineering Studies"
+    },
+    {
+        "name": "Interior Architecture"
+    },
+    {
+        "name": "Interior Design - Professional Program"
+    },
+    {
+        "name": "Italian Studies"
+    },
+    {
+        "name": "Japanese"
+    },
+    {
+        "name": "Jewish Studies"
+    },
+    {
+        "name": "Kinesiology"
+    },
+    {
+        "name": "Landscape Architecture (Pre)"
+    },
+    {
+        "name": "Law and Society (Criminology)"
+    },
+    {
+        "name": "Linguistics"
+    },
+    {
+        "name": "Management (General)"
+    },
+    {
+        "name": "Marketing"
+    },
+    {
+        "name": "Materials Engineering"
+    },
+    {
+        "name": "Mathematics"
+    },
+    {
+        "name": "Mathematics, Applied"
+    },
+    {
+        "name": "Mathematics - Business"
+    },
+    {
+        "name": "Mathematics Education"
+    },
+    {
+        "name": "Mathematics - Statistics"
+    },
+    {
+        "name": "Mechanical Engineering"
+    },
+    {
+        "name": "Mechanical Engineering Technology"
+    },
+    {
+        "name": "Mechatronics Engineering Technology"
+    },
+    {
+        "name": "Medical Laboratory Sciences"
+    },
+    {
+        "name": "Microbiology"
+    },
+    {
+        "name": "Motorsports Engineering"
+    },
+    {
+        "name": "Multidisciplinary Engineering"
+    },
+    {
+        "name": "Music"
+    },
+    {
+        "name": "Natural Resources and Environmental Science (multiple concentrations)"
+    },
+    {
+        "name": "Neurobiology and Physiology"
+    },
+    {
+        "name": "Nuclear Engineering"
+    },
+    {
+        "name": "Nursing"
+    },
+    {
+        "name": "Nutrition and Dietetics"
+    },
+    {
+        "name": "Nutrition and Dietetics/Nutrition, Fitness, and Health (double major)"
+    },
+    {
+        "name": "Nutrition, Fitness, and Health"
+    },
+    {
+        "name": "Nutrition Science"
+    },
+    {
+        "name": "Occupational and Environmental Health Sciences"
+    },
+    {
+        "name": "Organizational Leadership"
+    },
+    {
+        "name": "Pharmaceutical Sciences"
+    },
+    {
+        "name": "Philosophy"
+    },
+    {
+        "name": "Physics"
+    },
+    {
+        "name": "Physics, Applied"
+    },
+    {
+        "name": "Planetary Sciences"
+    },
+    {
+        "name": "Plant Genetics, Breeding, and Biotechnology"
+    },
+    {
+        "name": "Plant Science"
+    },
+    {
+        "name": "Plant Studies - Exploratory (Pre)"
+    },
+    {
+        "name": "Political Science"
+    },
+    {
+        "name": "Pre-dentistry"
+    },
+    {
+        "name": "Pre-law"
+    },
+    {
+        "name": "Pre-medicine"
+    },
+    {
+        "name": "Pre-occupational Therapy"
+    },
+    {
+        "name": "Pre-physical Therapy"
+    },
+    {
+        "name": "Pre-physician Assistant"
+    },
+    {
+        "name": "Pre-veterinary Medicine"
+    },
+    {
+        "name": "Professional Writing"
+    },
+    {
+        "name": "Psychological Sciences"
+    },
+    {
+        "name": "Public Health"
+    },
+    {
+        "name": "Purdue Polytechnic Institute Statewide Programs"
+    },
+    {
+        "name": "Radiological Health Sciences"
+    },
+    {
+        "name": "Religious Studies"
+    },
+    {
+        "name": "Retail Management"
+    },
+    {
+        "name": "Robotics Engineering Technology"
+    },
+    {
+        "name": "Russian"
+    },
+    {
+        "name": "Sales and Marketing"
+    },
+    {
+        "name": "Science Education (Biology, Chemistry, Earth/Space, Physics)"
+    },
+    {
+        "name": "Selling and Sales Management"
+    },
+    {
+        "name": "Smart Manufacturing Industrial Informatics"
+    },
+    {
+        "name": "Social Studies Education"
+    },
+    {
+        "name": "Sociology"
+    },
+    {
+        "name": "Soil and Water Sciences"
+    },
+    {
+        "name": "Sound for the Performing Arts (Portfolio Required)"
+    },
+    {
+        "name": "Spanish"
+    },
+    {
+        "name": "Special Education: Mild & Intense Intervention 5-12"
+    },
+    {
+        "name": "Special Education: Mild & Intense Intervention K-6"
+    },
+    {
+        "name": "Speech, Language, and Hearing Sciences"
+    },
+    {
+        "name": "Statistics, Applied"
+    },
+    {
+        "name": "Statistics with Mathematics Option"
+    },
+    {
+        "name": "Studio Arts and Technology"
+    },
+    {
+        "name": "Supply Chain and Operations Management"
+    },
+    {
+        "name": "Supply Chain & Sales Engineering Technology"
+    },
+    {
+        "name": "Sustainable Food and Farming Systems"
+    },
+    {
+        "name": "Theatre"
+    },
+    {
+        "name": "Themed Entertainment Design"
+    },
+    {
+        "name": "Turf Management and Science"
+    },
+    {
+        "name": "Unmanned Aerial Systems"
+    },
+    {
+        "name": "UX Design"
+    },
+    {
+        "name": "Veterinary Nursing"
+    },
+    {
+        "name": "Visual Arts Design Education"
+    },
+    {
+        "name": "Visual Arts Education"
+    },
+    {
+        "name": "Visual Communication Design (Graphic Design)"
+    },
+    {
+        "name": "Web Programming and Design"
+    },
+    {
+        "name": "Wildlife"
+    },
+    {
+        "name": "Women’s, Gender and Sexuality Studies"
+    }
+  ]
+}
