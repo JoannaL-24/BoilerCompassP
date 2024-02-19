@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { usestate } from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -20,50 +17,28 @@ import '../css/Profile.css';
 const Profile_setup = () => {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const [userinfo, setUserinfo] = usestate({
+    major: [],
+    minor: [],
+    start: "",
+    end: "",
+  })
+
+  const handleChange = () => {
+    
+  };
+
   return (
     <div>
       <h1 className="paget">Profile Setup</h1>
-      <Box className="Ctn" style={{ height: "30vh" }}>
-      {/* <FormControl display="flex" style={{width: 400}}>
-      <h3 align="left" className="Question">Choose your major:</h3>
-        <InputLabel sx={{mt: "4.8em"}} id="major">Select one or more</InputLabel>
-        <Select
-          labelId="major"
-          // id="demo-simple-select"
-          // value={age}
-          sx={{ mt: "1em" }}
-          label="Select one or more"
-          // multiple
-          // onChange={handleChange}
-        >
-          {major_data.majors.map(major => (
-            <MenuItem value={major.name} key={major.name}>{major.name}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      <Box className="Ctn">
       <FormControl display="flex" style={{width: 400}}>
-      <h3 align="left" className="Question">Select your minor:</h3>
-        <InputLabel sx={{mt: "4.8em"}} id="minor">Select one or more</InputLabel>
-        <Select
-          labelId="minor"
-          // id="demo-simple-select"
-          // value={age}
-          sx={{ mt: "1em" }}
-          default="N/A"
-          label="Select one or more"
-          // multiple
-          // onChange={handleChange}
-        >
-          {minor_data.minors.map(minor => (
-            <MenuItem value={minor.name} key={minor.name}>{minor.name}</MenuItem>
-          ))}
-        </Select>
-      </FormControl> */}
-      <FormControl display="flex" style={{width: 400}}>
+        <h3 className="Question">Choose your major(s):</h3>
         <Autocomplete
+        className="Input"
         multiple
         id="majors"
-        options={major_data}
+        options={major_data.majors}
         disableCloseOnSelect
         getOptionLabel={(option) => option.name}
         renderOption={(props, option, { selected }) => (
@@ -77,23 +52,51 @@ const Profile_setup = () => {
             {option.name}
           </li>
         )}
-        style={{ width: 500 }}
+        renderInput={(params) => (
+          <TextField {...params}
+          label="Select one or more"
+          placeholder="Select one or more"
+          required={true}
+          />
+        )}
+      />
+      </FormControl>
+      <FormControl display="flex" style={{width: 400}}>
+        <h3 className="Question">Choose your minor(s):</h3>
+        <Autocomplete
+        className="Input"
+        multiple
+        id="majors"
+        options={minor_data.minors}
+        disableCloseOnSelect
+        getOptionLabel={(option) => option.name}
+        renderOption={(props, option, { selected }) => (
+          <li {...props}>
+            <Checkbox
+              icon={icon}
+              checkedIcon={checkedIcon}
+              style={{ marginRight: 8 }}
+              checked={selected}
+            />
+            {option.name}
+          </li>
+        )}
         renderInput={(params) => (
           <TextField {...params} label="Select one or more" placeholder="Select one or more" />
         )}
       />
       </FormControl>
       <FormControl display="flex" style={{width: 400}}>
-        <h3 align="left" className="Question">When did you start school at Purdue?</h3>
+        <h3 className="Question">When did you start school at Purdue?</h3>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker sx={{ mt: "1em" }} label="Select date"/>
-          <h3 align="left" className="Question">Expected graduation date:</h3>
-          <DatePicker sx={{ mt: "1em" }} label="Select date"/>
+          <DatePicker sx={{ mt: "1em", mb: "2em"}} label="Select date" required={true}/>
+          <h3 className="Question">Expected graduation date:</h3>
+          <DatePicker sx={{ mt: "1em"}} label="Select date" required={true}/>
         </LocalizationProvider>
       </FormControl>
 
-        <Box>
-          <Button className="Btn" sx={{mt: "4em"}} variant="button" variant="outlined">Submit</Button>
+        <Box className="Btn">
+          <Button variant="outlined">Submit</Button>
         </Box>
       </Box>
     </div>
