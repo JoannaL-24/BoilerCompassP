@@ -19,7 +19,8 @@ function App() {
 
   return (
     <div>
-      <StudentHomepage SettingsButton={openSettings} />
+      <CoverPage></CoverPage>
+      {/* <StudentHomepage SettingsButton={openSettings} />
       {showSettings && (
         <div className="centersettings">
           <div
@@ -30,7 +31,7 @@ function App() {
             <button onClick={closeSettings}>Close</button>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

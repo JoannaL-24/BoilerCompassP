@@ -65,18 +65,32 @@
 
 .nav {
   width: 100%;
-  height: 7vh;
+  height: 10vh;
   position:absolute;
   top: 0px;
   background-color: var(--black);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  align-content: center;
+
 }
 
 .horizontalCenter {
+  height: 100vh;
   display: flex;
   flex-direction: row;
   align-content: center;
   justify-content: center;
   align-items: center
+}
+
+.verticalLeft {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: flex-start
 }
 
 .coverLogo {
@@ -85,11 +99,21 @@
 
 .coverComponent {
   width: 40%;
-  padding: 2vh 5%;
+  padding: 2vh 2%;
 }
 
 .coverComponent h1{
-  font-size: 50px;
+  font-size: 45px;
+}
+#signInForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+#signInForm MuiTextField-root {
+  width: 50%;
+  background-color: #282c34;
 }
 
 .mediumBtn {
