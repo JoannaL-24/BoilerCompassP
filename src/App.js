@@ -1,7 +1,7 @@
 import './App.css';
 // import {Routes, Route} from 'react-router-dom';
 import Welcome from './components/Welcome'
-import Profile from './components/Profile_setup'
+import Profile_student from './components/Profile_setup_student'
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
         <Route path='/' element={<Welcome/>}/>
       </Routes> */}
       {/* <Welcome/> */}
-      <Profile/>
+      <Profile_student/>
     </div>
   );
 }
