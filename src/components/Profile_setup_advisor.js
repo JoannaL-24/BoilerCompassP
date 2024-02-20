@@ -19,19 +19,15 @@ const Profile_setup = () => {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const [userinfo, setUserinfo] = useState({
-    major: [],
-    minor: [],
-    start_date: "",
-    end_date: "",
+    role: "advisor",
+    college: "",
+    department: "",
+    
   });
 
   const handleSubmit = (e) => {
     console.log(userinfo);
   };
-
-  const year = dayjs().get('year');
-  const validStartYear = (date) => !(( year  - date.get('year') >= 0) && (year - date.get('year') <= 10));
-  const validEndYear = (date) => !(( date.get('year') - year >= 0) && (date.get('year') - year <= 10));
 
   return (
     <div>
