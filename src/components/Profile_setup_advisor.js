@@ -3,14 +3,10 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Checkbox from '@mui/material/Checkbox';
 import Autocomplete from '@mui/material/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import dayjs from 'dayjs';
 import major_data from '../json/majors.json';
 import minor_data from '../json/minors.json';
 import '../css/Profile.css';
@@ -22,7 +18,7 @@ const Profile_setup = () => {
     role: "advisor",
     college: "",
     department: "",
-    
+
   });
 
   const handleSubmit = (e) => {
@@ -88,26 +84,6 @@ const Profile_setup = () => {
           <TextField {...params} label="Select one or more" placeholder="Select one or more" />
         )}
       />
-      </FormControl>
-      <FormControl display="flex" style={{width: 400}}>
-        <h3 className="Question">When did you start school at Purdue?</h3>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          //  inputFormat="DD/MM/YYY"
-           sx={{ mt: "1em", mb: "2em"}}
-           label="Select date"
-           required={true}
-           shouldDisableYear={validStartYear}
-           onChange={(e, value) => setUserinfo((previous) => ({...previous, start_date: value}))}/>
-          <h3 className="Question">Expected graduation date:</h3>
-          <DatePicker
-          //  inputFormat="DD/MM/YYY"
-           sx={{ mt: "1em"}}
-           label="Select date"
-           required={true}
-           shouldDisableYear={validEndYear}
-           onChange={(e, value) => setUserinfo((previous) => ({...previous, end_date: value}))}/>
-        </LocalizationProvider>
       </FormControl>
 
         <Box className="Btn">

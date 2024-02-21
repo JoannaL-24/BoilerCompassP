@@ -1,16 +1,17 @@
 import './App.css';
-// import {Routes, Route} from 'react-router-dom';
+import {Routes, Route} from 'react-router-dom';
 import Welcome from './components/Welcome'
-import Profile_student from './components/Profile_setup_student'
+import ProfileSetupStudent from './components/Profile_setup_student'
+import ProfileSetupAdvisor from './components/Profile_setup_advisor'
 
 function App() {
   return (
     <div className="App">
-      {/* <Routes>
+      <Routes>
         <Route path='/' element={<Welcome/>}/>
-      </Routes> */}
-      {/* <Welcome/> */}
-      <Profile_student/>
+        <Route path='/profile-setup-student' element={<ProfileSetupStudent/>}/>
+        <Route path='/profile-setup-advisor' element={<ProfileSetupAdvisor/>}/>
+      </Routes>
     </div>
   );
 }
