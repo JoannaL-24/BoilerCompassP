@@ -8,7 +8,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import major_data from '../json/majors.json';
-import minor_data from '../json/minors.json';
+import college_data from '../json/colleges.json';
 import '../css/Profile.css';
 
 const Profile_setup = () => {
@@ -30,15 +30,14 @@ const Profile_setup = () => {
       <h1 className="paget">Profile Setup</h1>
       <Box className="Ctn">
       <FormControl display="flex" style={{width: 400}}>
-        <h3 className="Question">Choose your major(s):</h3>
+        <h3 className="Question">Choose your college:</h3>
         <Autocomplete
         className="Input"
-        multiple
-        id="majors"
-        options={major_data.majors}
+        id="colleges"
+        options={college_data.colleges}
         disableCloseOnSelect
         getOptionLabel={(option) => option.name}
-        onChange = {(e, value) => setUserinfo((previous) => ({...previous, major: value}))}
+        onChange = {(e, value) => setUserinfo((previous) => ({...previous, college: value}))}
         renderOption={(props, option, { selected }) => (
           <li {...props}>
             <Checkbox
@@ -52,23 +51,22 @@ const Profile_setup = () => {
         )}
         renderInput={(params) => (
           <TextField {...params}
-          label="Select one or more"
-          placeholder="Select one or more"
+          label="Select"
+          placeholder="Select"
           required={true}
           />
         )}
       />
       </FormControl>
       <FormControl display="flex" style={{width: 400}}>
-        <h3 className="Question">Choose your minor(s):</h3>
+        <h3 className="Question">Choose your department:</h3>
         <Autocomplete
         className="Input"
-        multiple
-        id="minors"
-        options={minor_data.minors}
+        id="department"
+        options={major_data.majors}
         disableCloseOnSelect
         getOptionLabel={(option) => option.name}
-        onChange = {(e, value) => setUserinfo((previous) => ({...previous, minor: value}))}
+        onChange = {(e, value) => setUserinfo((previous) => ({...previous, department: value}))}
         renderOption={(props, option, { selected }) => (
           <li {...props}>
             <Checkbox
@@ -81,7 +79,11 @@ const Profile_setup = () => {
           </li>
         )}
         renderInput={(params) => (
-          <TextField {...params} label="Select one or more" placeholder="Select one or more" />
+          <TextField {...params}
+          label="Select"
+          placeholder="Select"
+          required={true}
+          />
         )}
       />
       </FormControl>

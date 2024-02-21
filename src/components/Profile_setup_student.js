@@ -143,7 +143,7 @@ const Profile_setup = () => {
           <DatePicker
             //  inputFormat="DD/MM/YYY"
               sx={{ mt: "1em", mb: "2em"}}
-              label="Select date"
+              label="Select date *"
               required={true}
               shouldDisableYear={validStartYear}
               onChange={(e, value) => setUserinfo((previous) => ({...previous, start_term: value}))}/>
@@ -151,7 +151,7 @@ const Profile_setup = () => {
             <DatePicker
             //  inputFormat="DD/MM/YYY"
               sx={{ mt: "1em"}}
-              label="Select date"
+              label="Select date *"
               required={true}
               shouldDisableYear={validEndYear}
               onChange={(e, value) => setUserinfo((previous) => ({...previous, end_term
