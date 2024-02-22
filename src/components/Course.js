@@ -4,7 +4,7 @@ import '../CSS_files/Course.css'
 const Course = (props) => {
   return (
     <div className='course'>
-        <div className='number_name'>{props.title}</div>
+        <h3 className='number_name'>{props.title}</h3>
     </div>
   )
 }
