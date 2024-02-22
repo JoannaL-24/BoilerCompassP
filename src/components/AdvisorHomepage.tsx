@@ -8,6 +8,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import AdvisorHomepageFilter from "./AdvisorHomepageFilter";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 function AdvisorHomepage() {
   return <AdvisorHomepageFilter></AdvisorHomepageFilter>;
