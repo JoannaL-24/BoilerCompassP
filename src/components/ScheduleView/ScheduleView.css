@@ -1,0 +1,37 @@
+.ScheduleView {
+    width: 100%;
+}
+
+.ScheduleDestribtion{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 20px 0px 50px;
+    h3 {
+        font-size: 24px;
+    }
+    ul {
+        text-decoration: none;
+        list-style-type: none;
+    }
+
+    a:hover {
+        color: white;
+        background-color: var(--light-gold);
+    }
+    
+}
+
+.DescrBtn {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    /* background-color: aquamarine; */
+    color: var(--black);
+    background-color: rgba(219, 219, 219, 0.5);
+    border-radius: 20px;
+    transition: 100ms;
+    
+}
+

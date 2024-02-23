@@ -1,0 +1,15 @@
+.DegreeOverview{
+    /* width: 100vw; */
+    display:flex;
+    flex-direction: column;
+}
+
+.ScheduleView {
+    width: 75%;
+    padding-top: calc(55px + 2vh);
+}
+
+.ScheduleSide {
+    width: 25%;
+    padding-top: calc(55px + 2vh);
+}
