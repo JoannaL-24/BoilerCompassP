@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import Course_list from "./components/Course_list";
+import Course_list from "./components/CourseList";
 
 function App() {
   return (
