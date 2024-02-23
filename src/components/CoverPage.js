@@ -4,6 +4,21 @@ import { alpha, styled } from '@mui/material/styles';
 import { colors } from "@mui/material";
 import { red } from "@mui/material/colors";
 
+
+const FormTextInput = styled(TextField)({
+    // '& input:valid': {
+    //   borderColor: '#daaa00',
+    //   borderWidth: 1,
+    // },
+    // '& input:invalid + fieldset': {
+    //     colors: "red",
+    // },
+    // '& input:valid:focus + fieldset': {
+    //   borderLeftWidth: 4,
+    //   padding: '4px !important', // override inline-style
+    // },
+  });
+
 export default function CoverPage () {
     // state
 
@@ -35,17 +50,5 @@ export default function CoverPage () {
     )
 }
 
-const FormTextInput = styled(TextField)({
-    '& input:valid + fieldset': {
-      borderColor: '#E0E3E7',
-      borderWidth: 1,
-    },
-    '& input:invalid + fieldset': {
-      borderColor: 'red',
-      borderWidth: 1,
-    },
-    '& input:valid:focus + fieldset': {
-      borderLeftWidth: 4,
-      padding: '4px !important', // override inline-style
-    },
-  });
+
+
