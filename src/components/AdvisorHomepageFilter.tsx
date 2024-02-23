@@ -8,6 +8,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 
 function AdvisorHomepageFilter() {
   const [value, setValue] = React.useState("female");
@@ -92,6 +94,22 @@ function AdvisorHomepageFilter() {
           />
         </RadioGroup>
       </FormControl>
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          transform: "translateX(-50%)", // Center the text field horizontally
+          bottom: "-10px",
+        }}
+      >
+        <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+        <TextField
+          id="input-with-sx"
+          label="Seach student"
+          variant="standard"
+          style={{ width: "200px", paddingBottom: "800px" }} // text field
+        />
+      </div>
     </div>
   );
 }
