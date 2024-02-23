@@ -4,6 +4,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import SettingsPage from "./SettingsPage";
 import StudentHomepage from "./StudentHomepage";
 import "./RunStudentHomepage.css";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 function RunStudentHomepage() {
   const [showSettings, setShowSettings] = useState(false);

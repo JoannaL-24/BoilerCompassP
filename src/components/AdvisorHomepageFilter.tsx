@@ -1,4 +1,3 @@
-//:((((
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -25,7 +24,7 @@ function AdvisorHomepageFilter() {
         borderTop: "1px solid gray",
         marginTop: "100px",
         paddingTop: "100px",
-        marginBottom: "10px",
+        // marginBottom: "10px",
       }}
     >
       <FormControl
@@ -109,6 +108,38 @@ function AdvisorHomepageFilter() {
           variant="standard"
           style={{ width: "200px", paddingBottom: "800px" }} // text field
         />
+      </div>
+      {/* Rectangular region with five <a> elements */}
+      <div
+        style={{
+          display: "flex",
+          //justifyContent: "space-between",
+          position: "relative",
+          left: "60%",
+          transform: "translateX(-50%)", // center the student horizontally
+          bottom: "200px", // adjust the vertical position
+          width: "70%", // adjust the width of the student
+        }}
+      >
+        {[...Array(5)].map((_, index) => (
+          <a
+            key={index}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textDecoration: "none",
+              border: "1px solid black",
+              borderRadius: "20px",
+              width: "calc(20% - 10px)", // adjust the width of each <a> element
+              padding: "10px",
+              marginRight: "50px",
+            }}
+          >
+            <AccountCircle sx={{ color: "action.active", fontSize: "40px" }} />
+            <span style={{ marginTop: "5px" }}>Name</span>
+          </a>
+        ))}
       </div>
     </div>
   );
