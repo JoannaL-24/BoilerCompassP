@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import React, { useState } from "react";
 import SettingsPage from "./components/SettingsPage";
 import StudentHomepage from "./components/StudentHomepage";
+import CoverPage from "./components/CoverPage";
 import RunStudentHomepage from "./components/RunStudentHomepage";
 
 function App() {
