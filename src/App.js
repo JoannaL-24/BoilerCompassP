@@ -5,9 +5,12 @@ import SettingsPage from "./components/SettingsPage";
 import StudentHomepage from "./components/StudentHomepage";
 import CoverPage from "./components/CoverPage";
 import RunStudentHomepage from "./components/RunStudentHomepage";
+import AdvisorHomepage from "./components/AdvisorHomepage";
+import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 
 function App() {
-  return <RunStudentHomepage></RunStudentHomepage>;
+  //return <RunStudentHomepage></RunStudentHomepage>;
+  return <AdvisorHomepage></AdvisorHomepage>;
 }
 
 export default App;
