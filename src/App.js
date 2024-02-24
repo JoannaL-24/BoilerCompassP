@@ -1,12 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
-import Course_list from "./components/CourseList";
+import CourseList from "./components/CourseList";
+import DarkModeToggle  from './components/DarkModeToggle';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Course_list />
+        <DarkModeToggle />
       </header>
     </div>
   );
