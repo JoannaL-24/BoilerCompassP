@@ -3,6 +3,8 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from "firebase/auth";
 import StudentProfile from './Student_profile'
 import Alert from '@mui/material/Alert';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import '../css/Profile.css';
 
 const Profile_setup_students = () => {
@@ -11,8 +13,8 @@ const Profile_setup_students = () => {
     user_type: "student",
     major: [],
     minor: [],
-    start_term: "",
-    end_term: "",
+    start_term: null,
+    end_term: null,
     advisor: "",
     group: [],
   });
@@ -27,7 +29,7 @@ const Profile_setup_students = () => {
   // const user = auth.currentUser;
   const user = null;
 
-  const handleSubmit = (e) => {
+  const submit_function = (e) => {
     console.log(userinfo); // for testing purposes
     if (user) {
       const uid = user.uid;
@@ -58,7 +60,7 @@ const Profile_setup_students = () => {
       </Alert>
       <h1 className="paget">Profile Setup</h1>
       <StudentProfile
-      handleSubmit={handleSubmit}
+      submit_function={submit_function}
       userinfo={userinfo}
       setUserinfo={setUserinfo}/>
     </div>
