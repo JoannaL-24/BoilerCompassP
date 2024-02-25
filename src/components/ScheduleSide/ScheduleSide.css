@@ -1,0 +1,8 @@
+.ScheduleSide {
+    border: 0px;
+    /* border-left-width: 3px;
+    border-style:solid;
+    border-color: rgb(219, 219, 219); */
+    background-color: rgb(244, 245, 249);
+    height: 100vh;
+}

@@ -22,7 +22,7 @@ const FormTextInput = styled(TextField)({
 export default function CoverPage () {
     // state
 
-    const signIn = (e) => {
+    const signIn = (e: React.FormEvent) => {
         alert("sign process");
     }
 
@@ -33,7 +33,7 @@ export default function CoverPage () {
                 <button className="goldBtn mediumBtn"><h3>Get Start</h3></button>
             </div>
             <div className="horizontalCenter">
-                <img src='/tempLogo.PNG' alt='Boiler Compass' className="coverLogo coverComponent"></img>
+                <img src='/logo/BoilerCompass Logo v2.png' alt='Boiler Compass' className="coverLogo coverComponent"></img>
                 <div className="coverComponent verticalLeft">
                     <h1>Start Your Journey</h1>
                     <form id="signInForm" onSubmit={signIn}>
