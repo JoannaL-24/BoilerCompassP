@@ -1,7 +1,7 @@
 import UserData from "./UserData";
 
 // Local storage implementation for user data storage and retrieval
-class LocalUserData implements UserData {
+export default class LocalUserData implements UserData {
 
     /* Returns whether the data was stored successfully. 
      * setItem can throw a DOMException: QuotaExceededError.
@@ -21,11 +21,11 @@ class LocalUserData implements UserData {
      */
     get(fieldName: string): unknown {
         const data = window.localStorage.getItem(fieldName);
-        if (!data) {
-            if (data == null)
-                return null;
+        if (data === undefined)
             return undefined;
-        }
+        if (data === null)
+            return null;
+
         return JSON.parse(data);
     }
 }

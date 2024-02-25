@@ -6,9 +6,7 @@
  * In general, fields of the user data should NEVER be deleted (i.e., set to undefined).
  * Instead, set to null, make empty for containers, etc.
  */
-interface StorageInterface {
+export default interface UserData {
     put(fieldName: string, data: unknown): boolean;
     get(fieldName: string): unknown;
 }
-
-export default StorageInterface;
