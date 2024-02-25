@@ -43,8 +43,7 @@ export default function ClippedDrawer() {
               <ListItem key={text} disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
-                    <ClassIcon />
-                    <SchoolIcon />
+                    {index % 2 === 0 ? <ClassIcon /> : <SchoolIcon />}
                   </ListItemIcon>
                   <ListItemText primary={text} />
                 </ListItemButton>
