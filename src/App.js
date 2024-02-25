@@ -6,6 +6,8 @@ import DegreePlanner from "./pages/DegreePlanner";
 import SettingsPage from "./components/SettingsPage";
 import StudentHomepage from "./components/StudentHomepage";
 import RunStudentHomepage from "./components/RunStudentHomepage";
+import AdvisorHomepage from "./components/AdvisorHomepage";
+import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 
 function App() {
   // return <RunStudentHomepage></RunStudentHomepage>;

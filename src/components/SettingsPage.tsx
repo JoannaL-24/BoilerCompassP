@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 function GeneralSettings() {
   return <div>{/* Add general settings content here */}</div>;
