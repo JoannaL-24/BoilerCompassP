@@ -9,6 +9,11 @@ import FormLabel from "@mui/material/FormLabel";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import firebase from "firebase/app";
+import { initializeApp } from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 
 function AdvisorHomepageFilter() {
   const [value, setValue] = React.useState("female");
