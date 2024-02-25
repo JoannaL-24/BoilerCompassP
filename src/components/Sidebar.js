@@ -20,13 +20,13 @@ export default function ClippedDrawer() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      {/* <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
              Topbar
           </Typography>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
       <Drawer
         variant="permanent"
         anchor="right"
@@ -36,7 +36,7 @@ export default function ClippedDrawer() {
           [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
         }}
       >
-        <Toolbar />
+        {/* <Toolbar /> */}
         <Box sx={{ overflow: 'auto' }}>
           <List>
             {['Courses', 'Requirements'].map((text, index) => (
