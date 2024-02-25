@@ -1,3 +1,7 @@
+.navBarContainer {
+    z-index: 100;
+}
+
 .DegreeOverview{
     /* width: 100vw; */
     display:flex;
