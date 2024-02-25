@@ -24,8 +24,8 @@ h3 {
 .Ctn {
   justify-content: center;
   align-items: center;
-  display: flex;
   flex-direction: column;
+  display: flex;
   height: "30vh";
 }
 
