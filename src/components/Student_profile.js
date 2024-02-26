@@ -21,19 +21,21 @@ import minor_data from '../json/minors.json';
 // css imports
 import '../css/Profile.css';
 
-const Student_profile = ({userinfo, setUserinfo, user}) => {
+const Student_profile = ({userinfo, setUserinfo, user, setup}) => {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const year = dayjs().get('year');
   const validStartYear = (date) => !(( year  - date.get('year') >= 0) && (year - date.get('year') <= 10));
   const validEndYear = (date) => !(( date.get('year') - year >= 0) && (date.get('year') - year <= 10));
-  // const validStartYear = (date) => !(( year  - date.getYear() >= 0) && (year - date.getYear() <= 10));
-  // const validEndYear = (date) => !(( date.getYear() - year >= 0) && (date.getYear() - year <= 10));
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [missingMajor, setMissingMajor] = useState("");
   const { handleSubmit } = useForm();
-  console.log(userinfo);
+  const prefer_majors_q = setup?"Choose your major(s):":"Your major:";
+  const prefer_minor_q = setup?"Choose your minor(s):":"Your minor(s):";
+  const start_term_q = setup?"When did you start school at Purdue?":"Your start date:";
+  const end_term_q = setup?"Expected graduation date:":"Your expected graduation date:";
+  const submit_button_text = setup?"Submit":"Update profile";
 
   const submit = () => {
     var go = true;
@@ -77,7 +79,7 @@ const Student_profile = ({userinfo, setUserinfo, user}) => {
     <div>
       <Box className="Ctn">
         <FormControl display="flex" style={{width: 400}}>
-          <h3 className="Question">Choose your major(s):</h3>
+          <h3 className="Question">{prefer_majors_q}</h3>
           <Autocomplete
           className="Input"
           multiple
@@ -112,7 +114,7 @@ const Student_profile = ({userinfo, setUserinfo, user}) => {
         />
         </FormControl>
         <FormControl display="flex" style={{width: 400}}>
-          <h3 className="Question">Choose your minor(s):</h3>
+          <h3 className="Question">{prefer_minor_q}</h3>
           <Autocomplete
           className="Input"
           multiple
@@ -143,7 +145,7 @@ const Student_profile = ({userinfo, setUserinfo, user}) => {
         />
         </FormControl>
         <FormControl display="flex" style={{width: 400}}>
-          <h3 className="Question">When did you start school at Purdue?</h3>
+          <h3 className="Question">{start_term_q}</h3>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               sx={{ mt: "1em", mb: "2em"}}
@@ -158,9 +160,9 @@ const Student_profile = ({userinfo, setUserinfo, user}) => {
                 },
               }}
             />
-            <h3 className="Question">Expected graduation date:</h3>
+            <h3 className="Question">{end_term_q}</h3>
             <DatePicker
-              sx={{ mt: "1em"}}
+              sx={{ mt: "1em", mb: "2em"}}
               label="Select end date *"
               shouldDisableYear={validEndYear}
               value={userinfo.end_term}
@@ -174,8 +176,12 @@ const Student_profile = ({userinfo, setUserinfo, user}) => {
             />
           </LocalizationProvider>
         </FormControl>
+        <FormControl display="flex" style={{width: 400}}>
+          {!setup && <h3 className="Question">Your advisor:</h3>}
+          {!setup && <h3 style={{fontWeight:"normal"}}>{userinfo.advisor}</h3>}
+        </FormControl>
         <Box className="Btn">
-          <Button type="submit" onClick={handleSubmit(submit)} variant="outlined">Submit</Button>
+          <Button type="submit" className="Btn" onClick={handleSubmit(submit)} variant="outlined">{submit_button_text}</Button>
         </Box>
       </Box>
     </div>

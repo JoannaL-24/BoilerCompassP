@@ -25,7 +25,8 @@ const Profile_setup_students = () => {
       <StudentProfile
       userinfo={userinfo}
       setUserinfo={setUserinfo}
-      user={user}/>
+      user={user}
+      setup={true}/>
     </div>
   )
 }

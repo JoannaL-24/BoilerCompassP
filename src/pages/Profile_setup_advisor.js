@@ -22,7 +22,8 @@ const Profile_setup_advisors = () => {
       <AdvisorProfile
       userinfo={userinfo}
       setUserinfo={setUserinfo}
-      user={user}/>
+      user={user}
+      setup={true}/>
     </div>
   )
 }

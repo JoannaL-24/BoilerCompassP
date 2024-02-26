@@ -14,10 +14,13 @@ import college_data from '../json/colleges.json';
 // css imports
 import '../css/Profile.css';
 
-const Advisor_profile = ({userinfo, setUserinfo, user}) => {
+const Advisor_profile = ({userinfo, setUserinfo, user, setup}) => {
   const [missingCollege, setMissingCollege] = useState("");
   const [missingDepartment, setMissingDepartment] = useState("");
   const { handleSubmit } = useForm();
+  const department_q = setup?"Choose your department:":"Your department:";
+  const college_q = setup?"Choose your college:":"Your college:";
+  const submit_button_text = setup?"Submit":"Update profile";
 
   const submit = () => {
     var go = true;
@@ -52,7 +55,7 @@ const Advisor_profile = ({userinfo, setUserinfo, user}) => {
     <div>
       <Box className="Ctn">
         <FormControl display="flex" style={{width: 400}}>
-          <h3 className="Question">Choose your department:</h3>
+          <h3 className="Question">{college_q}</h3>
           <Autocomplete
           className="Input"
           id="college"
@@ -80,7 +83,7 @@ const Advisor_profile = ({userinfo, setUserinfo, user}) => {
         />
         </FormControl>
         <FormControl display="flex" style={{width: 400}}>
-          <h3 className="Question">Choose your department:</h3>
+          <h3 className="Question">{department_q}</h3>
           <Autocomplete
           className="Input"
           id="deparment"
@@ -107,7 +110,7 @@ const Advisor_profile = ({userinfo, setUserinfo, user}) => {
         />
         </FormControl>
         <Box className="Btn">
-          <Button type="submit" onClick={handleSubmit(submit)} variant="outlined">Submit</Button>
+          <Button type="submit" onClick={handleSubmit(submit)} variant="outlined">{submit_button_text}</Button>
         </Box>
       </Box>
     </div>
