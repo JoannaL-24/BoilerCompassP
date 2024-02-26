@@ -1,0 +1,21 @@
+.Semester {
+    width: calc(83% / 3);
+}
+
+.SemesterDescription {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 15px 5px 5px;
+
+    h3 {
+        margin: 8px 0px 3px;
+    }
+}
+
+.Courses {
+    min-height: 400px;
+    background-color: rgb(244, 245, 249);
+    border-radius: 6px;
+}

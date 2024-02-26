@@ -9,7 +9,7 @@ export default function DegreePlanner () {
     return(
         <div className="DegreeOverview">
             <NavBar/>
-            <div style={{display:"flex", flexDirection:"row"}}>
+            <div className="DegreeContent">
                 <ScheduleView/>
                 <SceduleSide/>
             </div>

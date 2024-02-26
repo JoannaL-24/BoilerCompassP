@@ -5,9 +5,11 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import ScheduleYear from "../ScheduleYear/ScheduleYear";
 
 
 export default function ScheduleView () {
+
     return (
         <div className="ScheduleView">         
             <div className="ScheduleDestribtion">
@@ -30,7 +32,10 @@ export default function ScheduleView () {
                     </li>
                 </ul>
             </div>
-            {/* create seperate component for semester */}
+            <div className="SemesterYears">
+                <ScheduleYear/>
+                <ScheduleYear/>
+            </div>
         </div>
     )
 }
