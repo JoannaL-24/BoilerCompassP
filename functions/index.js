@@ -9,28 +9,28 @@ const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 
 // odata stuff
-const o = require('odata').o;
+const o = require("odata").o;
 
 initializeApp();
 
 async function queryODataAndStoreInFirebase() {
-    console.log('Querying OData service and storing data in Firestore...');
+  logger.info("Querying OData service and storing data in Firestore...");
 
-    const oHandler = o('https://api.purdue.io/odata/$metadata', {});
-    // const db = getFirestore();
+  const oHandler = o("https://api.purdue.io/odata/$metadata", {});
+  const db = getFirestore();
 
-    try {
-        const result = await oHandler.get('Terms').query();
-        console.log(result);
-    } catch (error) {
-        console.error('Error:', error);
-    }
+  try {
+    const result = await oHandler.get("Terms").query();
+    logger.info("Result:", result);
+  } catch (error) {
+    logger.error("Error:", error);
+  }
 }
 
-module.exports = { queryODataAndStoreInFirebase };
 
 // Scheduled Firebase Cloud Function
-// exports.scheduledFunction = onSchedule('every 24 hours', async (event) => {
-//     await queryODataAndStoreInFirebase();
-//     console.log('Scheduled function executed successfully.');
-// });
+exports.scheduledFunction = onSchedule({ schedule: "every 1 minutes from 21:28 to 21:35", timeZone: "America/New_York" }, async (event) => {
+  await queryODataAndStoreInFirebase();
+  console.log("Scheduled function executed successfully.");
+});
+

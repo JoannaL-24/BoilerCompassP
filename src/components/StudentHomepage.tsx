@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "@mui/material/Button";
 
 interface StudentHomepageActions {
   SettingsButton: () => void;
@@ -17,8 +18,9 @@ function StudentHomepage({ SettingsButton }: StudentHomepageActions) {
       >
         Schedules
       </h1>
-      <button
+      <Button
         onClick={SettingsButton}
+        variant="contained"
         style={{
           position: "absolute",
           top: "10px",
@@ -26,7 +28,7 @@ function StudentHomepage({ SettingsButton }: StudentHomepageActions) {
         }}
       >
         Settings
-      </button>
+      </Button>
     </div>
   );
 }

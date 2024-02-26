@@ -1,0 +1,70 @@
+.navBarContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    width: 100vw;
+    height: calc(55px + 2vh);
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    color: var(--black);
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 1.5px 6px;
+
+    img {
+        height: 100%;
+    }
+    ul {
+        height: 100%;
+        margin: 0px 45px 0px 0px;
+        padding:0px;
+        text-decoration: none;
+        list-style-type: none;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+.navBtnList{
+    li {
+        height: 100%;
+        margin-left: 20px;
+        display: inline-flex;
+        align-items: center;
+    }
+    h3 {
+        margin: 0px;
+    }
+    a {
+        display: inline-block;
+        position: relative;
+        margin: auto;
+        border: none;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    a:hover {
+        color: var(--main-gold);
+    }
+    a::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 1.8px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--main-gold);
+        transform-origin: bottom right;
+        transition: transform 0.3s ease-out;
+    }
+    a:hover::before,
+    a:focus::before {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+    }
+}
