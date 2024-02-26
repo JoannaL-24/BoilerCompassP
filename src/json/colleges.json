@@ -1,0 +1,40 @@
+{
+  "colleges": [
+    {
+      "name": "College of Agriculture"
+    },
+    {
+      "name": "Daniels School of Business"
+    },
+    {
+      "name": "College of Education"
+    },
+    {
+      "name": "College of Engineering"
+    },
+    {
+      "name": "Exploratory Studies"
+    },
+    {
+      "name": "College of Health and Human Sciences"
+    },
+    {
+      "name": "College of Liberal Arts"
+    },
+    {
+      "name": "College of Pharmacy"
+    },
+    {
+      "name": "Purdue Polytechnic Institute"
+    },
+    {
+      "name": "College of Science"
+    },
+    {
+      "name": "College of Veterinary Medicine"
+    },
+    {
+      "name": "Honors College"
+    }
+  ]
+}
