@@ -12,49 +12,52 @@ import ListItemText from '@mui/material/ListItemText';
 import ClassIcon from '@mui/icons-material/Class';
 import SchoolIcon from '@mui/icons-material/School';
 import Searchbar from './Searchbar';
+//import "./Sidebar.css"
 
 const drawerWidth = 240;
 
 export default function ClippedDrawer() {
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      {/* <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-             Topbar
-          </Typography>
-        </Toolbar>
-      </AppBar> */}
-      <Drawer
-        variant="permanent"
-        anchor="right"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
-        }}
-      >
-        <Searchbar/>
-        {/* <Toolbar /> */}
-        <Box sx={{ overflow: 'auto' }}>
-          <List>
-            {['Courses', 'Requirements'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <ClassIcon /> : <SchoolIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
+    <div className='Sidebar'>
+        <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        {/* <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+            <Toolbar>
+            <Typography variant="h6" noWrap component="div">
+                Topbar
+            </Typography>
+            </Toolbar>
+        </AppBar> */}
+        <Drawer
+            variant="permanent"
+            anchor="right"
+            sx={{
+                width: drawerWidth,
+                flexShrink: 0,
+                [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+            }}
+        >
+            <Searchbar/>
+            {/* <Toolbar /> */}
+            <Box sx={{ overflow: 'auto' }}>
+            <List>
+                {['Courses', 'Requirements'].map((text, index) => (
+                <ListItem key={text} disablePadding>
+                    <ListItemButton>
+                    <ListItemIcon>
+                        {index % 2 === 0 ? <ClassIcon /> : <SchoolIcon />}
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                    </ListItemButton>
+                </ListItem>
+                ))}
+            </List>
+            </Box>
+        </Drawer>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Toolbar />
         </Box>
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-      </Box>
-    </Box>
+        </Box>
+    </div>
   );
 }

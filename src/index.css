@@ -18,7 +18,7 @@ code {
 
 :root {
   --background: white;
-  --text-primary:#282c34;
+  --text-primary: #282c34;
   --text-secondary: rgb(105, 97, 52);
   --accent: rgb(215, 196, 148);
 }

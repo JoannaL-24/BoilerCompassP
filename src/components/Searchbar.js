@@ -9,29 +9,22 @@ const Searchbar = () => {
 
     const handleSearch = (e) => {
         //assume all lower case
-        setSearchInput(e.target.value.toLowercase());
+        var lowerCase = e.target.value.toLowerCase()
+        setSearchInput(lowerCase);
     }
-    if (searchInput.length > 0) {
-        courseList.filter((course) =>{
-            return course.name.match(searchInput);
-        })
-    }
+   
   return (
     <div className='search&display'>
         <div className="search">
-            <input
-            type = "text"
-            placeholder = "Search courses"
-            onchange = {handleSearch}
-            value = {searchInput}/>
-
             <TextField
-            id="outlined-basic"
-            variant="outlined"
-            fullWidth
-            label="Search"
+                id="outlined-basic"
+                onChange = {handleSearch}
+                variant="outlined"
+                style = {{width:200, height:10}}
+                label="Search course"
             />
         </div>
+        <SearchList input = {searchInput}/>
     </div>
   )
 }

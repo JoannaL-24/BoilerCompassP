@@ -1,5 +1,9 @@
-[{
+[
+{  "id": 1,
     "name": "cs307 software engineering i"
-}, {
+},
+{
+    "id": 2,
     "name": "ma265 linear algebra"
-}]
+}
+]
