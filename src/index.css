@@ -7,6 +7,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Times New Roman', Times, serif;
   font-weight: bold;
+  --black: #282c34;
+  --main-gold: #daaa00;
+  --light-gold: #CEB888;
 }
 
 code {

@@ -47,11 +47,7 @@
     ]
   },
   "devDependencies": {
-    "css-loader": "^6.10.0"
-  },
-  "browser": {
-    "fs": false,
-    "path": false,
-    "os": false
+    "css-loader": "^6.10.0",
+    "typescript": "^4"
   }
 }
