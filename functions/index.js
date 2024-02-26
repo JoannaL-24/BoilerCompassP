@@ -1,8 +1,7 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and triggers.
 const { logger } = require("firebase-functions");
-const { onRequest } = require("firebase-functions/v2/https");
-const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 const { onSchedule } = require("firebase-functions/v2/scheduler");
+const { onRequest } = require("firebase-functions/v2/https");
 
 // The Firebase Admin SDK to access Firestore.
 const { initializeApp } = require("firebase-admin/app");
@@ -17,20 +16,64 @@ async function queryODataAndStoreInFirebase() {
   logger.info("Querying OData service and storing data in Firestore...");
 
   const oHandler = o("https://api.purdue.io/odata/$metadata", {});
-  const db = getFirestore();
+  const firestore = getFirestore();
 
   try {
-    const result = await oHandler.get("Terms").query();
-    logger.info("Result:", result);
+    const entityTypes = [
+      "Terms",
+      "Subjects",
+      "Courses",
+      "Classes",
+      "Sections",
+      "Meetings",
+      "Instructors",
+      "Campuses",
+      "Buildings",
+      "Rooms"
+    ];
+
+    for (const entityType of entityTypes) {
+      console.log(`Querying ${entityType}...`);
+
+      const totalCount = await oHandler.get(entityType + "/$count").query();
+      const entities = await oHandler.get(entityType).query();
+      const lowerCaseEntityType = entityType.toLowerCase();
+
+      console.log(`Queried ${entityType} of count ${totalCount}`);
+
+      var count = 0;
+      const batchSize = 10000;
+      while (entities.length > 0) {
+        const batch = firestore.batch();
+
+        const dataBatch = entities.splice(0, batchSize);
+        dataBatch.forEach(entity => {
+          const docId = entity.Id; // Use the object's ID as the document ID
+          const docRef = firestore.collection(lowerCaseEntityType).doc(docId);
+          batch.set(docRef, entity);
+        });
+        await batch.commit();
+
+        count += dataBatch.length;
+
+        console.log(`${count}/${totalCount} ${entityType} stored in Firestore.`);
+      }
+    }
+
   } catch (error) {
     logger.error("Error:", error);
   }
 }
 
-
 // Scheduled Firebase Cloud Function
-exports.scheduledFunction = onSchedule({ schedule: "every 1 minutes from 21:28 to 21:35", timeZone: "America/New_York" }, async (event) => {
+// exports.scheduledFunction = onSchedule({ schedule: "every 1 minutes from 18:10", timeZone: "America/New_York" }, async (event) => {
+//   await queryODataAndStoreInFirebase();
+//   console.log("Scheduled function executed successfully.");
+// });
+
+exports.queryFunction = onRequest(async (req, res) => {
   await queryODataAndStoreInFirebase();
   console.log("Scheduled function executed successfully.");
 });
 
+// Function URL (queryFunction(us-central1)): https://queryfunction-jmcmkrvdxa-uc.a.run.app
