@@ -13,8 +13,8 @@ import firebase from "firebase/app";
 import { initializeApp } from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
-
+import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
+import app from "../models/firebase.ts";
 function AdvisorHomepageFilter() {
   const [value, setValue] = React.useState("female");
 
