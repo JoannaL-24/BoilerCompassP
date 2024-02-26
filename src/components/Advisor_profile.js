@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import Autocomplete from '@mui/material/Autocomplete';
-import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form'
 // firebase imports
-import { doc, updateDoc, Timestamp } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
 // data imports
 import major_data from '../json/majors.json';
@@ -15,7 +14,7 @@ import college_data from '../json/colleges.json';
 // css imports
 import '../css/Profile.css';
 
-const Advisor_profile = ({userinfo, setUserinfo, signedIn, setSignedIn, user}) => {
+const Advisor_profile = ({userinfo, setUserinfo, user}) => {
   const [missingCollege, setMissingCollege] = useState("");
   const [missingDepartment, setMissingDepartment] = useState("");
   const { handleSubmit } = useForm();
@@ -58,10 +57,11 @@ const Advisor_profile = ({userinfo, setUserinfo, signedIn, setSignedIn, user}) =
           className="Input"
           id="college"
           required={true}
-          options={major_data.majors}
+          options={college_data.colleges}
           disableCloseOnSelect
-          defaultValue={userinfo.deparment}
+          value={userinfo.college}
           getOptionLabel={(option) => option.name}
+          isOptionEqualToValue={(option, value) => option.value === value.value}
           onChange = {(e, value) => {setUserinfo((previous) => ({...previous, college: value})); setMissingCollege("");}}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
@@ -87,7 +87,8 @@ const Advisor_profile = ({userinfo, setUserinfo, signedIn, setSignedIn, user}) =
           required={true}
           options={major_data.majors}
           disableCloseOnSelect
-          defaultValue={userinfo.deparment}
+          value={userinfo.department}
+          isOptionEqualToValue={(option, value) => option.value === value.value}
           getOptionLabel={(option) => option.name}
           onChange = {(e, value) => {setUserinfo((previous) => ({...previous, department: value})); setMissingDepartment("");}}
           renderOption={(props, option, { selected }) => (

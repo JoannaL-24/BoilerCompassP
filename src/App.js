@@ -13,6 +13,7 @@ import RunStudentHomepage from "./components/RunStudentHomepage";
 import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
+import Profile from "./pages/Profile";
 
 function App() {
   //return <AdvisorHomepage />;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
@@ -21,20 +21,23 @@ import minor_data from '../json/minors.json';
 // css imports
 import '../css/Profile.css';
 
-const Student_profile = ({userinfo, setUserinfo, signedIn, setSignedIn, user}) => {
+const Student_profile = ({userinfo, setUserinfo, user}) => {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const year = dayjs().get('year');
   const validStartYear = (date) => !(( year  - date.get('year') >= 0) && (year - date.get('year') <= 10));
   const validEndYear = (date) => !(( date.get('year') - year >= 0) && (date.get('year') - year <= 10));
+  // const validStartYear = (date) => !(( year  - date.getYear() >= 0) && (year - date.getYear() <= 10));
+  // const validEndYear = (date) => !(( date.getYear() - year >= 0) && (date.getYear() - year <= 10));
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [missingMajor, setMissingMajor] = useState("");
   const { handleSubmit } = useForm();
+  console.log(userinfo);
 
   const submit = () => {
     var go = true;
-    if (!userinfo.major || !userinfo.major.length) {
+    if (!userinfo.prefer_majors || !userinfo.prefer_majors.length) {
       setMissingMajor("You must select at least one major");
       go = false;
     }
@@ -56,8 +59,8 @@ const Student_profile = ({userinfo, setUserinfo, signedIn, setSignedIn, user}) =
       //   const uid = user.uid;
       const user_doc = doc(firestore, "users", "f9RIsQLWoiPjlpVaC3XkPlzeXcr1");
       updateDoc(user_doc, {
-        prefer_majors: userinfo.major,
-        prefer_minor: userinfo.minor,
+        prefer_majors: userinfo.prefer_majors,
+        prefer_minor: userinfo.prefer_minor,
         user_type: userinfo.user_type,
         advisor: userinfo.advisor,
         start_term: Timestamp.fromDate(new Date(userinfo.start_term)),
@@ -81,10 +84,11 @@ const Student_profile = ({userinfo, setUserinfo, signedIn, setSignedIn, user}) =
           id="majors"
           options={major_data.majors}
           disableCloseOnSelect
-          value={userinfo.major}
+          value={userinfo.prefer_majors}
           required={true}
           getOptionLabel={(option) => option.name}
-          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, major: value})); setMissingMajor("");}}
+          isOptionEqualToValue={(option, value) => option.value === value.value}
+          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, prefer_majors: value})); setMissingMajor(""); console.log(userinfo.prefer_majors)}}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
               <Checkbox
@@ -116,9 +120,10 @@ const Student_profile = ({userinfo, setUserinfo, signedIn, setSignedIn, user}) =
           required={true}
           options={minor_data.minors}
           disableCloseOnSelect
-          defaultValue={userinfo.minor}
+          value={userinfo.prefer_minor}
           getOptionLabel={(option) => option.name}
-          onChange = {(e, value) => setUserinfo((previous) => ({...previous, minor: value}))}
+          isOptionEqualToValue={(option, value) => option.value === value.value}
+          onChange = {(e, value) => setUserinfo((previous) => ({...previous, prefer_minor: value}))}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
               <Checkbox
@@ -144,7 +149,7 @@ const Student_profile = ({userinfo, setUserinfo, signedIn, setSignedIn, user}) =
               sx={{ mt: "1em", mb: "2em"}}
               label="Select start date *"
               shouldDisableYear={validStartYear}
-              defaultValue={userinfo.start_term}
+              value={userinfo.start_term}
               onChange = {(value) => {setUserinfo((previous) => ({...previous, start_term: value})); setStart("");}}
               slotProps={{
                 textField: {
@@ -158,7 +163,7 @@ const Student_profile = ({userinfo, setUserinfo, signedIn, setSignedIn, user}) =
               sx={{ mt: "1em"}}
               label="Select end date *"
               shouldDisableYear={validEndYear}
-              defaultValue={userinfo.end_term}
+              value={userinfo.end_term}
               onChange = {(value) => {setUserinfo((previous) => ({...previous, end_term: value})); setEnd("");}}
               slotProps={{
                 textField: {
