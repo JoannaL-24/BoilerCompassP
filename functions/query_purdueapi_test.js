@@ -14,7 +14,7 @@ const app = initializeApp({
 })
 
 async function queryODataAndStoreInFirebase() {
-  logger.info("Querying OData service and storing data in Firestore...");
+  console.log("Querying OData service and storing data in Firestore...");
 
   const oHandler = o("https://api.purdue.io/odata/$metadata", {});
   const firestore = getFirestore(app);
@@ -25,29 +25,44 @@ async function queryODataAndStoreInFirebase() {
       // "Subjects",
       // "Courses",
       // "Classes",
-      "Sections",
-      // "Meetings",
+      // "Sections",
+      "Meetings",
       // "Instructors",
       // "Campuses",
       // "Buildings",
       // "Rooms"
     ];
-    for (const entityType of entityTypes) {
-      logger.info(`Querying ${entityType}...`);
 
+    for (const entityType of entityTypes) {
+      console.log(`Querying ${entityType}...`);
+
+      const totalCount = await oHandler.get(entityType + "/$count").query();
       const entities = await oHandler.get(entityType).query();
       const lowerCaseEntityType = entityType.toLowerCase();
 
-      await entities.forEach(async entity => {
-        const docId = entity.Id; // Use the object's ID as the document ID
-        const docRef = firestore.collection(lowerCaseEntityType).doc(docId);
-        await docRef.set(entity);
-      });
+      console.log(`Queried ${entityType} of count ${totalCount}`);
 
-      logger.info(`Data for ${entityType} stored in Firestore successfully.`);
+      var count = 0;
+      const batchSize = 10000;
+      while (entities.length > 0) {
+        const batch = firestore.batch();
+
+        const dataBatch = entities.splice(0, batchSize);
+        dataBatch.forEach(entity => {
+          const docId = entity.Id; // Use the object's ID as the document ID
+          const docRef = firestore.collection(lowerCaseEntityType).doc(docId);
+          batch.set(docRef, entity);
+        });
+        await batch.commit();
+
+        count += dataBatch.length;
+
+        console.log(`${count}/${totalCount} ${entityType} stored in Firestore.`);
+      }
     }
+
   } catch (error) {
-    logger.error("Error:", error);
+    console.error("Error:", error);
   }
 }
 
