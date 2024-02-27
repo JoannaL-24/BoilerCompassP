@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Radio from "@mui/material/Radio";
@@ -13,13 +13,48 @@ import firebase from "firebase/app";
 import { initializeApp } from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { doc, updateDoc } from "firebase/firestore";
+import { firestore } from "../models/firebase.ts";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+
+import app from "../models/firebase.ts";
 
 function AdvisorHomepageFilter() {
-  const [value, setValue] = React.useState("female");
+  const [value, setValue] = useState("female");
+  const [userNames, setUserNames] = useState<
+    { name: string; purdue_email: string; prefer_majors: string[] }[]
+  >([]);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+
+  useEffect(() => {
+    const firestore = getFirestore(app);
+    const fetchUserNames = async () => {
+      const usersSnapshot = await getDocs(collection(firestore, "users"));
+      const usersData: {
+        name: string;
+        purdue_email: string;
+        prefer_majors: string[];
+      }[] = [];
+      usersSnapshot.forEach((doc) => {
+        const userData = doc.data();
+        usersData.push({
+          name: userData.name,
+          purdue_email: userData.purdue_email,
+          prefer_majors: userData.prefer_majors || [], // Ensure prefer_majors is an array or default to an empty array
+        });
+      });
+      setUserNames(usersData);
+    };
+
+    fetchUserNames();
+  }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue((event.target as HTMLInputElement).value);
+    setValue(event.target.value);
+  };
+
+  const handleUserClick = (userData: any) => {
+    setSelectedUser(userData);
   };
 
   return (
@@ -29,15 +64,15 @@ function AdvisorHomepageFilter() {
         borderTop: "1px solid gray",
         marginTop: "100px",
         paddingTop: "100px",
-        // marginBottom: "10px",
       }}
     >
       <FormControl
-        sx={{ border: "2px solid black", borderRadius: "5px", padding: "10px" }}
+        sx={{
+          border: "2px solid black",
+          borderRadius: "5px",
+          padding: "10px",
+        }}
       >
-        {/* <FormLabel id="demo-controlled-radio-buttons-group" sx={{ fontSize: 30 }}>
-        Sort
-      </FormLabel>*/}
         <RadioGroup
           aria-labelledby="demo-controlled-radio-buttons-group"
           name="controlled-radio-buttons-group"
@@ -102,7 +137,7 @@ function AdvisorHomepageFilter() {
         style={{
           position: "absolute",
           left: "50%",
-          transform: "translateX(-50%)", // Center the text field horizontally
+          transform: "translateX(-50%)",
           bottom: "-10px",
         }}
       >
@@ -111,24 +146,28 @@ function AdvisorHomepageFilter() {
           id="input-with-sx"
           label="Seach student"
           variant="standard"
-          style={{ width: "200px", paddingBottom: "800px" }} // text field
+          style={{ width: "200px", paddingBottom: "800px" }}
         />
       </div>
-      {/* Rectangular region with five <a> elements */}
+      {/* brevity */}
+
       <div
         style={{
           display: "flex",
-          //justifyContent: "space-between",
+          flexWrap: "wrap",
+          alignItems: "center",
           position: "relative",
           left: "60%",
-          transform: "translateX(-50%)", // center the student horizontally
-          bottom: "200px", // adjust the vertical position
-          width: "70%", // adjust the width of the student
+          transform: "translateX(-50%)",
+          bottom: "200px",
+          width: "70%",
         }}
       >
-        {[...Array(5)].map((_, index) => (
+        {userNames.map((user, index) => (
           <a
             key={index}
+            href="#"
+            onClick={() => handleUserClick(user)}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -136,18 +175,45 @@ function AdvisorHomepageFilter() {
               textDecoration: "none",
               border: "1px solid black",
               borderRadius: "20px",
-              width: "calc(20% - 10px)", // adjust the width of each <a> element
+              width: "160px",
               padding: "10px",
               marginRight: "50px",
+              marginBottom: "10px",
             }}
           >
             <AccountCircle sx={{ color: "action.active", fontSize: "40px" }} />
-            <span style={{ marginTop: "5px" }}>Name</span>
+            <span style={{ marginTop: "5px" }}>{user.name}</span>
           </a>
         ))}
       </div>
+
+      {/* Popup to display user data */}
+      {selectedUser && (
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "white",
+            padding: "20px",
+            borderRadius: "10px",
+            boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+          }}
+        >
+          <h2>User Details</h2>
+          <p>Name: {selectedUser.name}</p>
+          <p>Email: {selectedUser.purdue_email}</p>
+          <p>Prefer Majors:</p>
+          <ul>
+            {selectedUser.prefer_majors.map((major: string, index: number) => (
+              <li key={index}>{major}</li>
+            ))}
+          </ul>
+          <button onClick={() => setSelectedUser(null)}>Close</button>
+        </div>
+      )}
     </div>
   );
 }
-
 export default AdvisorHomepageFilter;
