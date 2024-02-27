@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import StudentProfile from '../components/Student_profile'
-import AdvisorProfile from '../components/Advisor_profile'
+import StudentProfile from '../components/StudentProfile'
+import AdvisorProfile from '../components/AdvisorProfile'
 import Alert from '@mui/material/Alert';
 import { auth, firestore } from '../models/firebase.ts';
 import dayjs from 'dayjs';
@@ -11,13 +11,12 @@ const Profile = () => {
   const user = auth.currentUser;
   const [userinfo, setUserinfo] = useState(null);
   const [convertDate, setConverDate] = useState(true);
-  useEffect(() => {
-    const user_doc = getDoc(doc(firestore, "users", "f9RIsQLWoiPjlpVaC3XkPlzeXcr1"))
+  // useEffect(() => {
+    const user_doc = getDoc(doc(firestore, "users", "advisor_testing"))
     .then((docSnapshot) => {
-    // here
       setUserinfo(userinfo?userinfo:docSnapshot.data());
     });
-  });
+  // });
   if (userinfo && convertDate) {
     if (userinfo.user_type === "advisor") {
       setConverDate(false);

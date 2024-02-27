@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import AdvisorProfile from '../components/Advisor_profile'
+import StudentProfile from '../components/StudentProfile'
 import Alert from '@mui/material/Alert';
 import { auth } from '../models/firebase.ts';
 import '../css/Profile.css';
 
-const Profile_setup_advisors = () => {
+const Profile_setup_students = () => {
   const [userinfo, setUserinfo] = useState({
-    role: "advisor",
-    college: "",
-    department: "",
-    students: [],
+    user_type: "student",
+    prefer_majors: [],
+    prefer_minor: [],
+    start_term: null,
+    end_term: null,
+    advisor: "",
+    group: [],
   });
   const user = auth.currentUser;
 
@@ -19,7 +22,7 @@ const Profile_setup_advisors = () => {
       {"Please sign in to continue setting up profile"}
       </Alert>
       <h1 className="paget">Profile Setup</h1>
-      <AdvisorProfile
+      <StudentProfile
       userinfo={userinfo}
       setUserinfo={setUserinfo}
       user={user}
@@ -28,4 +31,4 @@ const Profile_setup_advisors = () => {
   )
 }
 
-export default Profile_setup_advisors
+export default Profile_setup_students

@@ -14,6 +14,7 @@ import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
 import Profile from "./pages/Profile";
+import ProgressBarTesting from './components/ProgressBar';
 
 function App() {
   //return <AdvisorHomepage />;
