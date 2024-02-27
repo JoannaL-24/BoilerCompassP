@@ -11,12 +11,12 @@ const Profile = () => {
   const user = auth.currentUser;
   const [userinfo, setUserinfo] = useState(null);
   const [convertDate, setConverDate] = useState(true);
-  // useEffect(() => {
+  useEffect(() => {
     const user_doc = getDoc(doc(firestore, "users", "advisor_testing"))
     .then((docSnapshot) => {
       setUserinfo(userinfo?userinfo:docSnapshot.data());
     });
-  // });
+  }, []);
   if (userinfo && convertDate) {
     if (userinfo.user_type === "advisor") {
       setConverDate(false);

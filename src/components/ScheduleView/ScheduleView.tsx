@@ -6,6 +6,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ScheduleYear from "../ScheduleYear/ScheduleYear";
+import ProgressBar from '../ProgressBar'
 
 
 export default function ScheduleView () {
@@ -36,6 +37,8 @@ export default function ScheduleView () {
                 <ScheduleYear/>
                 <ScheduleYear/>
             </div>
+            {/* create seperate component for semester */}
+            <ProgressBar completed={20} total={50}/>
         </div>
     )
 }
