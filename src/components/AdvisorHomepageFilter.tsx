@@ -10,6 +10,8 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import firebase from "firebase/app";
+import "firebase/firestore";
+
 import { initializeApp } from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
@@ -56,6 +58,30 @@ function AdvisorHomepageFilter() {
   const handleUserClick = (userData: any) => {
     setSelectedUser(userData);
   };
+
+    const app = initializeApp(firebaseConfig);
+
+    const db = getFirestore(app);
+
+    // Reference to the users collection
+    const usersCollection = collection(db, "users");
+
+    // Fetch user data
+    getDocs(usersCollection)
+      .then((querySnapshot) => {
+        const names: string[] = [];
+        querySnapshot.forEach((doc) => {
+          const userData = doc.data();
+          if (userData && userData.name) {
+            names.push(userData.name);
+          }
+        });
+        setUserNames(names);
+      })
+      .catch((error) => {
+        console.log("Error getting documents:", error);
+      });
+  }, []); // Empty dependency array to run effect only once
 
   return (
     <div
