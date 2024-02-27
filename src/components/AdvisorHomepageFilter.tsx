@@ -1,181 +1,20 @@
-import React, { useState, useEffect } from "react";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import firebase from "firebase/app";
-import { initializeApp } from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-import { doc, updateDoc } from "firebase/firestore";
-import { firestore } from "../models/firebase.ts";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-
-import app from "../models/firebase.ts";
-
-function AdvisorHomepageFilter() {
-  const [value, setValue] = useState("female");
-  const [userNames, setUserNames] = useState<string[]>([]);
-
-  useEffect(() => {
-    const firestore = getFirestore(app);
-    const fetchUserNames = async () => {
-      const usersSnapshot = await getDocs(collection(firestore, "users"));
-      const names: string[] = [];
-      usersSnapshot.forEach((doc) => {
-        const userData = doc.data();
-        names.push(userData.name);
-      });
-      setUserNames(names);
-    };
-
-    fetchUserNames();
-  }, []);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-  };
-
-  return (
-    <div
-      style={{
-        width: "100%",
-        borderTop: "1px solid gray",
-        marginTop: "100px",
-        paddingTop: "100px",
-      }}
-    >
-      <FormControl
-        sx={{
-          border: "2px solid black",
-          borderRadius: "5px",
-          padding: "10px",
-        }}
-      >
-        <RadioGroup
-          aria-labelledby="demo-controlled-radio-buttons-group"
-          name="controlled-radio-buttons-group"
-          value={value}
-          onChange={handleChange}
-        >
-          <FormControlLabel
-            value="alphabetincrease"
-            control={
-              <Radio
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 35,
-                  },
-                }}
-              />
-            }
-            label="Sort alphabetically (ascending)"
-          />
-          <FormControlLabel
-            value="alphabetdecrease"
-            control={
-              <Radio
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 35,
-                  },
-                }}
-              />
-            }
-            label="Sort alphabetically (descending)"
-          />
-          <FormControlLabel
-            value="yearincrease"
-            control={
-              <Radio
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 35,
-                  },
-                }}
-              />
-            }
-            label="Sort by year (ascending)"
-          />
-          <FormControlLabel
-            value="yeardecrease"
-            control={
-              <Radio
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 35,
-                  },
-                }}
-              />
-            }
-            label="Sort by year (descending)"
-          />
-        </RadioGroup>
-      </FormControl>
-      <div
-        style={{
-          position: "absolute",
-          left: "50%",
-          transform: "translateX(-50%)",
-          bottom: "-10px",
-        }}
-      >
-        <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-        <TextField
-          id="input-with-sx"
-          label="Seach student"
-          variant="standard"
-          style={{ width: "200px", paddingBottom: "800px" }}
-        />
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap", // Allow items to wrap to the next line
-
-          alignItems: "center", // Center the items vertically
-          position: "relative",
-          left: "60%",
-          transform: "translateX(-50%)",
-          bottom: "200px",
-          width: "70%",
-        }}
-      >
-        {userNames.map((name, index) => (
-          <a
-            key={index}
-            style={{
-              //here is the box
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textDecoration: "none",
-              border: "1px solid black",
-              borderRadius: "20px",
-              //width: "calc(13%)",
-              width: "160px",
-              padding: "10px",
-              marginRight: "50px",
-              marginBottom: "10px", // Spacing between rows
-            }}
-          >
-            <AccountCircle sx={{ color: "action.active", fontSize: "40px" }} />
-            <span style={{ marginTop: "5px" }}>{name}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-export default AdvisorHomepageFilter;
-
+// import React, { useState } from "react";
+// import Button from "@mui/material/Button";
+// import ButtonGroup from "@mui/material/ButtonGroup";
+// import Radio from "@mui/material/Radio";
+// import RadioGroup from "@mui/material/RadioGroup";
+// import FormControlLabel from "@mui/material/FormControlLabel";
+// import FormControl from "@mui/material/FormControl";
+// import FormLabel from "@mui/material/FormLabel";
+// import Box from "@mui/material/Box";
+// import TextField from "@mui/material/TextField";
+// import AccountCircle from "@mui/icons-material/AccountCircle";
+// import firebase from "firebase/app";
+// import { initializeApp } from "firebase/app";
+// import "firebase/auth";
+// import "firebase/firestore";
+// import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
+// import app from "../models/firebase.ts";
 // function AdvisorHomepageFilter() {
 //   const [value, setValue] = React.useState("female");
 
@@ -312,3 +151,97 @@ export default AdvisorHomepageFilter;
 // }
 
 // export default AdvisorHomepageFilter;
+
+import React, { useState, useEffect } from "react";
+import firebase from "firebase/app";
+import "firebase/firestore";
+
+import { initializeApp } from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
+import app from "../models/firebase.ts";
+import { firestore } from "../models/firebase";
+import Button from "@mui/material/Button";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+
+function AdvisorHomepageFilter() {
+  const [userNames, setUserNames] = useState<string[]>([]); // array of strings
+
+  useEffect(() => {
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: `${process.env.REACT_APP_FIREBASE_KEY}`,
+      authDomain: `${process.env.REACT_APP_FIREBASE_AUTH_DOMAIN}`,
+      projectId: `${process.env.REACT_APP_FIREBASE_PROJECT_ID}`,
+      storageBucket: `${process.env.REACT_APP_FIREBASE_STORAGE_BUCKET}`,
+      messagingSenderId: `${process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID}`,
+      appId: `${process.env.REACT_FIREBASE_APP_ID}`,
+      measurementId: `${process.env.REACT_FIREBASE_MEASUREMENT_ID}`,
+    };
+
+    const app = initializeApp(firebaseConfig);
+
+    const db = getFirestore(app);
+
+    // Reference to the users collection
+    const usersCollection = collection(db, "users");
+
+    // Fetch user data
+    getDocs(usersCollection)
+      .then((querySnapshot) => {
+        const names: string[] = [];
+        querySnapshot.forEach((doc) => {
+          const userData = doc.data();
+          if (userData && userData.name) {
+            names.push(userData.name);
+          }
+        });
+        setUserNames(names);
+      })
+      .catch((error) => {
+        console.log("Error getting documents:", error);
+      });
+  }, []); // Empty dependency array to run effect only once
+
+  return (
+    <div>
+      {/* Render the dynamically generated <a> elements */}
+      <div
+        style={{
+          display: "flex",
+          position: "relative",
+          left: "60%",
+          transform: "translateX(-50%)",
+          bottom: "200px",
+          width: "70%",
+        }}
+      >
+        {userNames.map((name, index) => (
+          <a
+            key={index}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textDecoration: "none",
+              border: "1px solid black",
+              borderRadius: "20px",
+              width: "calc(20% - 10px)",
+              padding: "10px",
+              marginRight: "50px",
+            }}
+          >
+            <AccountCircle sx={{ color: "action.active", fontSize: "40px" }} />
+            <span style={{ marginTop: "5px" }}>{name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default AdvisorHomepageFilter;
