@@ -21,18 +21,29 @@ import app from "../models/firebase.ts";
 
 function AdvisorHomepageFilter() {
   const [value, setValue] = useState("female");
-  const [userNames, setUserNames] = useState<string[]>([]);
+  const [userNames, setUserNames] = useState<
+    { name: string; purdue_email: string; prefer_majors: string[] }[]
+  >([]);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
 
   useEffect(() => {
     const firestore = getFirestore(app);
     const fetchUserNames = async () => {
       const usersSnapshot = await getDocs(collection(firestore, "users"));
-      const names: string[] = [];
+      const usersData: {
+        name: string;
+        purdue_email: string;
+        prefer_majors: string[];
+      }[] = [];
       usersSnapshot.forEach((doc) => {
         const userData = doc.data();
-        names.push(userData.name);
+        usersData.push({
+          name: userData.name,
+          purdue_email: userData.purdue_email,
+          prefer_majors: userData.prefer_majors || [], // Ensure prefer_majors is an array or default to an empty array
+        });
       });
-      setUserNames(names);
+      setUserNames(usersData);
     };
 
     fetchUserNames();
@@ -40,6 +51,10 @@ function AdvisorHomepageFilter() {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+  };
+
+  const handleUserClick = (userData: any) => {
+    setSelectedUser(userData);
   };
 
   return (
@@ -134,12 +149,13 @@ function AdvisorHomepageFilter() {
           style={{ width: "200px", paddingBottom: "800px" }}
         />
       </div>
+      {/* brevity */}
+
       <div
         style={{
           display: "flex",
-          flexWrap: "wrap", // Allow items to wrap to the next line
-
-          alignItems: "center", // Center the items vertically
+          flexWrap: "wrap",
+          alignItems: "center",
           position: "relative",
           left: "60%",
           transform: "translateX(-50%)",
@@ -147,168 +163,57 @@ function AdvisorHomepageFilter() {
           width: "70%",
         }}
       >
-        {userNames.map((name, index) => (
+        {userNames.map((user, index) => (
           <a
             key={index}
+            href="#"
+            onClick={() => handleUserClick(user)}
             style={{
-              //here is the box
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               textDecoration: "none",
               border: "1px solid black",
               borderRadius: "20px",
-              //width: "calc(13%)",
               width: "160px",
               padding: "10px",
               marginRight: "50px",
-              marginBottom: "10px", // Spacing between rows
+              marginBottom: "10px",
             }}
           >
             <AccountCircle sx={{ color: "action.active", fontSize: "40px" }} />
-            <span style={{ marginTop: "5px" }}>{name}</span>
+            <span style={{ marginTop: "5px" }}>{user.name}</span>
           </a>
         ))}
       </div>
+
+      {/* Popup to display user data */}
+      {selectedUser && (
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "white",
+            padding: "20px",
+            borderRadius: "10px",
+            boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+          }}
+        >
+          <h2>User Details</h2>
+          <p>Name: {selectedUser.name}</p>
+          <p>Email: {selectedUser.purdue_email}</p>
+          <p>Prefer Majors:</p>
+          <ul>
+            {selectedUser.prefer_majors.map((major: string, index: number) => (
+              <li key={index}>{major}</li>
+            ))}
+          </ul>
+          <button onClick={() => setSelectedUser(null)}>Close</button>
+        </div>
+      )}
     </div>
   );
 }
-
 export default AdvisorHomepageFilter;
-
-// function AdvisorHomepageFilter() {
-//   const [value, setValue] = React.useState("female");
-
-//   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     setValue((event.target as HTMLInputElement).value);
-//   };
-
-//   return (
-//     <div
-//       style={{
-//         width: "100%",
-//         borderTop: "1px solid gray",
-//         marginTop: "100px",
-//         paddingTop: "100px",
-//         // marginBottom: "10px",
-//       }}
-//     >
-//       <FormControl
-//         sx={{ border: "2px solid black", borderRadius: "5px", padding: "10px" }}
-//       >
-//         {/* <FormLabel id="demo-controlled-radio-buttons-group" sx={{ fontSize: 30 }}>
-//         Sort
-//       </FormLabel>*/}
-//         <RadioGroup
-//           aria-labelledby="demo-controlled-radio-buttons-group"
-//           name="controlled-radio-buttons-group"
-//           value={value}
-//           onChange={handleChange}
-//         >
-//           <FormControlLabel
-//             value="alphabetincrease"
-//             control={
-//               <Radio
-//                 sx={{
-//                   "& .MuiSvgIcon-root": {
-//                     fontSize: 35,
-//                   },
-//                 }}
-//               />
-//             }
-//             label="Sort alphabetically (ascending)"
-//           />
-//           <FormControlLabel
-//             value="alphabetdecrease"
-//             control={
-//               <Radio
-//                 sx={{
-//                   "& .MuiSvgIcon-root": {
-//                     fontSize: 35,
-//                   },
-//                 }}
-//               />
-//             }
-//             label="Sort alphabetically (descending)"
-//           />
-//           <FormControlLabel
-//             value="yearincrease"
-//             control={
-//               <Radio
-//                 sx={{
-//                   "& .MuiSvgIcon-root": {
-//                     fontSize: 35,
-//                   },
-//                 }}
-//               />
-//             }
-//             label="Sort by year (ascending)"
-//           />
-//           <FormControlLabel
-//             value="yeardecrease"
-//             control={
-//               <Radio
-//                 sx={{
-//                   "& .MuiSvgIcon-root": {
-//                     fontSize: 35,
-//                   },
-//                 }}
-//               />
-//             }
-//             label="Sort by year (descending)"
-//           />
-//         </RadioGroup>
-//       </FormControl>
-//       <div
-//         style={{
-//           position: "absolute",
-//           left: "50%",
-//           transform: "translateX(-50%)", // Center the text field horizontally
-//           bottom: "-10px",
-//         }}
-//       >
-//         <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-//         <TextField
-//           id="input-with-sx"
-//           label="Seach student"
-//           variant="standard"
-//           style={{ width: "200px", paddingBottom: "800px" }} // text field
-//         />
-//       </div>
-//       {/* Rectangular region with five <a> elements */}
-//       <div
-//         style={{
-//           display: "flex",
-//           //justifyContent: "space-between",
-//           position: "relative",
-//           left: "60%",
-//           transform: "translateX(-50%)", // center the student horizontally
-//           bottom: "200px", // adjust the vertical position
-//           width: "70%", // adjust the width of the student
-//         }}
-//       >
-//         {[...Array(5)].map((_, index) => (
-//           <a
-//             key={index}
-//             style={{
-//               display: "flex",
-//               flexDirection: "column",
-//               alignItems: "center",
-//               textDecoration: "none",
-//               border: "1px solid black",
-//               borderRadius: "20px",
-//               width: "calc(20% - 10px)", // adjust the width of each <a> element
-//               padding: "10px",
-//               marginRight: "50px",
-//             }}
-//           >
-//             <AccountCircle sx={{ color: "action.active", fontSize: "40px" }} />
-//             <span style={{ marginTop: "5px" }}>Name</span>
-//           </a>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default AdvisorHomepageFilter;
