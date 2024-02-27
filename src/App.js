@@ -12,9 +12,11 @@ import StudentHomepage from "./components/StudentHomepage";
 import RunStudentHomepage from "./components/RunStudentHomepage";
 import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
+import DeleteAccount from "./components/DeleteAccount";
 
 function App() {
-  return <AdvisorHomepage />;
+  //return <AdvisorHomepage />;
+  return <DeleteAccount />;
   /*return (
     
     
