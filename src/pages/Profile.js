@@ -11,8 +11,9 @@ const Profile = () => {
   const user = auth.currentUser;
   const [userinfo, setUserinfo] = useState(null);
   const [convertDate, setConverDate] = useState(true);
+  const [updated, setUpdated] = useState(false);
   useEffect(() => {
-    const user_doc = getDoc(doc(firestore, "users", "advisor_testing"))
+    const user_doc = getDoc(doc(firestore, "users", "f9RIsQLWoiPjlpVaC3XkPlzeXcr1"))
     .then((docSnapshot) => {
       setUserinfo(userinfo?userinfo:docSnapshot.data());
     });
@@ -24,6 +25,7 @@ const Profile = () => {
     else {
       setUserinfo((prev)=>({...prev, start_term: dayjs(userinfo.start_term.toDate()), end_term: dayjs(userinfo.end_term.toDate())}));
       setConverDate(false);
+      // console.log(userinfo);
     }
   }
 
@@ -32,19 +34,24 @@ const Profile = () => {
       <Alert severity="error" sx={{ display: user ? 'none' : 'flex', top: 0, left: 0, width: '100%', height: '4%'}}>
       {"Please sign in to continue viewing your profile"}
       </Alert>
+      <Alert severity="success" sx={{ display: !updated? 'none' : 'flex', top: 0, left: 0, width: '100%', height: '4%'}}>
+      {"Your profile was updated successfully!"}
+      </Alert>
       <h1 className="paget">Your Profile</h1>
       {userinfo && userinfo.user_type === "student" && // add user&&
       <StudentProfile
         userinfo={userinfo}
         setUserinfo={setUserinfo}
         user={user}
-        setup={false}/>}
+        setup={false}
+        setUpdated={setUpdated}/>}
       {userinfo && userinfo.user_type==="advisor" &&
         <AdvisorProfile
           userinfo={userinfo}
           setUserinfo={setUserinfo}
           user={user}
-          setup={false}/>}
+          setup={false}
+          setUpdated={setUpdated}/>}
     </div>
   )
 }

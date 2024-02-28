@@ -38,7 +38,7 @@ export default function ScheduleView () {
                 <ScheduleYear/>
             </div>
             {/* create seperate component for semester */}
-            <ProgressBar completed={20} total={50}/>
+            <ProgressBar completed={20} total={50} planned={40}/>
         </div>
     )
 }

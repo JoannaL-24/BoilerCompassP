@@ -21,7 +21,7 @@ import minor_data from '../json/minors.json';
 // css imports
 import '../css/Profile.css';
 
-const Student_profile = ({userinfo, setUserinfo, user, setup}) => {
+const Student_profile = ({userinfo, setUserinfo, user, setup, setUpdated}) => {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const year = dayjs().get('year');
@@ -36,6 +36,7 @@ const Student_profile = ({userinfo, setUserinfo, user, setup}) => {
   const start_term_q = setup?"When did you start school at Purdue?":"Your start date:";
   const end_term_q = setup?"Expected graduation date:":"Your expected graduation date:";
   const submit_button_text = setup?"Submit":"Update profile";
+  // console.log(userinfo);
 
   const submit = () => {
     var go = true;
@@ -68,6 +69,7 @@ const Student_profile = ({userinfo, setUserinfo, user, setup}) => {
         start_term: Timestamp.fromDate(new Date(userinfo.start_term)),
         end_term: Timestamp.fromDate(new Date(userinfo.end_term)),
       });
+      setUpdated(true);
       // }
       // else {
       //   setSignedIn(false);
@@ -89,8 +91,10 @@ const Student_profile = ({userinfo, setUserinfo, user, setup}) => {
           value={userinfo.prefer_majors}
           required={true}
           getOptionLabel={(option) => option.name}
-          isOptionEqualToValue={(option, value) => option.value === value.value}
-          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, prefer_majors: value})); setMissingMajor(""); console.log(userinfo.prefer_majors)}}
+          // isOptionEqualToValue={(option, value) => option.value === value.value}
+          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, prefer_majors: value}));
+                                     setMissingMajor("");
+                                     (!setup && setUpdated(false))}}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
               <Checkbox
@@ -124,8 +128,9 @@ const Student_profile = ({userinfo, setUserinfo, user, setup}) => {
           disableCloseOnSelect
           value={userinfo.prefer_minor}
           getOptionLabel={(option) => option.name}
-          isOptionEqualToValue={(option, value) => option.value === value.value}
-          onChange = {(e, value) => setUserinfo((previous) => ({...previous, prefer_minor: value}))}
+          // isOptionEqualToValue={(option, value) => option.value === value.value}
+          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, prefer_minor: value}));
+                                     (!setup && setUpdated(false))}}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
               <Checkbox
@@ -152,7 +157,9 @@ const Student_profile = ({userinfo, setUserinfo, user, setup}) => {
               label="Select start date *"
               shouldDisableYear={validStartYear}
               value={userinfo.start_term}
-              onChange = {(value) => {setUserinfo((previous) => ({...previous, start_term: value})); setStart("");}}
+              onChange = {(value) => {setUserinfo((previous) => ({...previous, start_term: value}));
+                                      setStart("");
+                                      (!setup && setUpdated(false))}}
               slotProps={{
                 textField: {
                   error: start && start.length?true:false,
@@ -166,7 +173,9 @@ const Student_profile = ({userinfo, setUserinfo, user, setup}) => {
               label="Select end date *"
               shouldDisableYear={validEndYear}
               value={userinfo.end_term}
-              onChange = {(value) => {setUserinfo((previous) => ({...previous, end_term: value})); setEnd("");}}
+              onChange = {(value) => {setUserinfo((previous) => ({...previous, end_term: value}));
+                                      setEnd("");
+                                      (!setup && setUpdated(false))}}
               slotProps={{
                 textField: {
                   error: end && end.length?true:false,
