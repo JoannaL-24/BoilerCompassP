@@ -9,7 +9,7 @@
     "@material-ui/styles": "^4.11.5",
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
-    "@mui/x-date-pickers": "^6.19.4",
+    "@mui/x-date-pickers": "^6.19.5",
     "@react-firebase/auth": "^0.2.10",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -23,7 +23,7 @@
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
     "react-hook-form": "^7.50.1",
-    "react-router-dom": "^6.22.1",
+    "react-router-dom": "^6.22.2",
     "react-scripts": "^5.0.1",
     "reactjs-popup": "^2.0.6",
     "web-vitals": "^2.1.4"

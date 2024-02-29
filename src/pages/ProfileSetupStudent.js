@@ -12,18 +12,23 @@ const ProfileSetupStudents = () => {
     prefer_minor: [],
     start_term: null,
     end_term: null,
+    advisor: "Purdue Pete",
   });
+  // if (currentUser) {
+  //   console.log("here");
+  //   console.log(currentUser.uid);
+  // }
 
   return (
     <div>
-      <Alert severity="error" sx={{ display: currentUser ? 'none' : 'flex', top: 0, left: 0, width: '100%', height: '4%'}}>
-      {"Please sign in to continue setting up profile"}
+      <Alert severity="error" sx={{ display: currentUser ? 'none' : 'flex', top: 0, left: 0, width: '100%', height: '4%' }}>
+        {"Please sign in to continue setting up profile"}
       </Alert>
       <h1 className="paget">Profile Setup</h1>
       <StudentProfile
-      userinfo={userinfo}
-      setUserinfo={setUserinfo}
-      setup={true}/>
+        userinfo={userinfo}
+        setUserinfo={setUserinfo}
+        setup={true} />
     </div>
   )
 }

@@ -1,14 +1,29 @@
 import React from "react";
+import useState from "react";
+// @ts-ignore
 import { ReactComponent as Sun } from "./Sun.svg";
+// @ts-ignore
 import { ReactComponent as Moon } from "./Moon.svg";
 import "./DarkModeToggle.css"
+// firebase imports
+import { doc, updateDoc, Timestamp } from "firebase/firestore";
+import { firestore } from '../../models/firebase.ts';
 
 const DarkModeToggle = () => {
+    /*get theme from fire store  
+    const theme = */
+    /*
+    set state s                                                      
+    const [theme, setTheme] = useState({
+
+    }); */
     const setDarkMode = () => {
+        // @ts-ignore
         document.querySelector("body").setAttribute('data-theme', 'dark')
         localStorage.setItem("selectedTheme", "dark")
     }
     const setLightMode = () => {
+        // @ts-ignore
         document.querySelector("body").setAttribute('data-theme', 'light')
         localStorage.setItem("selectedTheme", "light")
     }
@@ -17,7 +32,7 @@ const DarkModeToggle = () => {
     if (selectedTheme === "dark") {
         setDarkMode();
     }
-    const toggleTheme = (e) => {
+    const toggleTheme = (/** @type {{ target: { checked: any; }; }} */ e) => {
         if (e.target.checked) setDarkMode();
         else setLightMode();
     }
@@ -30,7 +45,7 @@ const DarkModeToggle = () => {
                 onChange = {toggleTheme}
                 defaultChecked = {selectedTheme === "dark"}
             />
-            <label className='dark_mode_label' for='darkmode-toggle'>
+            <label className='dark_mode_label' htmlFor='darkmode-toggle'>
                 <Sun />
                 <Moon />
             </label>

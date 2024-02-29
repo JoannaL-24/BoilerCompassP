@@ -3,7 +3,7 @@ import StudentProfile from '../components/StudentProfile'
 import AdvisorProfile from '../components/AdvisorProfile'
 import Alert from '@mui/material/Alert';
 import { firestore } from '../models/firebase.ts';
-import { useAuth } from '../components/contexts/AuthContext'
+import { useAuth } from '../components/contexts/AuthContext';
 import dayjs from 'dayjs';
 import { doc, updateDoc, getDoc, Timestamp } from "firebase/firestore";
 import '../css/Profile.css';
@@ -13,13 +13,13 @@ const Profile = () => {
   const [userinfo, setUserinfo] = useState(null);
   const [convertDate, setConverDate] = useState(true);
   const [updated, setUpdated] = useState(false);
-  // if (currentUser) {
-    useEffect(() => {
-      const user_doc = getDoc(doc(firestore, "users", "f9RIsQLWoiPjlpVaC3XkPlzeXcr1"))
+  if (currentUser) {
+    // useEffect(() => {
+      const user_doc = getDoc(doc(firestore, "users", currentUser.uid))
       .then((docSnapshot) => {
         setUserinfo(userinfo?userinfo:docSnapshot.data());
       });
-    }, []);
+    // }, []);
     if (userinfo && convertDate) {
       if (userinfo.user_type === "advisor") {
         setConverDate(false);
@@ -29,7 +29,7 @@ const Profile = () => {
         setConverDate(false);
         // console.log(userinfo);
       }
-    // }
+    }
   }
 
   return (

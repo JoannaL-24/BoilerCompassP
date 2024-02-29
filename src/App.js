@@ -1,15 +1,14 @@
 import './App.css';
-import CourseList from "./components/CourseList";
-import DarkModeToggle from './components/DarkModeToggle';
+import DarkModeToggle from './components/DarkModeToggle/DarkModeToggle';
 import Sidebar from './components/Sidebar'
-import CoursePopup from './components/CoursePopup'
-import "./App.css";
+import CoursePopup from './components/CoursePopup/CoursePopup'
 import React from "react";
 import ReactDOM from "react-dom";
 import { Routes, Route } from "react-router-dom";
 import Welcome from "./pages/Welcome";
 import ProfileSetupStudent from "./pages/ProfileSetupStudent";
 import ProfileSetupAdvisor from "./pages/ProfileSetupAdvisor";
+import Profile from './pages/Profile';
 import CoverPage from "./pages/CoverPage";
 import DegreePlanner from "./pages/DegreePlanner";
 import SettingsPage from "./components/SettingsPage";
@@ -19,37 +18,30 @@ import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
 import DraggableCourse from "./components/DraggableCourse";
-import { ODataProvider } from "./components/contexts/ODataContext"
+import { AuthProvider } from './components/contexts/AuthContext';
 
 function App() {
-  //return <AdvisorHomepage />;
-  //return <DeleteAccount />;
-  // return <DraggableCourse />;
-
-  // return <DeleteAccount />;
   return (
-    <div className="App">
-      <header className="App-header">
-        <DarkModeToggle />
-        <Sidebar />
-        <CoursePopup />
-      </header>
-      <Routes>
-        <Route path="/DegreePlanner" element={<DegreePlanner />} />
-        <Route path="/" element={<DegreePlanner />} />
-        <Route path="/Welcome" element={<Welcome />} />
-        <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
-        />
-        <Route
-          path="/profile-setup-advisor"
-          element={<ProfileSetupAdvisor />}
-        />
-      </Routes>
-    </div>
+    <AuthProvider>
+      <div className="App">
+        {/* <header className="App-header">
+          <DarkModeToggle />
+          <Sidebar />
+          <CoursePopup />
+        </header> */}
+        <Routes>
+          <Route path="/DegreePlanner" element={<DegreePlanner />}/>
+          <Route path="/" element={<CoverPage />}/>
+          <Route path="/Welcome" element={<Welcome />}/>
+          <Route path="/Profile" element={<Profile />}/>
+          <Route path="/ProfileSetupStudent" element={<ProfileSetupStudent />}/>
+          <Route path="/ProfileSetupAdvisor" element={<ProfileSetupAdvisor />}/>
+          <Route path="/AdvisorHomePage" element={<AdvisorHomepage/>}/>
+          <Route path="/Settings" element={<SettingsPage/>}/>
+        </Routes>
+      </div>
+    </AuthProvider>
   );
-
-  // return <RunStudentHomepage></RunStudentHomepage>;
-  // return <DegreePlanner/>
 }
 
 export default App;

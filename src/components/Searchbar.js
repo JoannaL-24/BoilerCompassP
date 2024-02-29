@@ -7,6 +7,8 @@ import { oHandler } from "models/purdueapi"
 const Searchbar = () => {
   const [results, setResults] = useState([]);
 
+  const PwlCampusId = "eb70e97b-3583-4ac9-86e5-468ad3869de8"
+
   const handleSearch = debounce(async (searchInput) => {
     const searchString = searchInput.toUpperCase().trim();
 
@@ -53,9 +55,14 @@ const Searchbar = () => {
       <div className="search">
         <TextField
           id="outlined-basic"
+          display="flex"
+          justifyContent="center"
+          inputProps = {{style: {fontSize: 15}}}
+          InputLabelProps={{style: {fontSize: 13}}}
+          size = "small" 
           onChange={(e) => handleSearch(e.target.value)}
           variant="outlined"
-          style={{ width: 200, height: 10 }}
+          style={{ width: 200, height: 5 }}
           label="Search course"
         />
       </div>
