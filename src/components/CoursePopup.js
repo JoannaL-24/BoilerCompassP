@@ -21,7 +21,7 @@ const CoursePopup = () => {
             </div>
             <div className='actions'>
               <Popup
-                trigger = {<button className='button'>View Sessions</button>}
+                trigger = {<button className='view button'>View Sessions</button>}
                 nested
               >
                 <span className='sessions'>
