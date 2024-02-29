@@ -20,26 +20,26 @@ async function queryODataAndStoreInFirebase() {
 
   try {
     const entityTypes = [
-      "Terms",
-      "Subjects",
-      "Courses",
-      "Classes",
-      "Sections",
+      // "Terms",
+      // "Subjects",
+      // "Courses",
+      // "Classes",
+      // "Sections",
       "Meetings",
-      "Instructors",
-      "Campuses",
-      "Buildings",
-      "Rooms"
+      // "Instructors",
+      // "Campuses",
+      // "Buildings",
+      // "Rooms"
     ];
 
     for (const entityType of entityTypes) {
-      console.log(`Querying ${entityType}...`);
+      logger.info(`Querying ${entityType}...`);
 
       const totalCount = await oHandler.get(entityType + "/$count").query();
       const entities = await oHandler.get(entityType).query();
       const lowerCaseEntityType = entityType.toLowerCase();
 
-      console.log(`Queried ${entityType} of count ${totalCount}`);
+      logger.info(`Queried ${entityType} of count ${totalCount}`);
 
       var count = 0;
       const batchSize = 10000;
@@ -56,7 +56,7 @@ async function queryODataAndStoreInFirebase() {
 
         count += dataBatch.length;
 
-        console.log(`${count}/${totalCount} ${entityType} stored in Firestore.`);
+        logger.info(`${count}/${totalCount} ${entityType} stored in Firestore.`);
       }
     }
 
