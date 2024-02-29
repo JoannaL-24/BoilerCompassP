@@ -6,6 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../components/contexts/AuthContext'
+import { Navigate } from 'react-router-dom';
 // firebase imports
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
@@ -23,7 +24,8 @@ const Advisor_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
   const department_q = setup?"Choose your department:":"Your department:";
   const college_q = setup?"Choose your college:":"Your college:";
   const submit_button_text = setup?"Submit":"Update profile";
-  console.log(userinfo);
+  const navigate = useNavigate();
+  // console.log(userinfo);
 
   const submit = () => {
     var go = true;
@@ -39,18 +41,19 @@ const Advisor_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
     else setMissingDepartment("");
     if (go) {
       console.log(userinfo); // for testing purposes
-      // if (user) {
-      //   const uid = user.uid;
-      const user_doc = doc(firestore, "users", "advisor_testing");
-      updateDoc(user_doc, {
-        college: userinfo.college,
-        department: userinfo.department,
-      });
-      (!setup && setUpdated(true));
-      // }
-      // else {
-      //   setSignedIn(false);
-      // }
+      if (currentUser) {
+        const uid = currentUser.uid;
+        const user_doc = doc(firestore, "users", currentUser.id);
+        updateDoc(user_doc, {
+          college: userinfo.college,
+          department: userinfo.department,
+        });
+        (!setup && setUpdated(true));
+        if (setup) navigate('/DegreePlanner');
+      }
+      else {
+        setSignedIn(false);
+      }
     }
   }
 
@@ -63,12 +66,10 @@ const Advisor_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
           className="Input"
           id="college"
           required={true}
-          // multiple
           options={college_data.colleges}
           disableCloseOnSelect
           value={userinfo.college}
           getOptionLabel={(option) => option.name}
-          // isOptionEqualToValue={(option, value) => option.value === value.value}
           onChange = {(e, value) => {setUserinfo((previous) => ({...previous, college: value}));
                                      setMissingCollege("");
                                      (!setup && setUpdated(false))}}
@@ -95,11 +96,9 @@ const Advisor_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
           className="Input"
           id="deparment"
           required={true}
-          // multiple
           options={major_data.majors}
           disableCloseOnSelect
           value={userinfo.department}
-          // isOptionEqualToValue={(option, value) => option.value === value.value}
           getOptionLabel={(option) => option.name}
           onChange = {(e, value) => {setUserinfo((previous) => ({...previous, department: value}));
                                      setMissingDepartment("");
@@ -112,7 +111,6 @@ const Advisor_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
           renderInput={(params) => (
             <TextField {...params}
             label="Select"
-            // label={userinfo.college.length==0?"Select":""}
             placeholder="Select"
             required
             error={missingDepartment && missingDepartment.length?true:false}
