@@ -6,6 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../components/contexts/AuthContext'
+import { Navigate } from 'react-router-dom';
 // firebase imports
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
@@ -23,6 +24,7 @@ const Advisor_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
   const department_q = setup?"Choose your department:":"Your department:";
   const college_q = setup?"Choose your college:":"Your college:";
   const submit_button_text = setup?"Submit":"Update profile";
+  const navigate = useNavigate();
   // console.log(userinfo);
 
   const submit = () => {
@@ -47,6 +49,7 @@ const Advisor_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
           department: userinfo.department,
         });
         (!setup && setUpdated(true));
+        if (setup) navigate('/DegreePlanner');
       }
       else {
         setSignedIn(false);
