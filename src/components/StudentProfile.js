@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
@@ -12,15 +12,20 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form'
+import { useAuth } from '../components/contexts/AuthContext'
+// firebase imports
+import { doc, updateDoc, Timestamp } from "firebase/firestore";
+import { firestore } from '../models/firebase.ts';
 // data imports
 import major_data from '../json/majors.json';
 import minor_data from '../json/minors.json';
 // css imports
 import '../css/Profile.css';
 
-const Student_profile = ({alert_message, submit_function, userinfo, setUserinfo}) => {
+const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const { currentUser } = useAuth();
   const year = dayjs().get('year');
   const validStartYear = (date) => !(( year  - date.get('year') >= 0) && (year - date.get('year') <= 10));
   const validEndYear = (date) => !(( date.get('year') - year >= 0) && (date.get('year') - year <= 10));
@@ -28,10 +33,16 @@ const Student_profile = ({alert_message, submit_function, userinfo, setUserinfo}
   const [end, setEnd] = useState("");
   const [missingMajor, setMissingMajor] = useState("");
   const { handleSubmit } = useForm();
+  const prefer_majors_q = setup?"Choose your major(s):":"Your major:";
+  const prefer_minor_q = setup?"Choose your minor(s):":"Your minor(s):";
+  const start_term_q = setup?"When did you start school at Purdue?":"Your start date:";
+  const end_term_q = setup?"Expected graduation date:":"Your expected graduation date:";
+  const submit_button_text = setup?"Submit":"Update profile";
+  console.log(userinfo);
 
   const submit = () => {
     var go = true;
-    if (!userinfo.major || !userinfo.major.length) {
+    if (!userinfo.prefer_majors || !userinfo.prefer_majors.length) {
       setMissingMajor("You must select at least one major");
       go = false;
     }
@@ -46,24 +57,45 @@ const Student_profile = ({alert_message, submit_function, userinfo, setUserinfo}
       go = false;
     }
     else setEnd("");
-    if (go) submit_function();
+    if (go) {
+      console.log(userinfo); // for testing purposes
+      // if (user) {
+      //   const uid = user.uid;
+      const user_doc = doc(firestore, "users", "f9RIsQLWoiPjlpVaC3XkPlzeXcr1");
+      updateDoc(user_doc, {
+        prefer_majors: userinfo.prefer_majors,
+        prefer_minor: userinfo.prefer_minor,
+        user_type: userinfo.user_type,
+        advisor: userinfo.advisor,
+        start_term: Timestamp.fromDate(new Date(userinfo.start_term)),
+        end_term: Timestamp.fromDate(new Date(userinfo.end_term)),
+      });
+      (!setup && setUpdated(true));
+      // }
+      // else {
+      //   setSignedIn(false);
+      // }
+    }
   }
 
   return (
     <div>
       <Box className="Ctn">
         <FormControl display="flex" style={{width: 400}}>
-          <h3 className="Question">Choose your major(s):</h3>
+          <h3 className="Question">{prefer_majors_q}</h3>
           <Autocomplete
           className="Input"
           multiple
           id="majors"
           options={major_data.majors}
           disableCloseOnSelect
-          value={userinfo.major}
+          value={userinfo.prefer_majors}
           required={true}
           getOptionLabel={(option) => option.name}
-          onChange = {(e, value) => setUserinfo((previous) => ({...previous, major: value}))}
+          // isOptionEqualToValue={(option, value) => option.value === value.value}
+          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, prefer_majors: value}));
+                                     setMissingMajor("");
+                                     (!setup && setUpdated(false))}}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
               <Checkbox
@@ -87,7 +119,7 @@ const Student_profile = ({alert_message, submit_function, userinfo, setUserinfo}
         />
         </FormControl>
         <FormControl display="flex" style={{width: 400}}>
-          <h3 className="Question">Choose your minor(s):</h3>
+          <h3 className="Question">{prefer_minor_q}</h3>
           <Autocomplete
           className="Input"
           multiple
@@ -95,9 +127,11 @@ const Student_profile = ({alert_message, submit_function, userinfo, setUserinfo}
           required={true}
           options={minor_data.minors}
           disableCloseOnSelect
-          defaultValue={userinfo.minor}
+          value={userinfo.prefer_minor}
           getOptionLabel={(option) => option.name}
-          onChange = {(e, value) => setUserinfo((previous) => ({...previous, minor: value}))}
+          // isOptionEqualToValue={(option, value) => option.value === value.value}
+          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, prefer_minor: value}));
+                                     (!setup && setUpdated(false))}}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
               <Checkbox
@@ -117,32 +151,32 @@ const Student_profile = ({alert_message, submit_function, userinfo, setUserinfo}
         />
         </FormControl>
         <FormControl display="flex" style={{width: 400}}>
-          <h3 className="Question">When did you start school at Purdue?</h3>
+          <h3 className="Question">{start_term_q}</h3>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              inputFormat="yyyy-dd-mm"
               sx={{ mt: "1em", mb: "2em"}}
               label="Select start date *"
-              required={true}
               shouldDisableYear={validStartYear}
-              defaultValue={userinfo.start_term}
-              onChange = {(value) => setUserinfo((previous) => ({...previous, end_term: value}))}
+              value={userinfo.start_term}
+              onChange = {(value) => {setUserinfo((previous) => ({...previous, start_term: value}));
+                                      setStart("");
+                                      (!setup && setUpdated(false))}}
               slotProps={{
                 textField: {
-                  error: end && end.length?true:false,
-                  helperText: end,
+                  error: start && start.length?true:false,
+                  helperText: start,
                 },
               }}
             />
-            <h3 className="Question">Expected graduation date:</h3>
+            <h3 className="Question">{end_term_q}</h3>
             <DatePicker
-              inputFormat="yyyy-dd-mm"
-              sx={{ mt: "1em"}}
+              sx={{ mt: "1em", mb: "2em"}}
               label="Select end date *"
-              // required={true}
               shouldDisableYear={validEndYear}
-              defaultValue={userinfo.end_term}
-              onChange = {(value) => setUserinfo((previous) => ({...previous, end_term: value}))}
+              value={userinfo.end_term}
+              onChange = {(value) => {setUserinfo((previous) => ({...previous, end_term: value}));
+                                      setEnd("");
+                                      (!setup && setUpdated(false))}}
               slotProps={{
                 textField: {
                   error: end && end.length?true:false,
@@ -152,8 +186,12 @@ const Student_profile = ({alert_message, submit_function, userinfo, setUserinfo}
             />
           </LocalizationProvider>
         </FormControl>
+        <FormControl display="flex" style={{width: 400}}>
+          {!setup && <h3 className="Question">Your advisor:</h3>}
+          {!setup && <h3 style={{fontWeight:"normal"}}>{userinfo.advisor}</h3>}
+        </FormControl>
         <Box className="Btn">
-          <Button type="submit" onClick={handleSubmit(submit)} variant="outlined">Submit</Button>
+          <Button type="submit" className="Btn" onClick={handleSubmit(submit)} variant="outlined">{submit_button_text}</Button>
         </Box>
       </Box>
     </div>

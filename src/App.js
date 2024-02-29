@@ -7,9 +7,9 @@ import "./App.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Routes, Route } from "react-router-dom";
-import Welcome from "./components/Welcome";
-import ProfileSetupStudent from "./components/Profile_setup_student";
-import ProfileSetupAdvisor from "./components/Profile_setup_advisor";
+import Welcome from "./pages/Welcome";
+import ProfileSetupStudent from "./pages/ProfileSetupStudent";
+import ProfileSetupAdvisor from "./pages/ProfileSetupAdvisor";
 import CoverPage from "./pages/CoverPage";
 import DegreePlanner from "./pages/DegreePlanner";
 import SettingsPage from "./components/SettingsPage";
@@ -36,11 +36,10 @@ function App() {
           <CoursePopup />
         </header>
         <Routes>
+          <Route path="/DegreePlanner" element={<DegreePlanner />} />
           <Route path="/" element={<DegreePlanner />} />
           <Route path="/Welcome" element={<Welcome />} />
-          <Route
-            path="/profile-setup-student"
-            element={<ProfileSetupStudent />}
+          <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
           />
           <Route
             path="/profile-setup-advisor"
@@ -49,10 +48,10 @@ function App() {
         </Routes>
       </div>
     </ODataProvider>
-
-    // return <RunStudentHomepage></RunStudentHomepage>;
-    // return <DegreePlanner/>
   );
+
+  // return <RunStudentHomepage></RunStudentHomepage>;
+  // return <DegreePlanner/>
 }
 
 export default App;
