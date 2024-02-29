@@ -1,26 +1,34 @@
 import React, { useState } from 'react'
 import TextField from "@mui/material/TextField";
-import SearchList from "./SearchList"
 import "./Searchbar.css";
 import { firestore as db } from "models/firebase"
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, limit, orderBy } from 'firebase/firestore';
+import { debounce } from 'lodash';
 
 const Searchbar = () => {
   const [results, setResults] = useState([]);
 
-  const handleSearch = async (searchInput) => {
-    const searchString = searchInput.toLowerCase().trim();
+  const handleSearch = debounce(async (searchInput) => {
+    const searchString = searchInput.toUpperCase().trim();
 
     if (searchString === "") {
       setResults([]);
       return;
     }
 
-    const q = query(collection(db, "courseList"), where("Keywords", "array-contains", searchString));
+    const q = query(
+      collection(db, "courseList"),
+      where("Keywords", "array-contains", searchString),
+      orderBy("Name"),
+      limit(10)
+    );
     const querySnapshot = await getDocs(q);
-    const searchResults = querySnapshot.docs.map(doc => {
-    setResults(searchResults);
-  }
+    let results = []
+    querySnapshot.forEach((doc) => {
+      results.push({ Name: doc.data().Name, Id: doc.id });
+    });
+    setResults(results);
+  }, 500); // Adjust the delay as needed
 
   return (
     <div className='search&display'>
@@ -35,7 +43,7 @@ const Searchbar = () => {
       </div>
       <div>
         {results.map((result, index) => (
-          <div key={index}>{result}</div>
+          <div key={index}>{result.Name}</div>
         ))}
       </div>
     </div>

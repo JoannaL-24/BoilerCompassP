@@ -36,8 +36,8 @@ export const ODataProvider: React.FC<ODataContextProps> = ({ children }) => {
 
   const [odataValue, setOData] = useState<ODataContextValue | null>(null)
 
-  if (!odataValue) {
-  }
+  // if (!odataValue) {
+  // }
 
   return < ODataContext.Provider value={odataValue} > {children}</ODataContext.Provider >
 }
