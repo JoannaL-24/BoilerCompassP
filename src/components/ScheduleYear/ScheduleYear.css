@@ -1,0 +1,10 @@
+.Year{
+    width: 100%;
+    margin: 20px 0px 20px;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    justify-content: space-evenly;
+    text-align: center;
+}
