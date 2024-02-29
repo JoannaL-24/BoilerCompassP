@@ -18,10 +18,12 @@ import RunStudentHomepage from "./components/RunStudentHomepage";
 import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
+import DraggableCourse from "./components/DraggableCourse";
 
 function App() {
   //return <AdvisorHomepage />;
-  return <DeleteAccount />;
+  //return <DeleteAccount />;
+  return <DraggableCourse />;
   /*return (
     
     
