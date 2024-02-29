@@ -7,6 +7,6 @@
  * Instead, set to null, make empty for containers, etc.
  */
 export default interface UserData {
-    put(fieldName: string, data: unknown): boolean;
-    get(fieldName: string): unknown;
+    put(fieldName: string, data: any): Promise<void>;
+    get(fieldName: string): Promise<any>;
 }
