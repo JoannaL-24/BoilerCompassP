@@ -3,8 +3,8 @@ import { useOData } from './contexts/ODataContext'
 import data from "./CourseTest.json"
 
 function SearchList(props) {
-  const oDataContext = useOData();
-  console.log(oDataContext?.courses)
+  // const oDataContext = useOData();
+  // console.log(oDataContext?.courses)
 
   //create a new array by filtering the original array
   const filteredData = data.filter((el) => {
