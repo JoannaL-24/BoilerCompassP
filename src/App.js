@@ -1,8 +1,7 @@
 import './App.css';
-import CourseList from "./components/CourseList";
-import DarkModeToggle from './components/DarkModeToggle';
-import Sidebar from './components/Sidebar'
-import CoursePopup from './components/CoursePopup'
+// import CourseList from "./components/CourseList";
+import DarkModeToggle from './components/DarkModeToggle/DarkModeToggle.js';
+import CoursePopup from './components/CoursePopup/CoursePopup'
 import "./App.css";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -19,37 +18,28 @@ import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
 import DraggableCourse from "./components/DraggableCourse";
-import { ODataProvider } from "./components/contexts/ODataContext"
 
 function App() {
-  //return <AdvisorHomepage />;
-  //return <DeleteAccount />;
-  // return <DraggableCourse />;
-
-  // return <DeleteAccount />;
   return (
-    <div className="App">
-      <header className="App-header">
-        <DarkModeToggle />
-        <Sidebar />
-        <CoursePopup />
-      </header>
-      <Routes>
-        <Route path="/DegreePlanner" element={<DegreePlanner />} />
-        <Route path="/" element={<DegreePlanner />} />
-        <Route path="/Welcome" element={<Welcome />} />
-        <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
-        />
-        <Route
-          path="/profile-setup-advisor"
-          element={<ProfileSetupAdvisor />}
-        />
-      </Routes>
-    </div>
+      <div className="App">
+        <header className="App-header">
+          <DarkModeToggle />
+          <Sidebar />
+          <CoursePopup />
+        </header>
+        <Routes>
+          <Route path="/DegreePlanner" element={<DegreePlanner />} />
+          <Route path="/" element={<DegreePlanner />} />
+          <Route path="/Welcome" element={<Welcome />} />
+          <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
+          />
+          <Route
+            path="/profile-setup-advisor"
+            element={<ProfileSetupAdvisor />}
+          />
+        </Routes>
+      </div>
   );
-
-  // return <RunStudentHomepage></RunStudentHomepage>;
-  // return <DegreePlanner/>
 }
 
 export default App;
