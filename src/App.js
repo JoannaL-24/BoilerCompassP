@@ -18,29 +18,26 @@ import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
 import DraggableCourse from "./components/DraggableCourse";
-import { ODataProvider } from "./components/contexts/ODataContext"
 
 function App() {
   return (
-    <ODataProvider >
-      <div className="App">
-        {/* <header className="App-header">
-          <DarkModeToggle />
-          <CoursePopup />
-        </header> */}
-        <Routes>
-          <Route path="/" element={<CoverPage />} />
-          <Route path="/DegreePlanner" element={<DegreePlanner />} />
-          <Route path="/Welcome" element={<Welcome />} />
-          <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
-          />
-          <Route
-            path="/profile-setup-advisor"
-            element={<ProfileSetupAdvisor />}
-          />
-        </Routes>
-      </div>
-    </ODataProvider>
+    <div className="App">
+      {/* <header className="App-header">
+        <DarkModeToggle />
+        <CoursePopup />
+      </header> */}
+      <Routes>
+        <Route path="/" element={<CoverPage />} />
+        <Route path="/DegreePlanner" element={<DegreePlanner />} />
+        <Route path="/Welcome" element={<Welcome />} />
+        <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
+        />
+        <Route
+          path="/profile-setup-advisor"
+          element={<ProfileSetupAdvisor />}
+        />
+      </Routes>
+    </div>
   );
 }
 
