@@ -37,9 +37,14 @@ const Searchbar = () => {
       <div className="search">
         <TextField
           id="outlined-basic"
+          display="flex"
+          justifyContent="center"
+          inputProps = {{style: {fontSize: 15}}}
+          InputLabelProps={{style: {fontSize: 13}}}
+          size = "small" 
           onChange={(e) => handleSearch(e.target.value)}
           variant="outlined"
-          style={{ width: 200, height: 10 }}
+          style={{ width: 200, height: 5 }}
           label="Search course"
         />
       </div>

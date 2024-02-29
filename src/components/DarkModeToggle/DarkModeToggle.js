@@ -5,11 +5,18 @@ import { ReactComponent as Sun } from "./Sun.svg";
 // @ts-ignore
 import { ReactComponent as Moon } from "./Moon.svg";
 import "./DarkModeToggle.css"
+// firebase imports
+import { doc, updateDoc, Timestamp } from "firebase/firestore";
+import { firestore } from '../../models/firebase.ts';
 
 const DarkModeToggle = () => {
-    // const [theme, setTheme] = useState({
-        
-    // });
+    /*get theme from fire store  
+    const theme = */
+    /*
+    set state s                                                      
+    const [theme, setTheme] = useState({
+
+    }); */
     const setDarkMode = () => {
         // @ts-ignore
         document.querySelector("body").setAttribute('data-theme', 'dark')

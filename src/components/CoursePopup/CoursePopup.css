@@ -5,9 +5,14 @@
     background: transparent;
   }
 .modal {
+    position: relative;
     font-size: 12px;
+    justify-content: center;
     background: var(--background);
     color: var(--textPrimary);
+    width: 500px;
+    border-radius: 10px;
+    padding: 5px;
   }
   .modal > .header {
     width: 100%;
@@ -20,11 +25,17 @@
     width: 100%;
     padding: 10px 5px;
   }
-  .modal > .actions {
-    width: 100%;
+  .modal > .sessionsScroll {
+    background-color: var(--background);
+    color: var(--textPrimary);
+    border: 1px solid gray;
+    width: 85%;
+    height: 80px;
     padding: 10px 5px;
-    margin: auto;
+    margin: 10px;
     text-align: center;
+    overflow-y: scroll;
+    border-radius: 10px;
   }
   .modal > .close {
     cursor: pointer;
@@ -32,8 +43,8 @@
     display: block;
     padding: 2px 5px;
     line-height: 20px;
-    right: -10px;
-    top: -10px;
+    right: -2.5%;
+    top: -5%;
     font-size: 24px;
     background: #ffffff;
     border-radius: 18px;
