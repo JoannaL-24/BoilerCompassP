@@ -12,13 +12,16 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form'
+// firebase imports
+import { doc, updateDoc, Timestamp } from "firebase/firestore";
+import { firestore } from '../models/firebase.ts';
 // data imports
 import major_data from '../json/majors.json';
 import minor_data from '../json/minors.json';
 // css imports
 import '../css/Profile.css';
 
-const Student_profile = ({alert_message, submit_function, userinfo, setUserinfo}) => {
+const Student_profile = ({userinfo, setUserinfo, signedIn, setSignedIn, user}) => {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const year = dayjs().get('year');
@@ -46,7 +49,25 @@ const Student_profile = ({alert_message, submit_function, userinfo, setUserinfo}
       go = false;
     }
     else setEnd("");
-    if (go) submit_function();
+    if (go) {
+      console.log(userinfo); // for testing purposes
+      // const user = auth.currentUser;
+      // if (user) {
+      //   const uid = user.uid;
+      const user_doc = doc(firestore, "users", "f9RIsQLWoiPjlpVaC3XkPlzeXcr1");
+      updateDoc(user_doc, {
+        prefer_majors: userinfo.major,
+        prefer_minor: userinfo.minor,
+        user_type: userinfo.user_type,
+        advisor: userinfo.advisor,
+        start_term: Timestamp.fromDate(new Date(userinfo.start_term)),
+        end_term: Timestamp.fromDate(new Date(userinfo.end_term)),
+      });
+      // }
+      // else {
+      //   setSignedIn(false);
+      // }
+    }
   }
 
   return (
@@ -63,7 +84,7 @@ const Student_profile = ({alert_message, submit_function, userinfo, setUserinfo}
           value={userinfo.major}
           required={true}
           getOptionLabel={(option) => option.name}
-          onChange = {(e, value) => setUserinfo((previous) => ({...previous, major: value}))}
+          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, major: value})); setMissingMajor("");}}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
               <Checkbox
@@ -120,29 +141,25 @@ const Student_profile = ({alert_message, submit_function, userinfo, setUserinfo}
           <h3 className="Question">When did you start school at Purdue?</h3>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              inputFormat="yyyy-dd-mm"
               sx={{ mt: "1em", mb: "2em"}}
               label="Select start date *"
-              required={true}
               shouldDisableYear={validStartYear}
               defaultValue={userinfo.start_term}
-              onChange = {(value) => setUserinfo((previous) => ({...previous, end_term: value}))}
+              onChange = {(value) => {setUserinfo((previous) => ({...previous, start_term: value})); setStart("");}}
               slotProps={{
                 textField: {
-                  error: end && end.length?true:false,
-                  helperText: end,
+                  error: start && start.length?true:false,
+                  helperText: start,
                 },
               }}
             />
             <h3 className="Question">Expected graduation date:</h3>
             <DatePicker
-              inputFormat="yyyy-dd-mm"
               sx={{ mt: "1em"}}
               label="Select end date *"
-              // required={true}
               shouldDisableYear={validEndYear}
               defaultValue={userinfo.end_term}
-              onChange = {(value) => setUserinfo((previous) => ({...previous, end_term: value}))}
+              onChange = {(value) => {setUserinfo((previous) => ({...previous, end_term: value})); setEnd("");}}
               slotProps={{
                 textField: {
                   error: end && end.length?true:false,
