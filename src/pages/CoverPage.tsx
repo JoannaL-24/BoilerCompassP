@@ -1,49 +1,55 @@
 import React, { useState } from "react";
-import TextField from '@mui/material/TextField';
-import { alpha, styled } from '@mui/material/styles';
-import { colors } from "@mui/material";
-import { red } from "@mui/material/colors";
-
-
-const FormTextInput = styled(TextField)({
-    // '& input:valid': {
-    //   borderColor: '#daaa00',
-    //   borderWidth: 1,
-    // },
-    // '& input:invalid + fieldset': {
-    //     colors: "red",
-    // },
-    // '& input:valid:focus + fieldset': {
-    //   borderLeftWidth: 4,
-    //   padding: '4px !important', // override inline-style
-    // },
-  });
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import "./CoverPage.css"
 
 export default function CoverPage () {
-    // state
+    const [user, setUser] =useState({
+        email: '',
+        password: ''
+    });
 
-    const signIn = (e: React.FormEvent) => {
-        alert("sign process");
+    const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target;
+        setUser({...user, [name]: value});
+    }
+
+    const submitHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log(user.email + " " + user.password);
     }
 
     return (
-        <div className="pageWide">
-            <div className="nav">
+        <div className="CoverPage">
+            {/* <div className="nav">
                 <button className="mediumBtn"><h3>Sign in</h3></button>
                 <button className="goldBtn mediumBtn"><h3>Get Start</h3></button>
-            </div>
+            </div> */}
             <div className="horizontalCenter">
-                <img src='/logo/BoilerCompass Logo v2.png' alt='Boiler Compass' className="coverLogo coverComponent"></img>
-                <div className="coverComponent verticalLeft">
+                <div className="coverComponent" style={{width: "55%"}}>
+                    <img src='/logo/BoilerCompass Logo v2.png' alt='Boiler Compass' className="coverLogo"></img>
+                </div>
+                <div className="coverComponent coverInputs" style={{width: "45%"}}>
                     <h1>Start Your Journey</h1>
-                    <form id="signInForm" onSubmit={signIn}>
-                        <FormTextInput id="standard-basic" label="Email" type="email" variant="standard" />
-                        <FormTextInput id="standard-basic" label="Password" type="password" variant="standard" />
-                        <button className="mediumBtn" type="submit"><h3>Sign in</h3></button>
+                    <br/><br/>
+                    <form id="signInForm" onSubmit={submitHandler}>
+                        <div className="inputGroup">
+                            <input id="email" name="email" className="inputField" placeholder="Email" type="email" onChange={changeHandler}required/>
+                            <label htmlFor="email" className="inputLabel">Email</label>
+                        </div>
+                        <div className="inputGroup">
+                            <input id="password" name="password" className="inputField" placeholder="Password" type="password" onChange={changeHandler}required/>
+                            <label htmlFor="password" className="inputLabel">Password</label>
+                        </div>
+                        <br/>
+                        <button className="mediumBtn gradient" type="submit"><h3>Sign in</h3></button>
                     </form>
+                    <br/><br/>
+                    <div className="divider">OR</div>
+                    <br/><br/> 
                     <h2>Don't Have an Account?</h2>
-                    <button className="goldBtn mediumBtn"><h3>Get Start</h3></button>
+                    <button className="gradient mediumBtn"><h3>Get Start</h3></button>
                     {/* dropbox */}
+                    <br/>
                 </div>
             </div>
         </div>
