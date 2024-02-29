@@ -1,5 +1,5 @@
 .navBarContainer {
-    z-index: 100;
+    z-index: 2000;
 }
 
 .DegreeOverview{
@@ -20,9 +20,8 @@
 
 .ScheduleSide {
     position: fixed;
-    top: 0px;
+    top: calc(55px + 2vh);
     left: calc(100vw * 0.75);
     width: 25%;
     height: 100vh;
-    padding-top: calc(55px + 2vh);
 }

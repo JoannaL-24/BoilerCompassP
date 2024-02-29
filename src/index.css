@@ -8,11 +8,31 @@ body {
   font-family: 'Times New Roman', Times, serif;
   font-weight: bold;
   --black: #282c34;
-  --main-gold: #daaa00;
-  --light-gold: #CEB888;
+  --dark-gray: rgb(153, 153, 153);
+  --light-gray: rgb(187, 187, 187);
+  --main-gold: rgb(218, 170, 0);
+  --light-gold: rgb(206, 184, 136);
+  --error: rgb(200, 26, 26);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* * {
+    transition: all 0.3s ease-in-out;
+} */
+
+:root {
+  --background: #ffffff;
+  --textPrimary: #282c34;
+  --textSecondary: #79704c;
+  --accent: #d7c494;
+}
+[data-theme='dark'] {
+  --background: #282c34;
+  --textPrimary: #ffffff;
+  --textSecondary:#d7c494;
+  --accent: #79704c;
 }
