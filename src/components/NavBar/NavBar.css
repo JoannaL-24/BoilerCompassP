@@ -2,7 +2,6 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 99;
     width: 100vw;
     height: calc(55px + 2vh);
     

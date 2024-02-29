@@ -34,7 +34,7 @@ export default function ClippedDrawer() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className='Sidebar'>
+      <div className='Sidebar' style={{width: "100%"}}>
         <Box sx={{ display: 'flex' }}>
           <CssBaseline />
           {/* <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
