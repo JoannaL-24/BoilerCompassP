@@ -21,23 +21,24 @@ import DraggableCourse from "./components/DraggableCourse";
 
 function App() {
   return (
-    <div className="App">
-      {/* <header className="App-header">
-        <DarkModeToggle />
-        <CoursePopup />
-      </header> */}
-      <Routes>
-        <Route path="/" element={<CoverPage />} />
-        <Route path="/DegreePlanner" element={<DegreePlanner />} />
-        <Route path="/Welcome" element={<Welcome />} />
-        <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
-        />
-        <Route
-          path="/profile-setup-advisor"
-          element={<ProfileSetupAdvisor />}
-        />
-      </Routes>
-    </div>
+      <div className="App">
+        <header className="App-header">
+          <DarkModeToggle />
+          <Sidebar />
+          <CoursePopup />
+        </header>
+        <Routes>
+          <Route path="/DegreePlanner" element={<DegreePlanner />} />
+          <Route path="/" element={<DegreePlanner />} />
+          <Route path="/Welcome" element={<Welcome />} />
+          <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
+          />
+          <Route
+            path="/profile-setup-advisor"
+            element={<ProfileSetupAdvisor />}
+          />
+        </Routes>
+      </div>
   );
 }
 
