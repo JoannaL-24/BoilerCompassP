@@ -1,6 +1,6 @@
 import './App.css';
 import CourseList from "./components/CourseList";
-import DarkModeToggle  from './components/DarkModeToggle';
+import DarkModeToggle from './components/DarkModeToggle';
 import Sidebar from './components/Sidebar'
 import CoursePopup from './components/CoursePopup'
 import "./App.css";
@@ -23,15 +23,15 @@ import DraggableCourse from "./components/DraggableCourse";
 function App() {
   //return <AdvisorHomepage />;
   //return <DeleteAccount />;
-  return <DraggableCourse />;
-  /*return (
-    
-    
+  // return <DraggableCourse />;
+
+  // return <DeleteAccount />;
+  return (
     <div className="App">
       <header className="App-header">
         <DarkModeToggle />
-        <Sidebar/>
-        <CoursePopup/>
+        <Sidebar />
+        <CoursePopup />
       </header>
       <Routes>
         <Route path="/" element={<DegreePlanner />} />
@@ -46,10 +46,10 @@ function App() {
         />
       </Routes>
     </div>
-    
+
     // return <RunStudentHomepage></RunStudentHomepage>;
     // return <DegreePlanner/>
-  );*/
+  );
 }
 
 export default App;
