@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import NavBar from "../components/NavBar/NavBar";
 import ScheduleView from "../components/ScheduleView/ScheduleView";
 import SceduleSide from "../components/ScheduleSide/ScheduleSide";
+import Sidebar from '../components/Sidebar'
 import './DegreePlanner.css';
 
 export default function DegreePlanner () {

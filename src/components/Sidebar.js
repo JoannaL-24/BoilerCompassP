@@ -16,7 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DarkModeToggle from './DarkModeToggle/DarkModeToggle';
 //import "./Sidebar.css"
 
-const drawerWidth = 240;
+const drawerWidth = 480;
 
 export default function ClippedDrawer() {
 

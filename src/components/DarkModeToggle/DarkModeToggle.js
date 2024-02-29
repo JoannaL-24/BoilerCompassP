@@ -5,10 +5,13 @@ import { ReactComponent as Sun } from "./Sun.svg";
 // @ts-ignore
 import { ReactComponent as Moon } from "./Moon.svg";
 import "./DarkModeToggle.css"
+// firebase imports
+import { doc, updateDoc, Timestamp } from "firebase/firestore";
+import { firestore } from '../../models/firebase.ts';
 
 const DarkModeToggle = () => {
     const [theme, setTheme] = useState({
-        
+
     });
     const setDarkMode = () => {
         // @ts-ignore
