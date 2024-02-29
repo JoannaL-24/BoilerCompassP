@@ -17,9 +17,9 @@ code {
     monospace;
 }
 
-* {
+/* * {
     transition: all 0.3s ease-in-out;
-}
+} */
 
 :root {
   --background: #ffffff;

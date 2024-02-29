@@ -4,6 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Switch, { SwitchProps } from '@mui/material/Switch';
 import { styled } from '@mui/material/styles';
+import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -96,7 +97,7 @@ export default function NavBar() {
           </a>
         </li>
         <li className="navBtnList">
-          <Android12Switch />
+          <DarkModeToggle />
         </li>
         <li className="navBtnList">
           <a>
