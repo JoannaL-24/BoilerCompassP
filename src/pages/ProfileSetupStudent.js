@@ -13,6 +13,10 @@ const ProfileSetupStudents = () => {
     start_term: null,
     end_term: null,
   });
+  if (currentUser) {
+    console.log("here");
+    console.log(currentUser);
+  }
 
   return (
     <div>

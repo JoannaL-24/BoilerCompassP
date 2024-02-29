@@ -38,7 +38,7 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
   const start_term_q = setup?"When did you start school at Purdue?":"Your start date:";
   const end_term_q = setup?"Expected graduation date:":"Your expected graduation date:";
   const submit_button_text = setup?"Submit":"Update profile";
-  console.log(userinfo);
+  // console.log(userinfo);
 
   const submit = () => {
     var go = true;

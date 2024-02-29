@@ -17,27 +17,26 @@ import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
 import DraggableCourse from "./components/DraggableCourse";
+import { AuthProvider } from './components/contexts/AuthContext';
 
 function App() {
   return (
+    <AuthProvider>
       <div className="App">
-        <header className="App-header">
+        {/* <header className="App-header">
           <DarkModeToggle />
           <Sidebar />
           <CoursePopup />
-        </header>
+        </header> */}
         <Routes>
-          <Route path="/DegreePlanner" element={<DegreePlanner />} />
-          <Route path="/" element={<DegreePlanner />} />
-          <Route path="/Welcome" element={<Welcome />} />
-          <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
-          />
-          <Route
-            path="/profile-setup-advisor"
-            element={<ProfileSetupAdvisor />}
-          />
+          <Route path="/DegreePlanner" element={<DegreePlanner />}/>
+          <Route path="/" element={<CoverPage />}/>
+          <Route path="/Welcome" element={<Welcome />}/>
+          <Route path="/profile-setup-student" element={<ProfileSetupStudent />}/>
+          <Route path="/profile-setup-advisor" element={<ProfileSetupAdvisor />}/>
         </Routes>
       </div>
+    </AuthProvider>
   );
 }
 
