@@ -1,50 +1,50 @@
-// The Firebase Admin SDK to access Firestore.
-const { initializeApp, applicationDefault } = require("firebase-admin/app");
-const { getFirestore } = require("firebase-admin/firestore");
+// the firebase admin sdk to access firestore.
+const { initializeapp, applicationdefault } = require("firebase-admin/app");
+const { getfirestore } = require("firebase-admin/firestore");
 
 // odata stuff
 const o = require("odata").o;
 
-const app = initializeApp({
-  credential: applicationDefault(),
-  projectId: "boilercompass-3135d",
+const app = initializeapp({
+  credential: applicationdefault(),
+  projectid: "boilercompass-3135d",
 })
 
-async function queryODataAndStoreInFirebase() {
-  const db = getFirestore(app);
+async function queryodataandstoreinfirebase() {
+  const db = getfirestore(app);
 
   try {
     const courses = await db.collection('courses').get();
-    const subjectsRef = db.collection('subjects');
+    const subjectsref = db.collection('subjects');
 
-    const promiseCoursesList = [];
+    const promisecourseslist = [];
     for (const doc of courses.docs) {
       const course = doc.data();
-      promiseCoursesList.push(new Promise((resolve, reject) => {
-        subjectsRef.doc(course.SubjectId).get().then((doc) => {
+      promisecourseslist.push(new promise((resolve, reject) => {
+        subjectsref.doc(course.subjectid).get().then((doc) => {
           if (!doc.exists) {
-            console.log('No such document!');
+            console.log('no such document!');
             reject();
           }
 
           const subject = doc.data();
           let name = "";
-          name += subject.Abbreviation + " ";
-          name += course.Number;
-          const item = { Name: name, Id: course.Id };
+          name += subject.abbreviation + " ";
+          name += course.number;
+          const item = { name: name, id: course.id };
           resolve(item);
         })
       }))
     };
 
-    const coursesList = await Promise.all(promiseCoursesList);
-    const totalCourses = coursesList.length;
+    const courseslist = await promise.all(promisecourseslist);
+    const totalcourses = courseslist.length;
 
-    console.log("Courses List parsed");
+    console.log("courses list parsed");
 
-    const courseListRef = db.collection("courseList");
+    const courselistref = db.collection("courselist");
 
-    const genKeywords = (name) => {
+    const genkeywords = (name) => {
       const arr = [];
       for (let i = 1; i <= name.length; i++) {
         arr.push(name.slice(0, i));
@@ -53,31 +53,31 @@ async function queryODataAndStoreInFirebase() {
     }
 
     let count = 0;
-    const batchSize = 2000;
-    while (coursesList.length > 0) {
+    const batchsize = 2000;
+    while (courseslist.length > 0) {
       const batch = db.batch();
 
-      const dataBatch = coursesList.splice(0, batchSize);
-      for (const course of dataBatch) {
-        const docRef = courseListRef.doc(course.Id);
+      const databatch = courseslist.splice(0, batchsize);
+      for (const course of databatch) {
+        const docref = courselistref.doc(course.id);
 
-        const [subj, num] = course.Name.split(" ");
-        const keywords = genKeywords(course.Name).concat(genKeywords(subj)).concat(genKeywords(num));
-        const obj = { Name: course.Name, Keywords: keywords };
+        const [subj, num] = course.name.split(" ");
+        const keywords = genkeywords(course.name).concat(genkeywords(subj)).concat(genkeywords(num));
+        const obj = { name: course.name, keywords: keywords };
 
-        batch.set(docRef, obj);
+        batch.set(docref, obj);
       }
       await batch.commit();
 
-      count += dataBatch.length;
+      count += databatch.length;
 
-      console.log(`${count}/${totalCourses} courses stored in Firestore.`);
+      console.log(`${count}/${totalcourses} courses stored in firestore.`);
     }
 
   } catch (error) {
-    console.error("Error:", error);
+    console.error("error:", error);
   }
 }
 
-queryODataAndStoreInFirebase()
+queryodataandstoreinfirebase()
 
