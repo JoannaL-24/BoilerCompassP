@@ -10,9 +10,13 @@ import { doc, updateDoc, Timestamp } from "firebase/firestore";
 import { firestore } from '../../models/firebase.ts';
 
 const DarkModeToggle = () => {
+    /*get theme from fire store  
+    const theme = */
+    /*
+    set state s                                                      
     const [theme, setTheme] = useState({
 
-    });
+    }); */
     const setDarkMode = () => {
         // @ts-ignore
         document.querySelector("body").setAttribute('data-theme', 'dark')
