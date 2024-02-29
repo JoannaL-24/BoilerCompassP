@@ -38,26 +38,40 @@ async function queryODataAndStoreInFirebase() {
     };
 
     const coursesList = await Promise.all(promiseCoursesList);
+    const totalCourses = coursesList.length;
 
     console.log("Courses List parsed");
 
     const courseListRef = db.collection("courseList");
 
+    const genKeywords = (name) => {
+      const arr = [];
+      for (let i = 1; i <= name.length; i++) {
+        arr.push(name.slice(0, i));
+      }
+      return arr;
+    }
+
     let count = 0;
-    const batchSize = 1000;
+    const batchSize = 2000;
     while (coursesList.length > 0) {
       const batch = db.batch();
 
       const dataBatch = coursesList.splice(0, batchSize);
-      for (const course in dataBatch) {
+      for (const course of dataBatch) {
         const docRef = courseListRef.doc(course.Id);
-        batch.set(docRef, { Name: course.Name });
+
+        const [subj, num] = course.Name.split(" ");
+        const keywords = genKeywords(course.Name).concat(genKeywords(subj)).concat(genKeywords(num));
+        const obj = { Name: course.Name, Keywords: keywords };
+
+        batch.set(docRef, obj);
       }
       await batch.commit();
 
       count += dataBatch.length;
 
-      console.log(`${count}/${coursesList.length} courses stored in Firestore.`);
+      console.log(`${count}/${totalCourses} courses stored in Firestore.`);
     }
 
   } catch (error) {

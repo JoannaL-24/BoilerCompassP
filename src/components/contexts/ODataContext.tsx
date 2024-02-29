@@ -36,14 +36,16 @@ export const ODataProvider: React.FC<ODataContextProps> = ({ children }) => {
 
   const [odataValue, setOData] = useState<ODataContextValue | null>(null)
 
-  const coursesRef = collection(db, "courseList")
-  getDocs(coursesRef).then((querySnapshot) => {
-    const courseNames: Array<CourseName> = []
-    querySnapshot.forEach((doc) => {
-      courseNames.push({ Name: doc.data().Name, Id: doc.id })
+  if (!odataValue) {
+    const coursesRef = collection(db, "courseList")
+    getDocs(coursesRef).then((querySnapshot) => {
+      const courseNames: Array<CourseName> = []
+      querySnapshot.forEach((doc) => {
+        courseNames.push({ Name: doc.data().Name, Id: doc.id })
+      })
+      setOData({ courseNames: courseNames })
     })
-    setOData({ courseNames: courseNames })
-  })
+  }
 
   return < ODataContext.Provider value={odataValue} > {children}</ODataContext.Provider >
 }

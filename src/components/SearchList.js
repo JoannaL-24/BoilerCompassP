@@ -12,7 +12,7 @@ function SearchList(props) {
   if (oDataContext) {
     const docRef = doc(db, "courses", oDataContext?.courseNames[0].Id);
     getDoc(docRef).then((doc) => {
-      console.log("Document data:", doc.data());
+      // console.log("Document data:", doc.data());
     })
   }
 
