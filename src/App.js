@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom";
 import Welcome from "./pages/Welcome";
 import ProfileSetupStudent from "./pages/ProfileSetupStudent";
 import ProfileSetupAdvisor from "./pages/ProfileSetupAdvisor";
+import Profile from './pages/Profile';
 import CoverPage from "./pages/CoverPage";
 import DegreePlanner from "./pages/DegreePlanner";
 import SettingsPage from "./components/SettingsPage";
@@ -32,6 +33,7 @@ function App() {
           <Route path="/DegreePlanner" element={<DegreePlanner />}/>
           <Route path="/" element={<CoverPage />}/>
           <Route path="/Welcome" element={<Welcome />}/>
+          <Route path="/Profile" element={<Profile />}/>
           <Route path="/profile-setup-student" element={<ProfileSetupStudent />}/>
           <Route path="/profile-setup-advisor" element={<ProfileSetupAdvisor />}/>
         </Routes>
