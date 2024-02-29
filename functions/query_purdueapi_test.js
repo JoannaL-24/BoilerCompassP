@@ -23,8 +23,8 @@ async function queryODataAndStoreInFirebase() {
     const entityTypes = [
       // "Terms",
       // "Subjects",
-      // "Courses",
-      "Classes",
+      "Courses",
+      // "Classes",
       // "Sections",
       // "Meetings",
       // "Instructors",
@@ -38,27 +38,42 @@ async function queryODataAndStoreInFirebase() {
 
       const totalCount = await oHandler.get(entityType + "/$count").query();
       const entities = await oHandler.get(entityType).query();
-      const lowerCaseEntityType = entityType.toLowerCase();
+      // const lowerCaseEntityType = entityType.toLowerCase();
 
       console.log(`Queried ${entityType} of count ${totalCount}`);
 
-      var count = 0;
-      const batchSize = 10000;
-      while (entities.length > 0) {
-        const batch = firestore.batch();
+      // find duplicates in subject + name
+      var valueArr = entities.map(function(item) { return item.SubjectId + " " + item.Number });
+      var duplicateArr = entities.filter(function(item, index) {
+        return valueArr.indexOf(item.SubjectId + " " + item.Number) != index
+      });
+      // filter Number == 49000
+      duplicateArr = duplicateArr.filter(function(item) {
+        return item.Number == 49000
+      });
+      duplicateArr = duplicateArr.filter(function(item) {
+        return item.SubjectId == "25183622-2773-4f40-a3cd-c9c909fc6cad"
+      });
 
-        const dataBatch = entities.splice(0, batchSize);
-        dataBatch.forEach(entity => {
-          const docId = entity.Id; // Use the object's ID as the document ID
-          const docRef = firestore.collection(lowerCaseEntityType).doc(docId);
-          batch.set(docRef, entity);
-        });
-        await batch.commit();
+      console.log(duplicateArr);
 
-        count += dataBatch.length;
+      // var count = 0;
+      // const batchSize = 10000;
+      // while (entities.length > 0) {
+      //   const batch = firestore.batch();
 
-        console.log(`${count}/${totalCount} ${entityType} stored in Firestore.`);
-      }
+      //   const dataBatch = entities.splice(0, batchSize);
+      //   dataBatch.forEach(entity => {
+      //     const docId = entity.Id; // Use the object's ID as the document ID
+      //     const docRef = firestore.collection(lowerCaseEntityType).doc(docId);
+      //     batch.set(docRef, entity);
+      //   });
+      //   await batch.commit();
+
+      //   count += dataBatch.length;
+
+      //   console.log(`${count}/${totalCount} ${entityType} stored in Firestore.`);
+      // }
     }
 
   } catch (error) {
