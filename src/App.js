@@ -34,8 +34,10 @@ function App() {
           <Route path="/" element={<CoverPage />}/>
           <Route path="/Welcome" element={<Welcome />}/>
           <Route path="/Profile" element={<Profile />}/>
-          <Route path="/profile-setup-student" element={<ProfileSetupStudent />}/>
-          <Route path="/profile-setup-advisor" element={<ProfileSetupAdvisor />}/>
+          <Route path="/ProfileSetupStudent" element={<ProfileSetupStudent />}/>
+          <Route path="/ProfileSetupAdvisor" element={<ProfileSetupAdvisor />}/>
+          <Route path="/AdvisorHomePage" element={<AdvisorHomepage/>}/>
+          <Route path="/Settings" element={<SettingsPage/>}/>
         </Routes>
       </div>
     </AuthProvider>

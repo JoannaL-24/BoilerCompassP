@@ -60,7 +60,7 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
     }
     else setEnd("");
     if (go) {
-      console.log(userinfo); // for testing purposes
+      // console.log(userinfo); // for testing purposes
       if (currentUser) {
         const uid = currentUser.uid;
         const user_doc = doc(firestore, "users", currentUser.uid);
