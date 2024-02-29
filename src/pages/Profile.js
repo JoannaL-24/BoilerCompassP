@@ -3,7 +3,7 @@ import StudentProfile from '../components/StudentProfile'
 import AdvisorProfile from '../components/AdvisorProfile'
 import Alert from '@mui/material/Alert';
 import { firestore } from '../models/firebase.ts';
-import { useAuth } from '../components/contexts/AuthContext'
+import { useAuth } from '../components/contexts/AuthContext';
 import dayjs from 'dayjs';
 import { doc, updateDoc, getDoc, Timestamp } from "firebase/firestore";
 import '../css/Profile.css';
