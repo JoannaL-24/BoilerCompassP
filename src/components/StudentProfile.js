@@ -25,7 +25,7 @@ import '../css/Profile.css';
 const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
-  const { currentUser } = useAuth();
+  // const { currentUser } = useAuth();
   const year = dayjs().get('year');
   const validStartYear = (date) => !(( year  - date.get('year') >= 0) && (year - date.get('year') <= 10));
   const validEndYear = (date) => !(( date.get('year') - year >= 0) && (date.get('year') - year <= 10));

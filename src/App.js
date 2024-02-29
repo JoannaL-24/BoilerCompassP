@@ -1,7 +1,6 @@
 import './App.css';
-import CourseList from "./components/CourseList";
-import DarkModeToggle from './components/DarkModeToggle';
-import Sidebar from './components/Sidebar'
+// import CourseList from "./components/CourseList";
+// import DarkModeToggle from './components/DarkModeToggle';
 import CoursePopup from './components/CoursePopup'
 import "./App.css";
 import React from "react";

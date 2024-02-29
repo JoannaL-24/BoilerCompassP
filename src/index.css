@@ -10,8 +10,9 @@ body {
   --black: #282c34;
   --dark-gray: rgb(153, 153, 153);
   --light-gray: rgb(187, 187, 187);
-  --main-gold: #daaa00;
-  --light-gold: #CEB888;
+  --main-gold: rgb(218, 170, 0);
+  --light-gold: rgb(206, 184, 136);
+  --error: rgb(200, 26, 26);
 }
 
 code {
@@ -19,9 +20,9 @@ code {
     monospace;
 }
 
-* {
+/* * {
     transition: all 0.3s ease-in-out;
-}
+} */
 
 :root {
   --background: #ffffff;
