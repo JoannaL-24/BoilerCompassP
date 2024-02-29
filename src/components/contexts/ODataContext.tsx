@@ -23,7 +23,7 @@ type CourseName = {
 
 type ODataContextValue = {
   // courses: Array<Course>
-  courseNames: Array<CourseName>
+  // courseNames: Array<CourseName>
 }
 
 const ODataContext = React.createContext<ODataContextValue | null>(null)
@@ -37,14 +37,6 @@ export const ODataProvider: React.FC<ODataContextProps> = ({ children }) => {
   const [odataValue, setOData] = useState<ODataContextValue | null>(null)
 
   if (!odataValue) {
-    const coursesRef = collection(db, "courseList")
-    getDocs(coursesRef).then((querySnapshot) => {
-      const courseNames: Array<CourseName> = []
-      querySnapshot.forEach((doc) => {
-        courseNames.push({ Name: doc.data().Name, Id: doc.id })
-      })
-      setOData({ courseNames: courseNames })
-    })
   }
 
   return < ODataContext.Provider value={odataValue} > {children}</ODataContext.Provider >

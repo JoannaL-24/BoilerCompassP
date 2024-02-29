@@ -18,7 +18,7 @@ const Searchbar = () => {
 
     const q = query(collection(db, "courseList"), where("Keywords", "array-contains", searchString));
     const querySnapshot = await getDocs(q);
-    const searchResults = querySnapshot.docs.map(doc => doc.data().Name);
+    const searchResults = querySnapshot.docs.map(doc => {
     setResults(searchResults);
   }
 
