@@ -22,22 +22,16 @@ import DraggableCourse from "./components/DraggableCourse";
 import { ODataProvider } from "./components/contexts/ODataContext"
 
 function App() {
-  //return <AdvisorHomepage />;
-  //return <DeleteAccount />;
-  // return <DraggableCourse />;
-
-  // return <DeleteAccount />;
   return (
     <ODataProvider >
       <div className="App">
-        <header className="App-header">
+        {/* <header className="App-header">
           <DarkModeToggle />
-          <Sidebar />
           <CoursePopup />
-        </header>
+        </header> */}
         <Routes>
+          <Route path="/" element={<CoverPage />} />
           <Route path="/DegreePlanner" element={<DegreePlanner />} />
-          <Route path="/" element={<DegreePlanner />} />
           <Route path="/Welcome" element={<Welcome />} />
           <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
           />
@@ -49,9 +43,6 @@ function App() {
       </div>
     </ODataProvider>
   );
-
-  // return <RunStudentHomepage></RunStudentHomepage>;
-  // return <DegreePlanner/>
 }
 
 export default App;
