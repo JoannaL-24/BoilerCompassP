@@ -22,11 +22,48 @@ type AuthContextValue = {
   signUserIn: (email: string, password: string) => Promise<UserCredential>
   signUserOut: () => Promise<void>
   sendPassResetEmail: (email: string) => Promise<void>
-  updateUserEmail: (email: string) => Promise<void> | null,
-  updateUserPassword: (password: string) => Promise<void> | null
+  updateUserEmail: (currentUser: User, email: string) => Promise<void> | null
+  updateUserPassword: (
+    currentUser: User,
+    password: string,
+  ) => Promise<void> | null
 }
 
-const AuthContext = React.createContext<AuthContextValue | null>(null)
+const createUser = (email: string, password: string) => {
+  return createUserWithEmailAndPassword(auth, email, password)
+}
+
+const signUserIn = (email: string, password: string) => {
+  return signInWithEmailAndPassword(auth, email, password)
+}
+
+const signUserOut = () => {
+  return signOut(auth)
+}
+
+const sendPassResetEmail = (email: string) => {
+  return sendPasswordResetEmail(auth, email)
+}
+
+const updateUserEmail = (currentUser: User, email: string) => {
+  return updateEmail(currentUser, email)
+}
+
+const updateUserPassword = (currentUser: User, password: string) => {
+  return updatePassword(currentUser, password)
+}
+
+const value: AuthContextValue = {
+  currentUser: null,
+  createUser,
+  signUserIn,
+  signUserOut,
+  sendPassResetEmail,
+  updateUserEmail,
+  updateUserPassword,
+}
+
+const AuthContext = React.createContext<AuthContextValue>(value)
 
 export const useAuth = () => {
   return useContext(AuthContext)
@@ -41,50 +78,17 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null)
 
-  const createUser = (email: string, password: string) => {
-    return createUserWithEmailAndPassword(auth, email, password)
-  }
-
-  const signUserIn = (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password)
-  }
-
-  const signUserOut = () => {
-    return signOut(auth)
-  }
-
-  const sendPassResetEmail = (email: string) => {
-    return sendPasswordResetEmail(auth, email)
-  }
-
-  const updateUserEmail = (email: string) => {
-    if (currentUser) return updateEmail(currentUser, email)
-    return null
-  }
-
-  const updateUserPassword = (password: string) => {
-    if (currentUser) return updatePassword(currentUser, password)
-    return null
-  }
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user)
-        setCurrentUser(user)
+      if (user) setCurrentUser(user)
     })
 
     return unsubscribe
   }, [])
 
-  const value: AuthContextValue = {
-    currentUser: currentUser,
-    createUser,
-    signUserIn,
-    signUserOut,
-    sendPassResetEmail,
-    updateUserEmail,
-    updateUserPassword,
-  }
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ ...value, currentUser: currentUser }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
