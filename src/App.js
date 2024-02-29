@@ -39,6 +39,7 @@ function App() {
           <Route path="/AdvisorHomePage" element={<AdvisorHomepage/>}/>
           <Route path="/Settings" element={<SettingsPage/>}/>
         </Routes>
+        
       </div>
     </AuthProvider>
   );

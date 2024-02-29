@@ -63,7 +63,7 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
       // console.log(userinfo); // for testing purposes
       if (currentUser) {
         const uid = currentUser.uid;
-        const user_doc = doc(firestore, "users", currentUser.uid);
+        const user_doc = doc(firestore, "users", uid);
         updateDoc(user_doc, {
           prefer_majors: userinfo.prefer_majors,
           prefer_minor: userinfo.prefer_minor,
