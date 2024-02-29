@@ -2,6 +2,7 @@ import './App.css';
 import CourseList from "./components/CourseList";
 import DarkModeToggle  from './components/DarkModeToggle';
 import Sidebar from './components/Sidebar'
+import CoursePopup from './components/CoursePopup'
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <header className="App-header">
         <DarkModeToggle />
         <Sidebar/>
+        <CoursePopup/>
       </header>
     </div>
   );

@@ -17,14 +17,14 @@ code {
 }
 
 :root {
-  --background: white;
-  --text-primary: #282c34;
-  --text-secondary: rgb(105, 97, 52);
-  --accent: rgb(215, 196, 148);
+  --background: #ffffff;
+  --textPrimary: #282c34;
+  --textSecondary: #79704c;
+  --accent: #d7c494;
 }
 [data-theme='dark'] {
   --background: #282c34;
-  --text-primary: white;
-  --text-secondary:rgb(215, 196, 148);
-  --accent: rgb(105, 97, 52);
+  --textPrimary: #ffffff;
+  --textSecondary:#d7c494;
+  --accent: #79704c;
 }
