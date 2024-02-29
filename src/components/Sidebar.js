@@ -13,67 +13,69 @@ import ClassIcon from '@mui/icons-material/Class';
 import SchoolIcon from '@mui/icons-material/School';
 import Searchbar from './Searchbar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import DarkModeToggle from './DarkModeToggle';
+import DarkModeToggle from './DarkModeToggle/DarkModeToggle';
 //import "./Sidebar.css"
 
 const drawerWidth = 240;
 
 export default function ClippedDrawer() {
-    const theme = createTheme({
-        palette: {
-            mode: "dark",
-            darkTheme: {
-                textPrimary: '#ffffff',
-                textSecondary: '#d7c494',
-                accent: '#79704c',
-            }
-        }
-    });
 
-    return (
-        <ThemeProvider theme = {theme}>
-            <div className='Sidebar'>
-            <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            {/* <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+
+  const theme = createTheme({
+    palette: {
+      mode: "dark",
+      darkTheme: {
+        textPrimary: '#ffffff',
+        textSecondary: '#d7c494',
+        accent: '#79704c',
+      }
+    }
+  });
+
+  return (
+    <ThemeProvider theme={theme}>
+      <div className='Sidebar' style={{width: "100%"}}>
+        <Box sx={{ display: 'flex' }}>
+          <CssBaseline />
+          {/* <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar>
                 <Typography variant="h6" noWrap component="div">
                     Topbar
                 </Typography>
                 </Toolbar>
             </AppBar> */}
-            <Drawer
-                variant="permanent"
-                anchor="right"
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
-                }}
-            >
-                <Searchbar/>
-                {/* <Toolbar /> */}
-                <Box sx={{ overflow: 'auto' }}>
-                <List>
-                    {['Courses', 'Requirements'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? <ClassIcon /> : <SchoolIcon />}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                    ))}
-                </List>
-                </Box>
-            </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <Toolbar />
+          <Drawer
+            variant="permanent"
+            anchor="right"
+            sx={{
+              width: drawerWidth,
+              flexShrink: 0,
+              [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+            }}
+          >
+            <Searchbar />
+            {/* <Toolbar /> */}
+            <Box sx={{ overflow: 'auto' }}>
+              <List>
+                {['Courses', 'Requirements'].map((text, index) => (
+                  <ListItem key={text} disablePadding>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        {index % 2 === 0 ? <ClassIcon /> : <SchoolIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
             </Box>
-            </Box>
-        </div>
-        </ThemeProvider>
-       
-    );
-    }
+          </Drawer>
+          <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Toolbar />
+          </Box>
+        </Box>
+      </div>
+    </ThemeProvider>
+
+  );
+}

@@ -1,49 +1,103 @@
-import React, { useState } from "react";
-import TextField from '@mui/material/TextField';
-import { alpha, styled } from '@mui/material/styles';
-import { colors } from "@mui/material";
-import { red } from "@mui/material/colors";
-
-
-const FormTextInput = styled(TextField)({
-    // '& input:valid': {
-    //   borderColor: '#daaa00',
-    //   borderWidth: 1,
-    // },
-    // '& input:invalid + fieldset': {
-    //     colors: "red",
-    // },
-    // '& input:valid:focus + fieldset': {
-    //   borderLeftWidth: 4,
-    //   padding: '4px !important', // override inline-style
-    // },
-  });
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from '../components/contexts/AuthContext';
+import { auth } from '../models/firebase';
+import "./CoverPage.css"
+import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 
 export default function CoverPage () {
-    // state
+    // const { currentUser } = useAuth();
+    const [user, setUser] =useState({
+        email: '',
+        password: ''
+    });
+    const navigate = useNavigate();
 
-    const signIn = (e: React.FormEvent) => {
-        alert("sign process");
+    const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target;
+        setUser({...user, [name]: value});
     }
 
+    const submitHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        alert(user.email + "\n" + user.password);
+        // check input
+        signInWithEmailAndPassword(auth, user.email, user.password)
+            .then((useCredential) => {
+                console.log(useCredential)
+            }).catch((error) => {
+                console.log(error);
+                switch (error.code) {
+                  case "auth/invalid-email":
+                    // setError("Invalid Email!");
+                    break;
+                  case "auth/wrong-password":
+                    // setError("Invalid Password!");
+                    break;
+                  case "auth/user-not-found":
+                    // setError("User Not Found!");
+                    break;
+                  case "auth/too-many-requests":
+                    // setError("Failed too Many Times, Try Again Later!");
+                    break;
+                  default:
+                    console.log("Error Code: " + error.code);
+                    // setError("");
+                    break;
+            }
+        });
+    }
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log("have user");
+            // navigate("/Welcome");
+        } else {
+            console.log("no user");
+        }
+    });
+
+    const userSignOut = () => {
+        signOut(auth)
+          .then(() => {
+            console.log("sign out successful");
+          })
+          .catch((error) => console.log(error));
+      };
+
     return (
-        <div className="pageWide">
-            <div className="nav">
+        <div className="CoverPage">
+            {/* <div className="nav">
                 <button className="mediumBtn"><h3>Sign in</h3></button>
                 <button className="goldBtn mediumBtn"><h3>Get Start</h3></button>
-            </div>
+            </div> */}
             <div className="horizontalCenter">
-                <img src='/logo/BoilerCompass Logo v2.png' alt='Boiler Compass' className="coverLogo coverComponent"></img>
-                <div className="coverComponent verticalLeft">
+                <div className="coverComponent" style={{width: "55%"}}>
+                    <img src='/logo/BoilerCompass Logo v2.png' alt='Boiler Compass' className="coverLogo"></img>
+                </div>
+                <div className="coverComponent coverInputs" style={{width: "45%"}}>
                     <h1>Start Your Journey</h1>
-                    <form id="signInForm" onSubmit={signIn}>
-                        <FormTextInput id="standard-basic" label="Email" type="email" variant="standard" />
-                        <FormTextInput id="standard-basic" label="Password" type="password" variant="standard" />
-                        <button className="mediumBtn" type="submit"><h3>Sign in</h3></button>
+                    <br/><br/>
+                    <form id="signInForm" onSubmit={submitHandler}>
+                        <div className="inputGroup">
+                            <input id="email" name="email" className="inputField" placeholder="Email" type="email" onChange={changeHandler}required/>
+                            <label htmlFor="email" className="inputLabel">Email</label>
+                        </div>
+                        <div className="inputGroup">
+                            <input id="password" name="password" className="inputField" placeholder="Password" type="password" onChange={changeHandler}required/>
+                            <label htmlFor="password" className="inputLabel">Password</label>
+                        </div>
+                        <br/>
+                        <button className="mediumBtn gradient" type="submit"><h3>Sign in</h3></button>
                     </form>
+                    <br/><br/>
+                    <div className="divider">OR</div>
+                    <br/><br/> 
                     <h2>Don't Have an Account?</h2>
-                    <button className="goldBtn mediumBtn"><h3>Get Start</h3></button>
+                    <button className="gradient mediumBtn"><h3>Get Start</h3></button>
                     {/* dropbox */}
+                    <button className="mediumBtn" onClick={userSignOut}>Logout</button>
+                    <br/>
                 </div>
             </div>
         </div>

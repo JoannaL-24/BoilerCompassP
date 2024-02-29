@@ -1,8 +1,8 @@
 import './App.css';
 import CourseList from "./components/CourseList";
-import DarkModeToggle  from './components/DarkModeToggle';
+import DarkModeToggle from './components/DarkModeToggle';
 import Sidebar from './components/Sidebar'
-import CoursePopup from './components/CoursePopup'
+import CoursePopup from './components/CoursePopup/CoursePopup'
 import "./App.css";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -19,26 +19,29 @@ import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
 import DraggableCourse from "./components/DraggableCourse";
-import Profile from "./pages/Profile";
-import ProgressBarTesting from './components/ProgressBar';
-import { AuthProvider } from './components/contexts/AuthContext';
+import { ODataProvider } from "./components/contexts/ODataContext"
 
 function App() {
-  //return <AdvisorHomepage />;
-  // return <DeleteAccount />;
   return (
-    
-    <AuthProvider>
+    <ODataProvider >
       <div className="App">
+        {/* <header className="App-header">
+          <DarkModeToggle />
+          <CoursePopup />
+        </header> */}
         <Routes>
+          <Route path="/" element={<CoverPage />} />
           <Route path="/DegreePlanner" element={<DegreePlanner />} />
-          <Route path="/" element={<Welcome />} />
-          <Route path="/Profile" element={<Profile />} />
-          <Route path="/profile-setup-student" element={<ProfileSetupStudent />}/>
-          <Route path="/profile-setup-advisor" element={<ProfileSetupAdvisor />}/>
+          <Route path="/Welcome" element={<Welcome />} />
+          <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
+          />
+          <Route
+            path="/profile-setup-advisor"
+            element={<ProfileSetupAdvisor />}
+          />
         </Routes>
       </div>
-    </AuthProvider>
+    </ODataProvider>
   );
 }
 
