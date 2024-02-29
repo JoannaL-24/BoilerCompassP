@@ -2,9 +2,9 @@ import "./App.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Routes, Route } from "react-router-dom";
-import Welcome from "./components/Welcome";
-import ProfileSetupStudent from "./components/Profile_setup_student";
-import ProfileSetupAdvisor from "./components/Profile_setup_advisor";
+import Welcome from "./pages/Welcome";
+import ProfileSetupStudent from "./pages/ProfileSetupStudent";
+import ProfileSetupAdvisor from "./pages/ProfileSetupAdvisor";
 import CoverPage from "./pages/CoverPage";
 import DegreePlanner from "./pages/DegreePlanner";
 import SettingsPage from "./components/SettingsPage";
@@ -15,31 +15,25 @@ import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
 import Profile from "./pages/Profile";
 import ProgressBarTesting from './components/ProgressBar';
+import { AuthProvider } from './components/contexts/AuthContext';
 
 function App() {
   //return <AdvisorHomepage />;
-  return <DeleteAccount />;
-  /*return (
+  // return <DeleteAccount />;
+  return (
     
-    
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<DegreePlanner />} />
-        <Route path="/Welcome" element={<Welcome />} />
-        <Route
-          path="/profile-setup-student"
-          element={<ProfileSetupStudent />}
-        />
-        <Route
-          path="/profile-setup-advisor"
-          element={<ProfileSetupAdvisor />}
-        />
-      </Routes>
-    </div>
-    
-    // return <RunStudentHomepage></RunStudentHomepage>;
-    // return <DegreePlanner/>
-  );*/
+    <AuthProvider>
+      <div className="App">
+        <Routes>
+          <Route path="/DegreePlanner" element={<DegreePlanner />} />
+          <Route path="/" element={<Welcome />} />
+          <Route path="/Profile" element={<Profile />} />
+          <Route path="/profile-setup-student" element={<ProfileSetupStudent />}/>
+          <Route path="/profile-setup-advisor" element={<ProfileSetupAdvisor />}/>
+        </Routes>
+      </div>
+    </AuthProvider>
+  );
 }
 
 export default App;

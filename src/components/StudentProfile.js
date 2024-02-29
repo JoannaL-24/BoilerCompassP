@@ -12,6 +12,7 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form'
+import { useAuth } from '../components/contexts/AuthContext'
 // firebase imports
 import { doc, updateDoc, Timestamp } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
@@ -21,9 +22,10 @@ import minor_data from '../json/minors.json';
 // css imports
 import '../css/Profile.css';
 
-const Student_profile = ({userinfo, setUserinfo, user, setup, setUpdated}) => {
+const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const { currentUser } = useAuth();
   const year = dayjs().get('year');
   const validStartYear = (date) => !(( year  - date.get('year') >= 0) && (year - date.get('year') <= 10));
   const validEndYear = (date) => !(( date.get('year') - year >= 0) && (date.get('year') - year <= 10));
@@ -36,7 +38,7 @@ const Student_profile = ({userinfo, setUserinfo, user, setup, setUpdated}) => {
   const start_term_q = setup?"When did you start school at Purdue?":"Your start date:";
   const end_term_q = setup?"Expected graduation date:":"Your expected graduation date:";
   const submit_button_text = setup?"Submit":"Update profile";
-  // console.log(userinfo);
+  console.log(userinfo);
 
   const submit = () => {
     var go = true;
@@ -57,7 +59,6 @@ const Student_profile = ({userinfo, setUserinfo, user, setup, setUpdated}) => {
     else setEnd("");
     if (go) {
       console.log(userinfo); // for testing purposes
-      // const user = auth.currentUser;
       // if (user) {
       //   const uid = user.uid;
       const user_doc = doc(firestore, "users", "f9RIsQLWoiPjlpVaC3XkPlzeXcr1");
@@ -69,7 +70,7 @@ const Student_profile = ({userinfo, setUserinfo, user, setup, setUpdated}) => {
         start_term: Timestamp.fromDate(new Date(userinfo.start_term)),
         end_term: Timestamp.fromDate(new Date(userinfo.end_term)),
       });
-      setUpdated(true);
+      (!setup && setUpdated(true));
       // }
       // else {
       //   setSignedIn(false);

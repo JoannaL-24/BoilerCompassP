@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useForm } from 'react-hook-form'
+import { useAuth } from '../components/contexts/AuthContext'
 // firebase imports
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
@@ -14,13 +15,15 @@ import college_data from '../json/colleges.json';
 // css imports
 import '../css/Profile.css';
 
-const Advisor_profile = ({userinfo, setUserinfo, user, setup}) => {
+const Advisor_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
   const [missingCollege, setMissingCollege] = useState("");
   const [missingDepartment, setMissingDepartment] = useState("");
+  const { currentUser } = useAuth();
   const { handleSubmit } = useForm();
   const department_q = setup?"Choose your department:":"Your department:";
   const college_q = setup?"Choose your college:":"Your college:";
   const submit_button_text = setup?"Submit":"Update profile";
+  console.log(userinfo);
 
   const submit = () => {
     var go = true;
@@ -36,7 +39,6 @@ const Advisor_profile = ({userinfo, setUserinfo, user, setup}) => {
     else setMissingDepartment("");
     if (go) {
       console.log(userinfo); // for testing purposes
-      // const user = auth.currentUser;
       // if (user) {
       //   const uid = user.uid;
       const user_doc = doc(firestore, "users", "advisor_testing");
@@ -44,6 +46,7 @@ const Advisor_profile = ({userinfo, setUserinfo, user, setup}) => {
         college: userinfo.college,
         department: userinfo.department,
       });
+      (!setup && setUpdated(true));
       // }
       // else {
       //   setSignedIn(false);
@@ -60,12 +63,15 @@ const Advisor_profile = ({userinfo, setUserinfo, user, setup}) => {
           className="Input"
           id="college"
           required={true}
+          // multiple
           options={college_data.colleges}
           disableCloseOnSelect
           value={userinfo.college}
           getOptionLabel={(option) => option.name}
-          isOptionEqualToValue={(option, value) => option.value === value.value}
-          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, college: value})); setMissingCollege("");}}
+          // isOptionEqualToValue={(option, value) => option.value === value.value}
+          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, college: value}));
+                                     setMissingCollege("");
+                                     (!setup && setUpdated(false))}}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
               {option.name}
@@ -74,6 +80,7 @@ const Advisor_profile = ({userinfo, setUserinfo, user, setup}) => {
           renderInput={(params) => (
             <TextField {...params}
             label="Select"
+            // label={userinfo.college.length==0?"Select":""}
             placeholder="Select"
             required
             error={missingCollege && missingCollege.length?true:false}
@@ -88,12 +95,15 @@ const Advisor_profile = ({userinfo, setUserinfo, user, setup}) => {
           className="Input"
           id="deparment"
           required={true}
+          // multiple
           options={major_data.majors}
           disableCloseOnSelect
           value={userinfo.department}
-          isOptionEqualToValue={(option, value) => option.value === value.value}
+          // isOptionEqualToValue={(option, value) => option.value === value.value}
           getOptionLabel={(option) => option.name}
-          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, department: value})); setMissingDepartment("");}}
+          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, department: value}));
+                                     setMissingDepartment("");
+                                     (!setup && setUpdated(false))}}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
               {option.name}
@@ -102,6 +112,7 @@ const Advisor_profile = ({userinfo, setUserinfo, user, setup}) => {
           renderInput={(params) => (
             <TextField {...params}
             label="Select"
+            // label={userinfo.college.length==0?"Select":""}
             placeholder="Select"
             required
             error={missingDepartment && missingDepartment.length?true:false}

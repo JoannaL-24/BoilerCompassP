@@ -2,36 +2,39 @@ import React, { useState, useEffect } from 'react';
 import StudentProfile from '../components/StudentProfile'
 import AdvisorProfile from '../components/AdvisorProfile'
 import Alert from '@mui/material/Alert';
-import { auth, firestore } from '../models/firebase.ts';
+import { firestore } from '../models/firebase.ts';
+import { useAuth } from '../components/contexts/AuthContext'
 import dayjs from 'dayjs';
 import { doc, updateDoc, getDoc, Timestamp } from "firebase/firestore";
 import '../css/Profile.css';
 
 const Profile = () => {
-  const user = auth.currentUser;
+  const { currentUser } = useAuth();
   const [userinfo, setUserinfo] = useState(null);
   const [convertDate, setConverDate] = useState(true);
   const [updated, setUpdated] = useState(false);
-  useEffect(() => {
-    const user_doc = getDoc(doc(firestore, "users", "f9RIsQLWoiPjlpVaC3XkPlzeXcr1"))
-    .then((docSnapshot) => {
-      setUserinfo(userinfo?userinfo:docSnapshot.data());
-    });
-  }, []);
-  if (userinfo && convertDate) {
-    if (userinfo.user_type === "advisor") {
-      setConverDate(false);
-    }
-    else {
-      setUserinfo((prev)=>({...prev, start_term: dayjs(userinfo.start_term.toDate()), end_term: dayjs(userinfo.end_term.toDate())}));
-      setConverDate(false);
-      // console.log(userinfo);
-    }
+  // if (currentUser) {
+    useEffect(() => {
+      const user_doc = getDoc(doc(firestore, "users", "f9RIsQLWoiPjlpVaC3XkPlzeXcr1"))
+      .then((docSnapshot) => {
+        setUserinfo(userinfo?userinfo:docSnapshot.data());
+      });
+    }, []);
+    if (userinfo && convertDate) {
+      if (userinfo.user_type === "advisor") {
+        setConverDate(false);
+      }
+      else {
+        setUserinfo((prev)=>({...prev, start_term: dayjs(userinfo.start_term.toDate()), end_term: dayjs(userinfo.end_term.toDate())}));
+        setConverDate(false);
+        // console.log(userinfo);
+      }
+    // }
   }
 
   return (
     <div>
-      <Alert severity="error" sx={{ display: user ? 'none' : 'flex', top: 0, left: 0, width: '100%', height: '4%'}}>
+      <Alert severity="error" sx={{ display: currentUser ? 'none' : 'flex', top: 0, left: 0, width: '100%', height: '4%'}}>
       {"Please sign in to continue viewing your profile"}
       </Alert>
       <Alert severity="success" sx={{ display: !updated? 'none' : 'flex', top: 0, left: 0, width: '100%', height: '4%'}}>
@@ -42,14 +45,12 @@ const Profile = () => {
       <StudentProfile
         userinfo={userinfo}
         setUserinfo={setUserinfo}
-        user={user}
         setup={false}
         setUpdated={setUpdated}/>}
       {userinfo && userinfo.user_type==="advisor" &&
         <AdvisorProfile
           userinfo={userinfo}
           setUserinfo={setUserinfo}
-          user={user}
           setup={false}
           setUpdated={setUpdated}/>}
     </div>
