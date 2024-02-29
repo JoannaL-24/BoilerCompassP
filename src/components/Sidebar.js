@@ -13,7 +13,7 @@ import ClassIcon from '@mui/icons-material/Class';
 import SchoolIcon from '@mui/icons-material/School';
 import Searchbar from './Searchbar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import DarkModeToggle from './DarkModeToggle';
+import DarkModeToggle from './DarkModeToggle/DarkModeToggle';
 //import "./Sidebar.css"
 
 const drawerWidth = 240;

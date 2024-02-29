@@ -2,7 +2,7 @@ import './App.css';
 import CourseList from "./components/CourseList";
 import DarkModeToggle from './components/DarkModeToggle';
 import Sidebar from './components/Sidebar'
-import CoursePopup from './components/CoursePopup'
+import CoursePopup from './components/CoursePopup/CoursePopup'
 import "./App.css";
 import React from "react";
 import ReactDOM from "react-dom";
