@@ -1,30 +1,43 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import TextField from "@mui/material/TextField";
 import SearchList from "./SearchList"
 import "./Searchbar.css";
-//load from json file, might connect to database in the futrure
+import { firestore as db } from "models/firebase"
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 const Searchbar = () => {
-    const [searchInput, setSearchInput] = useState("");
+  const [results, setResults] = useState([]);
 
-    const handleSearch = (e) => {
-        //assume all lower case
-        var lowerCase = e.target.value.toLowerCase()
-        setSearchInput(lowerCase);
+  const handleSearch = async (searchInput) => {
+    const searchString = searchInput.toLowerCase().trim();
+
+    if (searchString === "") {
+      setResults([]);
+      return;
     }
-   
+
+    // const q = query(collection(db, "courseList"), where("Keywords", "array-contains", searchString));
+    // const querySnapshot = await getDocs(q);
+    // const searchResults = querySnapshot.docs.map(doc => {
+    // setResults(searchResults);
+  }
+
   return (
     <div className='search&display'>
-        <div className="search">
-            <TextField
-                id="outlined-basic"
-                onChange = {handleSearch}
-                variant="outlined"
-                style = {{width:200, height:10}}
-                label="Search course"
-            />
-        </div>
-        <SearchList input = {searchInput}/>
+      <div className="search">
+        <TextField
+          id="outlined-basic"
+          onChange={(e) => handleSearch(e.target.value)}
+          variant="outlined"
+          style={{ width: 200, height: 10 }}
+          label="Search course"
+        />
+      </div>
+      <div>
+        {results.map((result, index) => (
+          <div key={index}>{result}</div>
+        ))}
+      </div>
     </div>
   )
 }

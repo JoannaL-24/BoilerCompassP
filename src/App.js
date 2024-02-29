@@ -1,7 +1,7 @@
 import './App.css';
 // import CourseList from "./components/CourseList";
-// import DarkModeToggle from './components/DarkModeToggle';
-// import CoursePopup from './components/CoursePopup'
+import DarkModeToggle from './components/DarkModeToggle/DarkModeToggle.js';
+import CoursePopup from './components/CoursePopup/CoursePopup'
 import "./App.css";
 import React from "react";
 import ReactDOM from "react-dom";
