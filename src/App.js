@@ -1,3 +1,8 @@
+import './App.css';
+import CourseList from "./components/CourseList";
+import DarkModeToggle  from './components/DarkModeToggle';
+import Sidebar from './components/Sidebar'
+import CoursePopup from './components/CoursePopup'
 import "./App.css";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -13,14 +18,21 @@ import RunStudentHomepage from "./components/RunStudentHomepage";
 import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
+import DraggableCourse from "./components/DraggableCourse";
 
 function App() {
   //return <AdvisorHomepage />;
-  return <DeleteAccount />;
+  //return <DeleteAccount />;
+  return <DraggableCourse />;
   /*return (
     
     
     <div className="App">
+      <header className="App-header">
+        <DarkModeToggle />
+        <Sidebar/>
+        <CoursePopup/>
+      </header>
       <Routes>
         <Route path="/" element={<DegreePlanner />} />
         <Route path="/Welcome" element={<Welcome />} />
