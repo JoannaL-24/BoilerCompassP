@@ -8,6 +8,8 @@ body {
   font-family: 'Times New Roman', Times, serif;
   font-weight: bold;
   --black: #282c34;
+  --dark-gray: rgb(153, 153, 153);
+  --light-gray: rgb(187, 187, 187);
   --main-gold: #daaa00;
   --light-gold: #CEB888;
 }
