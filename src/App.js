@@ -25,29 +25,29 @@ function App() {
   // return <DraggableCourse />;
 
   // return <DeleteAccount />;
-  return (
-    <div className="App">
-      {/* <header className="App-header">
-        <DarkModeToggle />
-        <Sidebar />
-        <CoursePopup />
-      </header> */}
-      <Routes>
-        <Route path="/DegreePlanner" element={<DegreePlanner />} />
-        <Route path="/" element={<DegreePlanner />} />
-        <Route path="/Welcome" element={<Welcome />} />
-        <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
-        />
-        <Route
-          path="/profile-setup-advisor"
-          element={<ProfileSetupAdvisor />}
-        />
-      </Routes>
-    </div>
-  );
+  // return (
+  //   <div className="App">
+  //     {/* <header className="App-header">
+  //       <DarkModeToggle />
+  //       <Sidebar />
+  //       <CoursePopup />
+  //     </header> */}
+  //     <Routes>
+  //       <Route path="/DegreePlanner" element={<DegreePlanner />} />
+  //       <Route path="/" element={<DegreePlanner />} />
+  //       <Route path="/Welcome" element={<Welcome />} />
+  //       <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
+  //       />
+  //       <Route
+  //         path="/profile-setup-advisor"
+  //         element={<ProfileSetupAdvisor />}
+  //       />
+  //     </Routes>
+  //   </div>
+  // );
 
   // return <RunStudentHomepage></RunStudentHomepage>;
-  // return <DegreePlanner/>
+  return <DegreePlanner/>
 }
 
 export default App;
