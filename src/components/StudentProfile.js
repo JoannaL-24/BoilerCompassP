@@ -61,12 +61,11 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
       console.log(userinfo); // for testing purposes
       // if (user) {
       //   const uid = user.uid;
-      const user_doc = doc(firestore, "users", "f9RIsQLWoiPjlpVaC3XkPlzeXcr1");
+      const user_doc = doc(firestore, "users", "HlPoXSpJX1fqk2JLPXS5YEYp7Mc2");
       updateDoc(user_doc, {
         prefer_majors: userinfo.prefer_majors,
         prefer_minor: userinfo.prefer_minor,
         user_type: userinfo.user_type,
-        advisor: userinfo.advisor,
         start_term: Timestamp.fromDate(new Date(userinfo.start_term)),
         end_term: Timestamp.fromDate(new Date(userinfo.end_term)),
       });
