@@ -1,0 +1,76 @@
+.settingswindow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid black;
+  width: 400px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+}
+
+.closeButton {
+  align-self: flex-end;
+}
+
+.settingsContainer {
+  display: flex;
+  flex-direction: row; /* Arrange items horizontally */
+}
+
+.settingsColumn {
+  display: flex;
+  flex-direction: column; /* Arrange items vertically */
+  margin-right: 50px; /* Add margin to create space between columns */
+  margin-left: -50px;
+  position: absolute;
+  top: 10;
+  left: 50%;
+}
+
+.settingstextposition {
+  position: absolute;
+  display: flex;
+  flex-direction: row; /* Arrange items horizontally */
+  justify-content: center;
+  top: 10px;
+  left: 50px;
+  transform: translateX(-50%); /* Center horizontally */
+}
+
+.closebuttonposition {
+  display: flex;
+  top: -100px;
+  left: -100px;
+}
+
+.settingsTitle {
+  position: absolute;
+  top: 10;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.settingsContent {
+  flex-grow: 1; /* Allow content to expand to fill remaining space */
+}
+
+.settingsTitle {
+  margin-top: -30px;
+}
+
+.settingsColumn button {
+  width: -20px;
+  height: -20px;
+  font-size: 14px;
+}
+
+.settingswindow .MuiButtonGroup-root {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}

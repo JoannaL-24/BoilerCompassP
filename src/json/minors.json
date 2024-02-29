@@ -1,0 +1,397 @@
+{
+  "minors": [
+    {
+        "name":  "Accounting Minor"
+    },
+    {
+        "name":  "Advanced Global Technology Minor"
+    },
+    {
+        "name":  "Aerospace Studies Minor"
+    },
+    {
+        "name":  "African American Studies Minor"
+    },
+    {
+        "name":  "Agricultural Systems Management Minor"
+    },
+    {
+        "name":  "American Studies Minor"
+    },
+    {
+        "name":  "Animal Science Minor"
+    },
+    {
+        "name":  "Anthropology Minor"
+    },
+    {
+        "name":  "Aquatic Sciences Minor"
+    },
+    {
+        "name":  "Arabic Language and Culture Minor"
+    },
+    {
+        "name":  "Architectural Engineering Minor"
+    },
+    {
+        "name":  "Art and Design Studio Minor"
+    },
+    {
+        "name":  "Art History Minor"
+    },
+    {
+        "name":  "Asian American Studies Minor"
+    },
+    {
+        "name":  "Asian Studies Minor"
+    },
+    {
+        "name":  "ASL and Deaf Studies Minor"
+    },
+    {
+        "name":  "Astronomy Minor"
+    },
+    {
+        "name":  "Biochemistry Minor"
+    },
+    {
+        "name":  "Bioinformatics Minor"
+    },
+    {
+        "name":  "Biological Sciences Minor"
+    },
+    {
+        "name":  "Biometrics Minor"
+    },
+    {
+        "name":  "Biotechnology Minor"
+    },
+    {
+        "name":  "Business Economics Minor"
+    },
+    {
+        "name":  "Business French Minor"
+    },
+    {
+        "name":  "Chemistry Minor"
+    },
+    {
+        "name":  "Chinese Minor"
+    },
+    {
+        "name":  "Classical Studies Minor"
+    },
+    {
+        "name":  "Communication Minor"
+    },
+    {
+        "name":  "Computer and Information Technology Minor"
+    },
+    {
+        "name":  "Computer Science Minor"
+    },
+    {
+        "name":  "Construction Engineering Minor"
+    },
+    {
+        "name":  "Construction Graphics Minor"
+    },
+    {
+        "name":  "Construction Management Minor"
+    },
+    {
+        "name":  "Creative Writing Minor"
+    },
+    {
+        "name":  "Critical Disability Studies Minor"
+    },
+    {
+        "name":  "Crop Science Minor"
+    },
+    {
+        "name":  "Dance Minor"
+    },
+    {
+        "name":  "Data Driven Agriculture Minor"
+    },
+    {
+        "name":  "Design and Innovation Minor"
+    },
+    {
+        "name":  "Earth, Atmospheric, and Planetary Sciences Minor"
+    },
+    {
+        "name":  "Economics Minor"
+    },
+    {
+        "name":  "Electrical and Computer Engineering Minor"
+    },
+    {
+        "name":  "Electrical Engineering Technology Minor"
+    },
+    {
+        "name":  "Electronic and Time-Based Art Minor"
+    },
+    {
+        "name":  "Engineering and Public Policy Minor"
+    },
+    {
+        "name":  "English Minor"
+    },
+    {
+        "name":  "Environmental and Ecological Engineering Minor"
+    },
+    {
+        "name":  "Environmental Politics and Policy Minor"
+    },
+    {
+        "name":  "Event and Meeting Management Minor"
+    },
+    {
+        "name":  "Farm Management Minor"
+    },
+    {
+        "name":  "Fermentation Sciences Minor"
+    },
+    {
+        "name":  "Film & Video Studies Minor"
+    },
+    {
+        "name":  "Food and Agribusiness Management Minor"
+    },
+    {
+        "name":  "Food Science Minor"
+    },
+    {
+        "name":  "Foods and Nutrition Minor"
+    },
+    {
+        "name":  "Forensic Sciences Minor"
+    },
+    {
+        "name":  "Forest Ecosystems Minor"
+    },
+    {
+        "name":  "French Minor"
+    },
+    {
+        "name":  "French Cultural Studies Minor"
+    },
+    {
+        "name":  "Furniture Design Minor"
+    },
+    {
+        "name":  "German Minor"
+    },
+    {
+        "name":  "Global Engineering Studies Minor"
+    },
+    {
+        "name":  "Global Food and Agriculture Systems Minor"
+    },
+    {
+        "name":  "Global Liberal Arts Studies Minor"
+    },
+    {
+        "name":  "Global Studies Minor"
+    },
+    {
+        "name":  "History Minor"
+    },
+    {
+        "name":  "Horticulture Minor"
+    },
+    {
+        "name":  "HTM International Studies Minor"
+    },
+    {
+        "name":  "Human Development and Family Studies Minor"
+    },
+    {
+        "name":  "Human Resource Management Minor"
+    },
+    {
+        "name":  "Human Rights Studies Minor"
+    },
+    {
+        "name":  "Innovation and Transformational Change Minor"
+    },
+    {
+        "name":  "Insect Biology Minor"
+    },
+    {
+        "name":  "Intellectual Property Law for Engineers Minor"
+    },
+    {
+        "name":  "International Studies in Agriculture Minor"
+    },
+    {
+        "name":  "Islamic Studies Minor"
+    },
+    {
+        "name":  "Italian Minor"
+    },
+    {
+        "name":  "Japanese Minor"
+    },
+    {
+        "name":  "Jewish Studies Minor"
+    },
+    {
+        "name":  "Landscape and Turf Minor"
+    },
+    {
+        "name":  "Landscape Management Minor"
+    },
+    {
+        "name":  "Latin American and Latino Studies Minor"
+    },
+    {
+        "name":  "Law and Society Minor"
+    },
+    {
+        "name":  "Learning Sciences in Educational Studies Minor"
+    },
+    {
+        "name":  "LGBTQ Studies Minor"
+    },
+    {
+        "name":  "Linguistics Minor"
+    },
+    {
+        "name":  "Management Minor"
+    },
+    {
+        "name":  "Manufacturing Minor"
+    },
+    {
+        "name":  "Materials Science and Engineering Minor"
+    },
+    {
+        "name":  "Mathematical Economics Minor"
+    },
+    {
+        "name":  "Mathematics Minor"
+    },
+    {
+        "name":  "Military Science and Leadership Minor"
+    },
+    {
+        "name":  "Music History and Theory Minor"
+    },
+    {
+        "name":  "Native American and Indigenous Studies Minor"
+    },
+    {
+        "name":  "Natural Resources and Environmental Science Minor"
+    },
+    {
+        "name":  "Naval Science Minor"
+    },
+    {
+        "name":  "Nuclear Engineering Minor"
+    },
+    {
+        "name":  "Nutrition Minor"
+    },
+    {
+        "name":  "Occupational Health Science Minor"
+    },
+    {
+        "name":  "Organizational Leadership Minor"
+    },
+    {
+        "name":  "Peace Studies Minor"
+    },
+    {
+        "name":  "Pet Food Processing Minor"
+    },
+    {
+        "name":  "Philosophy Minor"
+    },
+    {
+        "name":  "Physics Minor"
+    },
+    {
+        "name":  "Plant Biology Minor"
+    },
+    {
+        "name":  "Plant Pathology Minor"
+    },
+    {
+        "name":  "Political Science Minor"
+    },
+    {
+        "name":  "Portuguese Minor"
+    },
+    {
+        "name":  "Product Lifecycle Management Minor"
+    },
+    {
+        "name":  "Professional Writing Minor"
+    },
+    {
+        "name":  "Psychology Minor"
+    },
+    {
+        "name": "Radiological Health Sciences Minor"
+    },
+    {
+        "name": "Religious Studies Minor"
+    },
+    {
+        "name": "Russian Minor"
+    },
+    {
+        "name": "Sociology Minor"
+    },
+    {
+        "name": "Soil Science Minor"
+    },
+    {
+        "name": "Spanish Minor"
+    },
+    {
+        "name": "Spanish for the Professions Minor"
+    },
+    {
+        "name": "Statistics Minor"
+    },
+    {
+        "name": "Supply Chain Engineering Technology Minor"
+    },
+    {
+        "name": "Sustainable Engineering Minor"
+    },
+    {
+        "name": "Sustainable Food and Farming Systems Minor"
+    },
+    {
+        "name": "Theatre Minor"
+    },
+    {
+        "name": "Theatre Design and Production Minor"
+    },
+    {
+        "name": "Turf Management Minor"
+    },
+    {
+        "name": "Unmanned Aerial Systems Minor"
+    },
+    {
+        "name": "Urban Forestry Minor"
+    },
+    {
+        "name": "Weed Science Minor"
+    },
+    {
+        "name": "Wildlife Science Minor"
+    },
+    {
+        "name": "Women’s, Gender, & Sexuality Studies Minor"
+    },
+    {
+        "name": "Wood Products Manufacturing Technology Minor"
+    }
+  ]
+}

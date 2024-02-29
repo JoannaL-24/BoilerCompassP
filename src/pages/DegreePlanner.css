@@ -1,0 +1,28 @@
+.navBarContainer {
+    z-index: 100;
+}
+
+.DegreeOverview{
+    /* width: 100vw; */
+    display:flex;
+    flex-direction: column;
+}
+.DegreeContent {
+    position: relative;
+    display:"flex";
+    flex-direction:"row";
+}
+
+.ScheduleView {
+    width: 75%;
+    padding-top: calc(55px + 2vh);
+}
+
+.ScheduleSide {
+    position: fixed;
+    top: 0px;
+    left: calc(100vw * 0.75);
+    width: 25%;
+    height: 100vh;
+    padding-top: calc(55px + 2vh);
+}
