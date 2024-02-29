@@ -1,12 +1,12 @@
 import React, { ReactNode, useContext, useState, useEffect } from 'react'
 import { firestore as db } from "models/firebase"
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, getDoc } from "firebase/firestore";
 
 type ODataContextProps = {
   children: ReactNode
 }
 
-type Courses = {
+type Course = {
   CreditHours: number
   Description: string
   Id: string
@@ -16,8 +16,14 @@ type Courses = {
   // classes: Array<Class> | null
 }
 
+type CourseName = {
+  Name: string
+  Id: string
+}
+
 type ODataContextValue = {
-  courses: Array<Courses>
+  // courses: Array<Course>
+  // courseNames: Array<CourseName>
 }
 
 const ODataContext = React.createContext<ODataContextValue | null>(null)
@@ -27,16 +33,11 @@ export const useOData = () => {
 }
 
 export const ODataProvider: React.FC<ODataContextProps> = ({ children }) => {
+
   const [odataValue, setOData] = useState<ODataContextValue | null>(null)
 
-  const coursesRef = collection(db, "courses")
-  getDocs(coursesRef).then((querySnapshot) => {
-    const courses: Array<Courses> = []
-    querySnapshot.forEach((doc) => {
-      courses.push(doc.data() as Courses)
-    })
-    setOData({ courses: courses })
-  })
+  // if (!odataValue) {
+  // }
 
   return < ODataContext.Provider value={odataValue} > {children}</ODataContext.Provider >
 }

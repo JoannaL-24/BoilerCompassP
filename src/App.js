@@ -1,7 +1,6 @@
 import './App.css';
-import CourseList from "./components/CourseList";
-import DarkModeToggle from './components/DarkModeToggle';
-import Sidebar from './components/Sidebar'
+// import CourseList from "./components/CourseList";
+import DarkModeToggle from './components/DarkModeToggle/DarkModeToggle.js';
 import CoursePopup from './components/CoursePopup/CoursePopup'
 import React from "react";
 import ReactDOM from "react-dom";
@@ -18,19 +17,18 @@ import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
 import DraggableCourse from "./components/DraggableCourse";
-import { ODataProvider } from "./components/contexts/ODataContext"
 
 function App() {
   return (
-    <ODataProvider >
       <div className="App">
-        {/* <header className="App-header">
+        <header className="App-header">
           <DarkModeToggle />
+          <Sidebar />
           <CoursePopup />
-        </header> */}
+        </header>
         <Routes>
-          <Route path="/" element={<CoverPage />} />
           <Route path="/DegreePlanner" element={<DegreePlanner />} />
+          <Route path="/" element={<DegreePlanner />} />
           <Route path="/Welcome" element={<Welcome />} />
           <Route path="/profile-setup-student" element={<ProfileSetupStudent />}
           />
@@ -40,7 +38,6 @@ function App() {
           />
         </Routes>
       </div>
-    </ODataProvider>
   );
 }
 

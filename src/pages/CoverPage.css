@@ -34,6 +34,7 @@
     align-content: center;
     justify-content: center;
     align-items: flex-start;
+    text-align: start;
 }
 
 .coverLogo {
@@ -43,7 +44,7 @@
 }
 
 .coverComponent h1 {
-    font-size: 60px;
+    font-size: 3rem;
     margin-bottom: 5px;
     color: var(--black);
     /* background: -webkit-linear-gradient(right, #b48d00,var(--black));
@@ -73,8 +74,8 @@
     font: inherit;
     position: relative;
     padding: 15px 0 10px;
-    margin-top: 10px;
     width: 50%;
+    min-width: 200px;
 
     .inputField {
         width: 100%;
@@ -127,31 +128,37 @@
     }
 }
 
+.errMsg{
+    color: var(--error);
+}
 
 .mediumBtn {
     width: 200px;
+    padding: 15px 3px;
     margin-right: 30px;
     border: none;
     border-radius: 2px;
     transition: 0.2s;
     cursor: pointer;
     color: var(--black);
-}
-
-.mediumBtn h3 {
-    margin: 15px 0px;
-}
-
-.mediumBtn:hover {
-    filter: brightness(90%);
+    text-align: center;
+    font-family: inherit;
+    h3 {
+        margin: 0px;
+        font-size: 18px;
+    }
 }
 
 .gradient {
-    background-image: linear-gradient(to right, var(--main-gold),  var(--light-gold));         
+    background-image: linear-gradient(to right, var(--main-gold) 1%, 30%, var(--accent));         
 }
 
 .goldBtn {
-    background-color: var(--main-gold);
+    background-color: var(--accent);
+}
+
+.goldBtn:hover {
+    filter: brightness(95%);
 }
 
 .divider {
@@ -169,3 +176,71 @@
     margin: 5px;
     background-color: var(--light-gray);
 }
+
+.getStartMenu {
+    display: flex;
+    flex-direction: row;
+    
+    button {
+        min-width: 150px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3 ease-in-out;
+    }
+    button:hover {
+        /* background-image: linear-gradient(to right, var(--main-gold) 1%, 30%, var(--accent)); */
+        /* background-color: var(--main-gold); */
+    }
+    
+}
+
+.signUpModal{
+    min-width: 400px;
+    min-height: 400px;
+    padding: 20px 30px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    #signUpForm {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .inputGroup {
+        width: 250px;
+        padding: 15px 0px 10px;
+    }
+    h3 {
+        margin: 0px 0px;
+    }
+
+    button {
+        padding: 15px 25px;
+        border: none;
+        border-radius: 2px;
+        transition: 0.2s;
+        cursor: pointer;
+        color: var(--black);
+        text-align: center;
+        font-family: initial;
+    }
+}
+
+/* Popup Modal Animation */
+@keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  .fadeIn {
+    animation: none;
+    -webkit-animation: fade-in 0.3s;
+  }

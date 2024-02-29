@@ -1,30 +1,51 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import TextField from "@mui/material/TextField";
-import SearchList from "./SearchList"
 import "./Searchbar.css";
-//load from json file, might connect to database in the futrure
+import { firestore as db } from "models/firebase"
+import { collection, query, where, getDocs, limit, orderBy } from 'firebase/firestore';
+import { debounce } from 'lodash';
 
 const Searchbar = () => {
-    const [searchInput, setSearchInput] = useState("");
+  const [results, setResults] = useState([]);
 
-    const handleSearch = (e) => {
-        //assume all lower case
-        var lowerCase = e.target.value.toLowerCase()
-        setSearchInput(lowerCase);
+  const handleSearch = debounce(async (searchInput) => {
+    const searchString = searchInput.toUpperCase().trim();
+
+    if (searchString === "") {
+      setResults([]);
+      return;
     }
-   
+
+    const q = query(
+      collection(db, "courseList"),
+      where("Keywords", "array-contains", searchString),
+      orderBy("Name"),
+      limit(10)
+    );
+    const querySnapshot = await getDocs(q);
+    let results = []
+    querySnapshot.forEach((doc) => {
+      results.push({ Name: doc.data().Name, Id: doc.id });
+    });
+    setResults(results);
+  }, 500); // Adjust the delay as needed
+
   return (
     <div className='search&display'>
-        <div className="search">
-            <TextField
-                id="outlined-basic"
-                onChange = {handleSearch}
-                variant="outlined"
-                style = {{width:200, height:10}}
-                label="Search course"
-            />
-        </div>
-        <SearchList input = {searchInput}/>
+      <div className="search">
+        <TextField
+          id="outlined-basic"
+          onChange={(e) => handleSearch(e.target.value)}
+          variant="outlined"
+          style={{ width: 200, height: 10 }}
+          label="Search course"
+        />
+      </div>
+      <div>
+        {results.map((result, index) => (
+          <div key={index}>{result.Name}</div>
+        ))}
+      </div>
     </div>
   )
 }

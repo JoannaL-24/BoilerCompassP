@@ -7,9 +7,9 @@ import { ReactComponent as Moon } from "./Moon.svg";
 import "./DarkModeToggle.css"
 
 const DarkModeToggle = () => {
-    const [theme, setTheme] = useState({
+    // const [theme, setTheme] = useState({
         
-    });
+    // });
     const setDarkMode = () => {
         // @ts-ignore
         document.querySelector("body").setAttribute('data-theme', 'dark')
