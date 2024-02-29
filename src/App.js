@@ -15,8 +15,16 @@ import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
 
 function App() {
-  //return <AdvisorHomepage />;
-  return <DeleteAccount />;
+  return (
+    <div className="App">
+      <Routes>
+        <Route path='/' element={<CoverPage/>}/>
+        <Route path='/welcome' element={<Welcome/>}/>
+        <Route path='/profile-setup-student' element={<ProfileSetupStudent/>}/>
+        <Route path='/profile-setup-advisor' element={<ProfileSetupAdvisor/>}/>
+      </Routes>
+    </div>
+  );
   /*return (
     
     
