@@ -1,14 +1,14 @@
-import './App.css';
-import DarkModeToggle from './components/DarkModeToggle/DarkModeToggle';
-import Sidebar from './components/Sidebar'
-import CoursePopup from './components/CoursePopup/CoursePopup'
+import "./App.css";
+import DarkModeToggle from "./components/DarkModeToggle/DarkModeToggle";
+import Sidebar from "./components/Sidebar";
+import CoursePopup from "./components/CoursePopup/CoursePopup";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Routes, Route } from "react-router-dom";
 import Welcome from "./pages/Welcome";
 import ProfileSetupStudent from "./pages/ProfileSetupStudent";
 import ProfileSetupAdvisor from "./pages/ProfileSetupAdvisor";
-import Profile from './pages/Profile';
+import Profile from "./pages/Profile";
 import CoverPage from "./pages/CoverPage";
 import DegreePlanner from "./pages/DegreePlanner";
 import SettingsPage from "./components/SettingsPage";
@@ -18,7 +18,7 @@ import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
 import DraggableCourse from "./components/DraggableCourse";
-import { AuthProvider } from './components/contexts/AuthContext';
+import { AuthProvider } from "./components/contexts/AuthContext";
 
 function App() {
   return (
@@ -30,14 +30,20 @@ function App() {
           <CoursePopup />
         </header> */}
         <Routes>
-          <Route path="/DegreePlanner" element={<DegreePlanner />}/>
-          <Route path="/" element={<CoverPage />}/>
-          <Route path="/Welcome" element={<Welcome />}/>
-          <Route path="/Profile" element={<Profile />}/>
-          <Route path="/ProfileSetupStudent" element={<ProfileSetupStudent />}/>
-          <Route path="/ProfileSetupAdvisor" element={<ProfileSetupAdvisor />}/>
-          <Route path="/AdvisorHomePage" element={<AdvisorHomepage/>}/>
-          <Route path="/Settings" element={<SettingsPage/>}/>
+          <Route path="/DegreePlanner" element={<DegreePlanner />} />
+          <Route path="/" element={<CoverPage />} />
+          <Route path="/Welcome" element={<Welcome />} />
+          <Route path="/Profile" element={<Profile />} />
+          <Route
+            path="/ProfileSetupStudent"
+            element={<ProfileSetupStudent />}
+          />
+          <Route
+            path="/ProfileSetupAdvisor"
+            element={<ProfileSetupAdvisor />}
+          />
+          <Route path="/AdvisorHomePage" element={<AdvisorHomepage />} />
+          <Route path="/Settings" element={<SettingsPage />} />
         </Routes>
       </div>
     </AuthProvider>
