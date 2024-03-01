@@ -9,7 +9,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import { useAuth } from "../components/contexts/AuthContext";
-// const currentUser = null;
+
+// const { currentUser } = useAuth();
+const currentUser = null;
 function DeleteAccount() {
   const { currentUser } = useAuth();
   const [open, setOpen] = useState(false);

@@ -161,6 +161,18 @@
     filter: brightness(95%);
 }
 
+.forgetPasswordLink{
+    margin-top: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: none;
+    background-color: transparent;
+}
+
+.forgetPasswordLink:hover {
+    color: var(--textSecondary);
+}
+
 .divider {
     width: 63%;
     font-size: 18px;
@@ -194,7 +206,7 @@
     
 }
 
-.signUpModal{
+.modal{
     min-width: 400px;
     min-height: 400px;
     padding: 20px 30px;
