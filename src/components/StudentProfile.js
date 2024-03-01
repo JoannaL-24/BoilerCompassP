@@ -193,7 +193,8 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
           {!setup && <h3 style={{fontWeight:"normal"}}>{userinfo.advisor}</h3>}
         </FormControl>
         <Box className="Btn">
-          <Button type="submit" className="Btn" onClick={handleSubmit(submit)} variant="outlined">{submit_button_text}</Button>
+          <Button type="submit" onClick={handleSubmit(submit)} variant="outlined">{submit_button_text}</Button>
+          {!setup && <Button sx={{mt: "0.5em"}} type="submit" className="Btn" href='/DegreePlanner' variant="outlined">Back to home</Button>}
         </Box>
       </Box>
     </div>

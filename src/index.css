@@ -10,7 +10,7 @@ body {
   --black: #282c34;
   --dark-gray: rgb(153, 153, 153);
   --light-gray: rgb(187, 187, 187);
-  --main-gold: rgb(218, 170, 0);
+  --main-gold: #daaa00;
   --light-gold: rgb(206, 184, 136);
   --error: rgb(200, 26, 26);
 }

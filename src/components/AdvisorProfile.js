@@ -129,13 +129,8 @@ const Advisor_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
           />
         </FormControl>
         <Box className="Btn">
-          <Button
-            type="submit"
-            onClick={handleSubmit(submit)}
-            variant="outlined"
-          >
-            {submit_button_text}
-          </Button>
+          <Button type="submit" onClick={handleSubmit(submit)} variant="outlined">{submit_button_text}</Button>
+          {!setup && <Button sx={{mt: "0.5em"}} type="submit" href='/AdvisorHomePage' variant="outlined">Back to home</Button>}
         </Box>
       </Box>
     </div>
