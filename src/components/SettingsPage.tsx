@@ -42,7 +42,7 @@ function SettingsPage() {
             <h1 className="settingsTitle">Appearance</h1>
           )} */}
         </div>
-        <div style={{ marginLeft: "800px" }}>
+        <div style={{ marginLeft: "700px" }}>
           {" "}
           <Link to={previousPage} style={{ textDecoration: "none" }}>
             <Button>Close</Button>
