@@ -26,12 +26,9 @@ function App() {
       <div className="App">
         {/* <header className="App-header">
           <DarkModeToggle />
-          <Sidebar />
           <CoursePopup />
         </header> */}
         <Routes>
-
-
           <Route path="/DegreePlanner" element={<DegreePlanner />}/>
           <Route path="/" element={<CoverPage />}/>
           <Route path="/Welcome" element={<Welcome />}/>
@@ -40,7 +37,6 @@ function App() {
           <Route path="/ProfileSetupAdvisor" element={<ProfileSetupAdvisor />}/>
           <Route path="/AdvisorHomePage" element={<AdvisorHomepage />}/>
           <Route path="/Settings" element={<SettingsPage />}/>
-
         </Routes>
         
       </div>
