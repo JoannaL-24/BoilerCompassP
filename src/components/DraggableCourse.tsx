@@ -3,7 +3,11 @@ import Draggable from "react-draggable";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 
-function DraggableCourse() {
+type DraggableCourseProps = {
+  course: string;
+};
+
+const DraggableCourse: React.FC<DraggableCourseProps> = ({ course }) => {
   return (
     <Draggable>
       <Card
@@ -12,11 +16,10 @@ function DraggableCourse() {
           height: "100px",
         }}
       >
-        {/* <Button onClick={handleClickOpen}>Open Popup</Button> */}
-        <CardContent>Course</CardContent>
+        <CardContent>{course}</CardContent>
       </Card>
     </Draggable>
   );
-}
+};
 
 export default DraggableCourse;
