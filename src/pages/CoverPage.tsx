@@ -47,7 +47,7 @@ export default function CoverPage() {
 
   const submitLogin = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert(user.email + "\n" + user.password);
+    // alert(user.email + "\n" + user.password);
     // check input
     if (!signUserIn) return;
     signUserIn(user.email, user.password)
