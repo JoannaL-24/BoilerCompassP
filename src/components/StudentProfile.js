@@ -38,7 +38,7 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
   const prefer_minor_q = setup?"Choose your minor(s):":"Your minor(s):";
   const start_term_q = setup?"When did you start school at Purdue?":"Your start date:";
   const end_term_q = setup?"Expected graduation date:":"Your expected graduation date:";
-  const submit_button_text = setup?"Submit":"Edit";
+  const submit_button_text = setup?"Submit":"Edit/Save";
   const navigate = useNavigate();
   // console.log(userinfo);
 
@@ -193,7 +193,8 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
           {!setup && <h3 style={{fontWeight:"normal"}}>{userinfo.advisor}</h3>}
         </FormControl>
         <Box className="Btn">
-          <Button type="submit" className="Btn" onClick={handleSubmit(submit)} variant="outlined">{submit_button_text}</Button>
+          <Button type="submit" onClick={handleSubmit(submit)} variant="outlined">{submit_button_text}</Button>
+          {!setup && <Button sx={{mt: "0.5em"}} type="submit" className="Btn" href='/DegreePlanner' variant="outlined">Back to home</Button>}
         </Box>
       </Box>
     </div>

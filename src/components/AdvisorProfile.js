@@ -25,7 +25,7 @@ const Advisor_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
   const { handleSubmit } = useForm();
   const department_q = setup ? "Choose your department:" : "Your department:";
   const college_q = setup ? "Choose your college:" : "Your college:";
-  const submit_button_text = setup ? "Submit" : "Edit";
+  const submit_button_text = setup ? "Submit" : "Edit/Save";
   const navigate = useNavigate();
   // console.log(userinfo);
 
@@ -129,13 +129,8 @@ const Advisor_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
           />
         </FormControl>
         <Box className="Btn">
-          <Button
-            type="submit"
-            onClick={handleSubmit(submit)}
-            variant="outlined"
-          >
-            {submit_button_text}
-          </Button>
+          <Button type="submit" onClick={handleSubmit(submit)} variant="outlined">{submit_button_text}</Button>
+          {!setup && <Button sx={{mt: "0.5em"}} type="submit" href='/AdvisorHomePage' variant="outlined">Back to home</Button>}
         </Box>
       </Box>
     </div>

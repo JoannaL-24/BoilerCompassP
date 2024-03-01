@@ -20,6 +20,8 @@ h3 {
 .Btn {
   margin-top: 1em;
   margin-bottom: 2em;
+  display: flex;
+  flex-direction: column;
 }
 
 .Ctn {
