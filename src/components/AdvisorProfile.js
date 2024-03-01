@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../components/contexts/AuthContext'
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // firebase imports
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
@@ -43,13 +43,13 @@ const Advisor_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
       console.log(userinfo); // for testing purposes
       if (currentUser) {
         const uid = currentUser.uid;
-        const user_doc = doc(firestore, "users", currentUser.id);
+        const user_doc = doc(firestore, "users", uid);
         updateDoc(user_doc, {
           college: userinfo.college,
           department: userinfo.department,
         });
         (!setup && setUpdated(true));
-        if (setup) navigate('/DegreePlanner');
+        if (setup) navigate('/AdvisorHomePage');
       }
       else {
         setSignedIn(false);

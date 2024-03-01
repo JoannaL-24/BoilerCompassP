@@ -18,10 +18,10 @@ const Welcome = () => {
       <Box className="Ctn" style={{ display: welcome? 'none' : 'flex', height: "100vh" }}>
       <h2 style={{ fontSize: "3em" }} variant="h1">Select your role:</h2>
       <Box>
-        <Button href="/profile-setup-student" className="Btn" sx={{ mt: 3}} variant="contained" size="large">Student</Button>
+        <Button href="/ProfileSetupStudent" className="Btn" sx={{ mt: 3}} variant="contained" size="large">Student</Button>
       </Box>
       <Box>
-        <Button href="/profile-setup-advisor" className="Btn" sx={{ mt: 3}} variant="contained" size="large" >Advisor</Button>
+        <Button href="/ProfileSetupAdvisor" className="Btn" sx={{ mt: 3}} variant="contained" size="large" >Advisor</Button>
       </Box>
     </Box>
   </div>

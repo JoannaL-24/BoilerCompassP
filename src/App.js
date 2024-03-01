@@ -36,8 +36,8 @@ function App() {
           <Route path="/Profile" element={<Profile />}/>
           <Route path="/ProfileSetupStudent" element={<ProfileSetupStudent />}/>
           <Route path="/ProfileSetupAdvisor" element={<ProfileSetupAdvisor />}/>
-          <Route path="/AdvisorHomePage" element={<AdvisorHomepage/>}/>
-          <Route path="/Settings" element={<SettingsPage/>}/>
+          <Route path="/AdvisorHomePage" element={<AdvisorHomepage />}/>
+          <Route path="/Settings" element={<SettingsPage />}/>
         </Routes>
         
       </div>
