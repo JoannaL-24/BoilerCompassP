@@ -42,7 +42,7 @@ export default function CoverPage() {
 
     const submitLogin = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        alert(user.email + "\n" + user.password);
+        // alert(user.email + "\n" + user.password);
         // check input
         if (!signUserIn) return;
         signUserIn(user.email, user.password)
@@ -75,7 +75,7 @@ export default function CoverPage() {
 
     const submitSignUp = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        alert(user.name + "\n" + user.email + "\n" + user.password);
+        // alert(user.name + "\n" + user.email + "\n" + user.password);
         if (!user.email.includes("@purdue.edu")) {
             seterrSignUp({ flag: 1, errDetail: "Please use email from Purdue email domain" });
         }
@@ -131,7 +131,7 @@ export default function CoverPage() {
 
     const resetPassword = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        alert(user.email);
+        // alert(user.email);
         if (!user.email.includes("@purdue.edu")) {
             setErrResetPassword({ flag: 1, errDetail: "Please use email from Purdue email domain" });
         }

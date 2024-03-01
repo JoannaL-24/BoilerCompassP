@@ -8,7 +8,6 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ScheduleYear from "../ScheduleYear/ScheduleYear";
 import ProgressBar from '../ProgressBar'
 
-
 export default function ScheduleView () {
 
     return (
@@ -35,10 +34,10 @@ export default function ScheduleView () {
             </div>
             <ProgressBar completed={20} total={50} planned={40}/>
             <div className="SemesterYears">
-                <ScheduleYear/>
-                <ScheduleYear/>
-                <ScheduleYear/>
-                <ScheduleYear/>
+                <ScheduleYear startYear={2022}/>
+                <ScheduleYear startYear={2023}/>
+                <ScheduleYear startYear={2024}/>
+                <ScheduleYear startYear={2025}/>
             </div>
             {/* create seperate component for semester */}
         </div>

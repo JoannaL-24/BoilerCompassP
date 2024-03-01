@@ -3,13 +3,12 @@ import Draggable from "react-draggable";
 import Card from "@mui/material/Card";
 import "./Semester.css"
 
-export default function Semester() {
-    let credits = 0;
+const Semester = ({term}) => {
 
     return (
         <div className="Semester">
             <div className="SemesterDescription">
-                <h3>Fall (16 Hrs) </h3>
+                <h3>{term} (16 Hrs) </h3>
             </div>
             <div className="Courses">
             <Draggable>
@@ -24,3 +23,4 @@ export default function Semester() {
         </div>
     )
 }
+export default Semester
