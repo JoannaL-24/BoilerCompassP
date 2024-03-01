@@ -2,17 +2,18 @@
     z-index: 2000;
 }
 
-.DegreeOverview{
+.DegreeOverview {
     /* width: 100vw; */
     background: var(--background);
     color: var(--textPrimary);
-    display:flex;
+    display: flex;
     flex-direction: column;
 }
+
 .DegreeContent {
     position: relative;
-    display:"flex";
-    flex-direction:"row";
+    display: flex;
+    flex-direction: row;
 }
 
 .ScheduleView {
@@ -21,9 +22,21 @@
 }
 
 .ScheduleSide {
-    position: fixed;
-    top: calc(55px + 2vh);
+    /* position: fixed; */
+    /* top: calc(55px + 2vh); */
+    /* height: 100vh; */
     left: calc(100vw * 0.75);
     width: 25%;
-    height: 100vh;
+    padding-top: calc(55px + 2vh);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+
+
+    .mediumBtn {
+        margin: 20px 0px 10px;
+        padding: 10px 5px 10px;
+    }
 }

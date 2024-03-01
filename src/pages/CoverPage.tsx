@@ -47,7 +47,7 @@ export default function CoverPage() {
 
   const submitLogin = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert(user.email + "\n" + user.password);
+    // alert(user.email + "\n" + user.password);
     // check input
     if (!signUserIn) return;
     signUserIn(user.email, user.password)
@@ -412,9 +412,9 @@ export default function CoverPage() {
               <h3>Start Without Account</h3>
             </button>
           </div>
-          <button className="mediumBtn" onClick={userSignOut}>
+          {/* <button className="mediumBtn" onClick={userSignOut}>
             Logout
-          </button>
+          </button> */}
           <br />
         </div>
       </div>

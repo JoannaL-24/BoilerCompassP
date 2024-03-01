@@ -14,11 +14,11 @@ const Profile = () => {
   const [userinfo, setUserinfo] = useState(null);
   const [convertDate, setConverDate] = useState(true);
   const [updated, setUpdated] = useState(false);
-  useEffect(() => {
+  // useEffect(() => {
     if (currentUser) {
       const user_doc = getDoc(doc(firestore, "users", currentUser.uid))
       .then((docSnapshot) => {
-        setUserinfo(docSnapshot.data());
+        setUserinfo(userinfo?userinfo:docSnapshot.data());
       });
       if (userinfo && convertDate) {
         if (userinfo.user_type === "advisor") {
@@ -31,7 +31,7 @@ const Profile = () => {
         }
       }
     }
-  }, [currentUser]);
+  // }, [currentUser]);
 
   return (
     <div>
