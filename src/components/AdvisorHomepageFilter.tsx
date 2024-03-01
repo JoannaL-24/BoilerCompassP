@@ -16,9 +16,10 @@ import "firebase/firestore";
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../models/firebase.ts";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
-import "./AdvisorHomepageFilter.css"
+import "./AdvisorHomepageFilter.css";
 
 import app from "../models/firebase.ts";
+import { useAuth } from "../components/contexts/AuthContext";
 
 function AdvisorHomepageFilter() {
   const [value, setValue] = useState("female");
@@ -26,6 +27,7 @@ function AdvisorHomepageFilter() {
     { name: string; purdue_email: string; prefer_majors: { name: string }[] }[]
   >([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     const firestore = getFirestore(app);
@@ -74,7 +76,7 @@ function AdvisorHomepageFilter() {
             style={{ width: "200px" }}
           />
         </div>
-        <br/>
+        <br />
         <FormControl
           sx={{
             border: "2px solid black",

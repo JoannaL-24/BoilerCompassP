@@ -8,6 +8,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+import { useAuth } from "../components/contexts/AuthContext";
+const { currentUser } = useAuth();
+
 function DeleteAccount() {
   const [open, setOpen] = useState(false);
 
@@ -15,6 +18,33 @@ function DeleteAccount() {
     // handle delete here
     setOpen(false);
   };
+
+  if (!currentUser) {
+    return (
+      <div>
+        <Button disabled>
+          <DeleteForeverIcon /> Delete Account
+        </Button>
+        <Dialog open={open} onClose={() => setOpen(false)}>
+          <DialogTitle>Confirmation</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete your account?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setOpen(false)}
+              style={{ marginRight: "250px" }}
+            >
+              No
+            </Button>
+            <Button onClick={handleDelete}>Yes</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
 
   return (
     <div>
