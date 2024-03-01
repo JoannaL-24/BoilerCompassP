@@ -29,7 +29,7 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({ course }) => {
             <button className='close' onClick = {close}>
               &times;
             </button>
-            <div className='header'>COURSE NAME</div>
+            <div className='header'>{course}</div>
             <div className='content'>
               {' '}
               COURSE DESCRIPTION HERE
