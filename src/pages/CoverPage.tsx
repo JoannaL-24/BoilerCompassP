@@ -2,12 +2,20 @@ import "./CoverPage.css"
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../components/contexts/AuthContext';
-import { auth } from '../models/firebase';
-import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import { auth, firestore } from '../models/firebase';
+import { signInWithEmailAndPassword, onAuthStateChanged, signOut, sendEmailVerification } from "firebase/auth";
 import Popup from "reactjs-popup";
+import UserData from "models/UserData";
+import RemoteUserdata from "models/RemoteUserData";
+import { User } from "models/BoilerCompass";
+import LocalUserData from "models/LocalUserData";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function CoverPage() {
-    const { signUserIn, createUser } = useAuth();
+    const navigate = useNavigate();
+    const { currentUser, signUserIn, createUser } = useAuth();
+    const remoteUserData: UserData = new RemoteUserdata;
+    const localUserData: UserData = new LocalUserData;
     const [user, setUser] = useState({
         name: '',
         email: '',
@@ -32,59 +40,144 @@ export default function CoverPage() {
         e.preventDefault();
         alert(user.email + "\n" + user.password);
         // check input
-        if(!signUserIn) return;
+        if (!signUserIn) return;
         signUserIn(user.email, user.password)
             .then((useCredential) => {
                 console.log(useCredential);
-                setErrLogin({flag: 0, errDetail:""});
+                setErrLogin({ flag: 0, errDetail: "" });
+                navigate("/DegreePlanner");
             }).catch((error) => {
                 console.log(error);
                 switch (error.code) {
                     case "auth/invalid-email":
-                        setErrLogin({flag: 1, errDetail:"Invalid Email!"});
+                        setErrLogin({ flag: 1, errDetail: "Invalid Email!" });
                         break;
                     case "auth/wrong-password":
-                        setErrLogin({flag: 2, errDetail:"Invalid Password!"});
+                        setErrLogin({ flag: 2, errDetail: "Invalid Password!" });
                         break;
                     case "auth/invalid-credential":
-                        setErrLogin({flag: 3, errDetail:"Invalid Credentail!"});
+                        setErrLogin({ flag: 3, errDetail: "Invalid Credentail!" });
                         break;
                     case "auth/user-not-found":
-                        setErrLogin({flag: 3, errDetail:"User Not Found"});
+                        setErrLogin({ flag: 3, errDetail: "User Not Found" });
                         break;
                     default:
                         console.log("Error Code: " + error.code);
-                        setErrLogin({flag: 0, errDetail:""});
+                        setErrLogin({ flag: 0, errDetail: "" });
                         break;
                 }
             });
     }
 
+    // const submitSignUp = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+    //     alert(user.name + "\n" + user.email + "\n" + user.password);
+    //     if (!user.email.includes("@purdue.edu")) {
+    //         seterrSignUp({ flag: 1, errDetail: "Please use email from Purdue email domain" });
+    //     }
+    //     else {
+    //         await createUser(user.email, user.password)
+    //             .then((useCredential) => {
+    //                 console.log(useCredential);
+    //                 seterrSignUp({ flag: 0, errDetail: "" });
+    //                 // sent email
+    //                 // let newUser: User = {
+    //                 //     name: user.name,
+    //                 //     purdue_email: user.email,
+    //                 //     dark_mode: false,
+    //                 //     groups: []
+    //                 // }
+    //                 // remoteUserData.init(newUser)
+    //                 //     .then(() => {
+    //                 //         console.log("success")
+    //                 //         // link to welcome page
+    //                 //     }).catch((error) => {
+    //                 //         console.log(error)
+    //                 //     })
+    //             }).catch((error) => {
+    //                 console.log(error);
+    //                 switch (error.code) {
+    //                     case "auth/email-already-in-use":
+    //                         seterrSignUp({ flag: 1, errDetail: "Used Email! Login With the Email" });
+    //                         break;
+    //                     case "auth/invalid-email":
+    //                         seterrSignUp({ flag: 1, errDetail: "Invalid Email!" });
+    //                         break;
+    //                     case "auth/weak-password":
+    //                         seterrSignUp({ flag: 2, errDetail: "Weak Password!" });
+    //                         break;
+    //                     default:
+    //                         console.log("Error Code: " + error.code);
+    //                         seterrSignUp({ flag: 0, errDetail: "" });
+    //                         break;
+    //                 }
+    //             });
+
+    //     }
+    // }
+
     const submitSignUp = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         alert(user.name + "\n" + user.email + "\n" + user.password);
         if (!user.email.includes("@purdue.edu")) {
-            seterrSignUp({flag: 1, errDetail: "Please use email from Purdue email domain"});
+            seterrSignUp({ flag: 1, errDetail: "Please use email from Purdue email domain" });
         }
         else {
-            // firebase auth
-            // check if the user already exist
-            // create user
-            // sent email verification
-            // create user doc
-            seterrSignUp({flag: 0, errDetail: ""});
-        }
+            createUser(user.email, user.password)
+                .then((userCredential) => {
+                    const signedUpUser = userCredential.user;
+                    console.log(signedUpUser);
+                    seterrSignUp({ flag: 0, errDetail: "" });
+                    setDoc(doc(firestore, `/users/${signedUpUser.uid}/`), {
+                        name: user.name,
+                        purdue_email: user.email,
+                        dark_mode: false,
+                        groups: []
+                    })
+                        .then(() => {
+                            console.log("success");
+                            navigate("/Welcome");
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                }).catch((error) => {
+                    console.log(error);
+                    switch (error.code) {
+                        case "auth/email-already-in-use":
+                            seterrSignUp({ flag: 1, errDetail: "Used Email! Login With the Email" });
+                            break;
+                        case "auth/invalid-email":
+                            seterrSignUp({ flag: 1, errDetail: "Invalid Email!" });
+                            break;
+                        case "auth/weak-password":
+                            seterrSignUp({ flag: 2, errDetail: "Weak Password!" });
+                            break;
+                        default:
+                            console.log("Error Code: " + error.code);
+                            seterrSignUp({ flag: 0, errDetail: "" });
+                            break;
+                    }
+                });
 
-    }
-    const navigate = useNavigate();
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // console.log("have user");
-            // navigate("/Welcome");
-        } else {
-            // console.log("no user");
         }
-    });
+    }
+
+    const guestSignUp = () => {
+        let newUser: User = {
+            name: "",
+            purdue_email: "",
+            dark_mode: false,
+            groups: []
+        }
+        localUserData.init(newUser)
+            .then(() => {
+                console.log("success");
+                navigate("/ProfileSetupStudent");
+            }).catch((error: unknown) => {
+                console.log(error);
+            })
+    }
 
     const userSignOut = () => {
         signOut(auth)
@@ -148,7 +241,7 @@ export default function CoverPage() {
                     <div className="getStartMenu">
                         <Popup
                             trigger={<button className="mediumBtn goldBtn"><h3>Create Account</h3></button>}
-                            onClose={() => {seterrSignUp({flag:0, errDetail: ""})}}
+                            onClose={() => { seterrSignUp({ flag: 0, errDetail: "" }) }}
                             modal
                             nested
                         >
@@ -178,9 +271,9 @@ export default function CoverPage() {
                             </div>
                             {/* )} */}
                         </Popup>
-                        <button className="mediumBtn goldBtn"><h3>Start Without Account</h3></button>
+                        <button className="mediumBtn goldBtn" onClick={guestSignUp}><h3>Start Without Account</h3></button>
                     </div>
-                    {/* <button className="mediumBtn" onClick={userSignOut}>Logout</button> */}
+                    <button className="mediumBtn" onClick={userSignOut}>Logout</button>
                     <br />
                 </div>
             </div>
