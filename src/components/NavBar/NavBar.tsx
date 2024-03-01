@@ -5,6 +5,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Switch, { SwitchProps } from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
+import Stack from "@mui/material/Stack";
+import SvgIcon, { SvgIconProps } from "@mui/material/SvgIcon";
+import HomeIcon from "@mui/icons-material/Home";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -63,12 +68,21 @@ const ITEM_HEIGHT = 48;
 
 export default function NavBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [homeAnchorEl, setHomeAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const homeOpen = Boolean(homeAnchorEl);
+  const handleHomeClick = (event: React.MouseEvent<HTMLElement>) => {
+    setHomeAnchorEl(event.currentTarget);
+  };
+  const handleHomeClose = () => {
+    setHomeAnchorEl(null);
   };
 
   return (
@@ -99,10 +113,46 @@ export default function NavBar() {
           <DarkModeToggle />
         </li>
         <li className="navBtnList">
-          //work inside here
-          <a>
-            <h3>A</h3>
-          </a>
+          {/* work inside here */}
+          <div>
+            <Button
+              aria-controls={homeOpen ? "home-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={homeOpen ? "true" : undefined}
+              onClick={handleHomeClick}
+            >
+              <HomeIcon />
+            </Button>
+            <Menu
+              id="home-menu"
+              anchorEl={homeAnchorEl}
+              open={homeOpen}
+              onClose={handleHomeClose}
+            >
+              <MenuItem onClick={handleHomeClose}>
+                <Link
+                  to="/Profile"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  Profile
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link
+                  to={{
+                    pathname: "/settings",
+                    state: { previousPage: "/DegreePlanner" },
+                  }}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  Settings
+                </Link>
+              </MenuItem>
+
+              {/* <MenuItem onClick={handleHomeClose}>Settings</MenuItem> */}
+              <MenuItem onClick={handleHomeClose}>Logout</MenuItem>
+            </Menu>
+          </div>
         </li>
       </ul>
       <Menu
