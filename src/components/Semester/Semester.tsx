@@ -5,6 +5,7 @@ import "./Semester.css"
 
 const Semester = ({term}) => {
     let credits = 0;
+    
     return (
         <div className="Semester">
             <div className="SemesterDescription">
