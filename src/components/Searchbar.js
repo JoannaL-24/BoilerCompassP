@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
+import DraggableCourse from "./DraggableCourse";
 import "./Searchbar.css";
-import { debounce } from 'lodash';
-import { oHandler } from "models/purdueapi"
+import { debounce } from "lodash";
+import { oHandler } from "models/purdueapi";
 
 const Searchbar = () => {
   const [results, setResults] = useState([]);
@@ -19,7 +20,7 @@ const Searchbar = () => {
     // split into words
     const searchWords = searchString.split(" ");
     let subject = "";
-    let number = ""
+    let number = "";
     // if letters, search for subject
     for (const word of searchWords) {
       if (word.match(/[a-z]/i)) {
@@ -34,32 +35,28 @@ const Searchbar = () => {
         $expand: `Classes($filter=Campus/Code eq 'PWL'), Subject`,
         $filter: `startswith(Subject/Abbreviation, '${subject}') and startswith(Number, '${number}')`,
       });
-      console.log(entities);
-      // max length 10
 
+      // max length 10
       setMatchedEntities(entities);
-      var results = []
+      var results = [];
       for (const entity of entities.slice(0, 10)) {
         results.push(entity.Subject.Abbreviation + " " + entity.Number);
       }
-
       setResults(results);
     } catch (error) {
       console.error("Error:", error);
-    };
-
+    }
   }, 500);
 
   return (
-    <div className='search&display'>
+    <div className="search&display">
       <div className="search">
         <TextField
           id="outlined-basic"
           display="flex"
-          // justifyContent="center"
-          inputProps = {{style: {fontSize: 15}}}
-          InputLabelProps={{style: {fontSize: 13}}}
-          size = "small" 
+          inputProps={{ style: { fontSize: 15 } }}
+          InputLabelProps={{ style: { fontSize: 13 } }}
+          size="small"
           onChange={(e) => handleSearch(e.target.value)}
           variant="outlined"
           style={{ width: 200, height: 5 }}
@@ -67,13 +64,12 @@ const Searchbar = () => {
         />
       </div>
       <div>
-        {
-          results.map((result, index) => (
-          <div key={index}>{result}</div>
+        {results.map((result, index) => (
+          <DraggableCourse key={index} course={result} />
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Searchbar
+export default Searchbar;
