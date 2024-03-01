@@ -73,9 +73,9 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
         });
         (!setup && setUpdated(true));
         if (setup) navigate('/DegreePlanner');
-      }
-      else {
-        setSignedIn(false);
+      } else {
+        (!setup && setUpdated(true));
+        if (setup) navigate('/DegreePlanner');
       }
     }
   }

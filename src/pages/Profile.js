@@ -7,6 +7,7 @@ import { useAuth } from '../components/contexts/AuthContext';
 import dayjs from 'dayjs';
 import { doc, updateDoc, getDoc, Timestamp } from "firebase/firestore";
 import '../css/Profile.css';
+import { PfpForm } from 'components/PfpForm';
 
 const Profile = () => {
   const { currentUser } = useAuth();
@@ -41,6 +42,7 @@ const Profile = () => {
       {"Your profile was updated successfully!"}
       </Alert>
       {currentUser && <h1 className="paget">Your Profile</h1>}
+      <PfpForm />
       {userinfo && userinfo.user_type === "student" && // add user&&
       <StudentProfile
         userinfo={userinfo}

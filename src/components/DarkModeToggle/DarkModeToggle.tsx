@@ -7,7 +7,7 @@ import { ReactComponent as Moon } from "./Moon.svg";
 import "./DarkModeToggle.css"
 // firebase imports
 import { useAuth } from '../contexts/AuthContext.tsx'
-import { doc, updateDoc, Timestamp } from "firebase/firestore";
+import { doc, updateDoc, Timestamp,getDoc } from "firebase/firestore";
 import { firestore } from '../../models/firebase.ts';
 
 type Props = {
@@ -18,31 +18,40 @@ type Props = {
 const DarkModeToggle = ({darkmode, setDarkmode}: Props) => {
 
     const { currentUser } = useAuth();
+    console.log(darkmode)
 
     const toggleTheme = (e) => {
-        if (e.target.checked) {
-            setDarkmode(true)
-        }
-        else {
-            setDarkmode(false)
-        }
+        // if (e.target.checked) {setDarkmode(false);}
+        // else {setDarkmode(true);}
+        console.log("mode: "+ darkmode)
+        console.log("checked: " + e.target.checked)
+        // if (e.target.checked === true) {setDarkmode(true);}
+        // else {setDarkmode(false);}
+        setDarkmode(e.target.checked)
+        console.log(darkmode)
+        console.log("set")
         if (currentUser) {
-            const user_doc = getDoc(doc(firestore, "users", currentUser.uid));
+            const user_doc = doc(firestore, "users", currentUser.uid);
             updateDoc(user_doc, {
-                dark_mode: darkmode
+                dark_mode: !darkmode
             });
         }
-        console.log(darkmode)
+         console.log("after doc update");
+         console.log(darkmode);
+         if (darkmode) {
+            document.querySelector("body").setAttribute("data-theme", "light")
+         }
+         else {document.querySelector("body").setAttribute("data-theme", "dark")}
     }
 
     return (
         <div className='dark_mode'>
             <input
+                checked = {darkmode}
                 className='dark_mode_input'
                 type='checkbox'
                 id='darkmode-toggle'
                 onChange = {toggleTheme}
-                defaultChecked = {darkmode}
             />
             <label className='dark_mode_label' htmlFor='darkmode-toggle'>
                 <Sun />
