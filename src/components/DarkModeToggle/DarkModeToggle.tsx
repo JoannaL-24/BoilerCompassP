@@ -33,7 +33,7 @@ const DarkModeToggle = ({darkmode, setDarkmode}: Props) => {
         if (currentUser) {
             const user_doc = doc(firestore, "users", currentUser.uid);
             updateDoc(user_doc, {
-                dark_mode: darkmode
+                dark_mode: !darkmode
             });
         }
          console.log("after doc update");
