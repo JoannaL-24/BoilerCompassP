@@ -1,4 +1,5 @@
 import UserData from './UserData'
+import { User, Student, Advisor } from './BoilerCompass'
 
 // Local storage implementation for user data storage and retrieval
 export default class LocalUserData implements UserData {
@@ -23,5 +24,42 @@ export default class LocalUserData implements UserData {
     if (data === undefined) return Promise.resolve(undefined)
     if (data === null) return Promise.resolve(null)
     return Promise.resolve(JSON.parse(data))
+  }
+
+  init(user: User): Promise<void> {
+    Object.keys(user).forEach((key) => {
+      this.put(key, user[key])
+    })
+    return Promise.resolve()
+  }
+
+  delete(): Promise<void> {
+    const tmpS: Student = {
+        prefer_majors: [],
+        prefer_minor: [],
+        start_term: undefined,
+        end_term: undefined,
+        advisors: [],
+        groups: [],
+        name: '',
+        purdue_email: '',
+        dark_mode: false
+    }
+    const tmpA: Advisor = {
+        department: '',
+        office: '',
+        students: [],
+        name: '',
+        purdue_email: '',
+        dark_mode: false,
+        groups: []
+    }
+    Object.keys(tmpS).forEach((key) => {
+      window.localStorage.removeItem(key)
+    })
+    Object.keys(tmpA).forEach((key) => {
+      window.localStorage.removeItem(key)
+    })
+    return Promise.resolve()
   }
 }

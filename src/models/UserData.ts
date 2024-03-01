@@ -1,3 +1,5 @@
+import { User } from "./BoilerCompass"
+
 /*
  * Storage interface for user data retrieval and storage
  * i.e., Guest users' user data is stored in LocalStorage,
@@ -7,6 +9,8 @@
  * Instead, set to null, make empty for containers, etc.
  */
 export default interface UserData {
-    put(fieldName: string, data: any): Promise<void>;
-    get(fieldName: string): Promise<any>;
+  put(fieldName: string, data: any): Promise<void>
+  get(fieldName: string): Promise<any>
+  init(user: User): Promise<void>
+  delete(): Promise<void>
 }
