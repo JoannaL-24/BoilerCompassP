@@ -5,7 +5,6 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { Link, useLocation } from "react-router-dom";
 import DeleteAccount from "./DeleteAccount";
 import { useAuth } from "../components/contexts/AuthContext";
-const { currentUser } = useAuth();
 
 function GeneralSettings() {
   return <div>{/* Add general settings content here */}</div>;

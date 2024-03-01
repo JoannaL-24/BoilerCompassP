@@ -29,8 +29,8 @@ function App() {
           <CoursePopup />
         </header> */}
         <Routes>
-          <Route path="/DegreePlanner" element={<DegreePlanner />} />
           <Route path="/" element={<CoverPage />} />
+          <Route path="/DegreePlanner" element={<DegreePlanner />} />
           <Route path="/Welcome" element={<Welcome />} />
           <Route path="/Profile" element={<Profile />} />
           <Route
