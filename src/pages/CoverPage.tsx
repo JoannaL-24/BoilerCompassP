@@ -13,7 +13,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 export default function CoverPage() {
     const navigate = useNavigate();
-    const { currentUser, signUserIn, createUser } = useAuth();
+    const { signUserIn, createUser, sendPassResetEmail } = useAuth();
     const remoteUserData: UserData = new RemoteUserdata;
     const localUserData: UserData = new LocalUserData;
     const [user, setUser] = useState({
@@ -27,6 +27,10 @@ export default function CoverPage() {
         errDetail: ""
     });
     const [errSignUp, seterrSignUp] = useState({
+        flag: 0,
+        errDetail: ""
+    });
+    const [errResetPassword, setErrResetPassword] = useState({
         flag: 0,
         errDetail: ""
     });
@@ -69,53 +73,6 @@ export default function CoverPage() {
             });
     }
 
-    // const submitSignUp = async (e: React.ChangeEvent<HTMLFormElement>) => {
-    //     e.preventDefault();
-    //     alert(user.name + "\n" + user.email + "\n" + user.password);
-    //     if (!user.email.includes("@purdue.edu")) {
-    //         seterrSignUp({ flag: 1, errDetail: "Please use email from Purdue email domain" });
-    //     }
-    //     else {
-    //         await createUser(user.email, user.password)
-    //             .then((useCredential) => {
-    //                 console.log(useCredential);
-    //                 seterrSignUp({ flag: 0, errDetail: "" });
-    //                 // sent email
-    //                 // let newUser: User = {
-    //                 //     name: user.name,
-    //                 //     purdue_email: user.email,
-    //                 //     dark_mode: false,
-    //                 //     groups: []
-    //                 // }
-    //                 // remoteUserData.init(newUser)
-    //                 //     .then(() => {
-    //                 //         console.log("success")
-    //                 //         // link to welcome page
-    //                 //     }).catch((error) => {
-    //                 //         console.log(error)
-    //                 //     })
-    //             }).catch((error) => {
-    //                 console.log(error);
-    //                 switch (error.code) {
-    //                     case "auth/email-already-in-use":
-    //                         seterrSignUp({ flag: 1, errDetail: "Used Email! Login With the Email" });
-    //                         break;
-    //                     case "auth/invalid-email":
-    //                         seterrSignUp({ flag: 1, errDetail: "Invalid Email!" });
-    //                         break;
-    //                     case "auth/weak-password":
-    //                         seterrSignUp({ flag: 2, errDetail: "Weak Password!" });
-    //                         break;
-    //                     default:
-    //                         console.log("Error Code: " + error.code);
-    //                         seterrSignUp({ flag: 0, errDetail: "" });
-    //                         break;
-    //                 }
-    //             });
-
-    //     }
-    // }
-
     const submitSignUp = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         alert(user.name + "\n" + user.email + "\n" + user.password);
@@ -136,7 +93,16 @@ export default function CoverPage() {
                     })
                         .then(() => {
                             console.log("success");
-                            navigate("/Welcome");
+                            // navigate("/Welcome");
+                            sendEmailVerification(signedUpUser, { url: "http://localhost:3000/Welcome" })
+                                .then(() => {
+                                    console.log("email sent");
+                                    seterrSignUp({ flag: 4, errDetail: "Email Sent, Please Verify Your Email" });
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                })
+
                         })
                         .catch((error) => {
                             console.log(error);
@@ -160,6 +126,27 @@ export default function CoverPage() {
                     }
                 });
 
+        }
+    }
+
+    const resetPassword = (e: React.ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        alert(user.email);
+        if (!user.email.includes("@purdue.edu")) {
+            setErrResetPassword({ flag: 1, errDetail: "Please use email from Purdue email domain" });
+        }
+        else {
+            sendPassResetEmail(user.email)
+                .then(() => {
+                    setErrResetPassword({ flag: 4, errDetail: "Password Reset Email Sent" });
+                }).catch((error) => {
+                    if (error.code === "auth/user-not-found") {
+                        setErrResetPassword({flag: 1, errDetail: "User Not Found"});
+                    } else {
+                        console.log(error);
+                        setErrResetPassword({flag: 0, errDetail:""});
+                    }
+                })
         }
     }
 
@@ -188,7 +175,10 @@ export default function CoverPage() {
     };
 
     const styleErr = (e, field, type) => {
-        if (e !== 2 && e !== 3 && field === "password") {
+        if (e === 4) {
+            return;
+        }
+        else if (e !== 2 && e !== 3 && field === "password") {
             return;
         }
         else if (e !== 1 && e !== 3 && field === "email") {
@@ -234,6 +224,23 @@ export default function CoverPage() {
                         <p className="errMsg">&nbsp;{errLogin.errDetail}</p>
                         <button className="mediumBtn goldBtn" type="submit"><h3>Log in</h3></button>
                     </form>
+                    <Popup
+                        trigger={<button className="forgetPasswordLink">Forget Password?</button>}
+                        onClose={() => setErrResetPassword({ flag: 0, errDetail: "" })}
+                        modal
+                        nested
+                    >
+                        <div className="modal fadeIn" style={{ minHeight: "300px" }}>
+                            <form id="signUpForm" onSubmit={resetPassword}>
+                                <div className="inputGroup">
+                                    <input id="email" name="email" className="inputField" placeholder="Email" type="email" onChange={changeHandler} style={styleErr(errResetPassword.flag, "email", "input")} required />
+                                    <label htmlFor="email" className="inputLabel" style={styleErr(errResetPassword.flag, "email", "label")}>Email</label>
+                                </div>
+                                <p className="errMsg">&nbsp;{errResetPassword.errDetail}</p>
+                                <button className="goldBtn" type="submit"><h3>Send Email For Reset<br />Password</h3></button>
+                            </form>
+                        </div>
+                    </Popup>
                     <br /><br />
                     <div className="divider">OR</div>
                     <br /><br />
@@ -245,8 +252,7 @@ export default function CoverPage() {
                             modal
                             nested
                         >
-                            {/* {close => ( */}
-                            <div className="signUpModal fadeIn">
+                            <div className="modal fadeIn">
                                 <form id="signUpForm" onSubmit={submitSignUp}>
                                     <div className="inputGroup">
                                         <input id="name" name="name" className="inputField" placeholder="Name" type="text" onChange={changeHandler} required />
@@ -263,13 +269,7 @@ export default function CoverPage() {
                                     <p className="errMsg">&nbsp;{errSignUp.errDetail}</p>
                                     <button className="goldBtn" type="submit"><h3>Sign Up!</h3></button>
                                 </form>
-                                {/* <button
-                                        onClick={() => { close(); }}
-                                    >
-                                        <h3>x</h3>
-                                    </button> */}
                             </div>
-                            {/* )} */}
                         </Popup>
                         <button className="mediumBtn goldBtn" onClick={guestSignUp}><h3>Start Without Account</h3></button>
                     </div>
