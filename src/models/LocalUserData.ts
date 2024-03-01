@@ -1,28 +1,65 @@
 import UserData from './UserData'
+import { User, Student, Advisor } from './BoilerCompass'
 
 // Local storage implementation for user data storage and retrieval
 export default class LocalUserData implements UserData {
   /* Returns whether the data was stored successfully.
    * setItem can throw a DOMException: QuotaExceededError.
    */
-  put(fieldName: string, data: unknown): boolean {
+  put(fieldName: string, data: unknown): Promise<void> {
     try {
       window.localStorage.setItem(fieldName, JSON.stringify(data))
     } catch (e: unknown) {
       console.log(e)
-      return false
+      return Promise.reject(e)
     }
-    return true
+    return Promise.resolve()
   }
 
   /* Returns the value stored as an object of unknown type,
    * or undefined for a field not defined.
    */
-  get(fieldName: string): unknown {
+  get(fieldName: string): Promise<unknown> {
     const data = window.localStorage.getItem(fieldName)
-    if (data === undefined) return undefined
-    if (data === null) return null
+    if (data === undefined) return Promise.resolve(undefined)
+    if (data === null) return Promise.resolve(null)
+    return Promise.resolve(JSON.parse(data))
+  }
 
-    return JSON.parse(data)
+  init(user: User): Promise<void> {
+    Object.keys(user).forEach((key) => {
+      this.put(key, user[key])
+    })
+    return Promise.resolve()
+  }
+
+  delete(): Promise<void> {
+    const tmpS: Student = {
+        prefer_majors: [],
+        prefer_minor: [],
+        start_term: undefined,
+        end_term: undefined,
+        advisors: [],
+        groups: [],
+        name: '',
+        purdue_email: '',
+        dark_mode: false
+    }
+    const tmpA: Advisor = {
+        department: '',
+        office: '',
+        students: [],
+        name: '',
+        purdue_email: '',
+        dark_mode: false,
+        groups: []
+    }
+    Object.keys(tmpS).forEach((key) => {
+      window.localStorage.removeItem(key)
+    })
+    Object.keys(tmpA).forEach((key) => {
+      window.localStorage.removeItem(key)
+    })
+    return Promise.resolve()
   }
 }

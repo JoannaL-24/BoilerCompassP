@@ -12,7 +12,12 @@ const ProfileSetupStudents = () => {
     prefer_minor: [],
     start_term: null,
     end_term: null,
+    advisor: "Purdue Pete",
   });
+  // if (currentUser) {
+  //   console.log("here");
+  //   console.log(currentUser.uid);
+  // }
 
   return (
     <div>

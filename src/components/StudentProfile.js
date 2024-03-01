@@ -13,6 +13,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../components/contexts/AuthContext'
+import { useNavigate } from 'react-router-dom';
 // firebase imports
 import { doc, updateDoc, Timestamp } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
@@ -25,7 +26,7 @@ import '../css/Profile.css';
 const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
-  // const { currentUser } = useAuth();
+  const { currentUser } = useAuth();
   const year = dayjs().get('year');
   const validStartYear = (date) => !(( year  - date.get('year') >= 0) && (year - date.get('year') <= 10));
   const validEndYear = (date) => !(( date.get('year') - year >= 0) && (date.get('year') - year <= 10));
@@ -37,8 +38,9 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
   const prefer_minor_q = setup?"Choose your minor(s):":"Your minor(s):";
   const start_term_q = setup?"When did you start school at Purdue?":"Your start date:";
   const end_term_q = setup?"Expected graduation date:":"Your expected graduation date:";
-  const submit_button_text = setup?"Submit":"Update profile";
-  console.log(userinfo);
+  const submit_button_text = setup?"Submit":"Edit";
+  const navigate = useNavigate();
+  // console.log(userinfo);
 
   const submit = () => {
     var go = true;
@@ -58,22 +60,23 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
     }
     else setEnd("");
     if (go) {
-      console.log(userinfo); // for testing purposes
-      // if (user) {
-      //   const uid = user.uid;
-      const user_doc = doc(firestore, "users", "HlPoXSpJX1fqk2JLPXS5YEYp7Mc2");
-      updateDoc(user_doc, {
-        prefer_majors: userinfo.prefer_majors,
-        prefer_minor: userinfo.prefer_minor,
-        user_type: userinfo.user_type,
-        start_term: Timestamp.fromDate(new Date(userinfo.start_term)),
-        end_term: Timestamp.fromDate(new Date(userinfo.end_term)),
-      });
-      (!setup && setUpdated(true));
-      // }
-      // else {
-      //   setSignedIn(false);
-      // }
+      // console.log(userinfo); // for testing purposes
+      if (currentUser) {
+        const uid = currentUser.uid;
+        const user_doc = doc(firestore, "users", uid);
+        updateDoc(user_doc, {
+          prefer_majors: userinfo.prefer_majors,
+          prefer_minor: userinfo.prefer_minor,
+          user_type: userinfo.user_type,
+          start_term: Timestamp.fromDate(new Date(userinfo.start_term)),
+          end_term: Timestamp.fromDate(new Date(userinfo.end_term)),
+        });
+        (!setup && setUpdated(true));
+        if (setup) navigate('/DegreePlanner');
+      }
+      else {
+        setSignedIn(false);
+      }
     }
   }
 

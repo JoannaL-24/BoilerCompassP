@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
+import DraggableCourse from "./DraggableCourse";
 import "./Searchbar.css";
-import { firestore as db } from "models/firebase"
-import { collection, query, where, getDocs, limit, orderBy } from 'firebase/firestore';
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
+import { oHandler } from "models/purdueapi";
 
 const Searchbar = () => {
   const [results, setResults] = useState([]);
+  const [matchedEntities, setMatchedEntities] = useState([]);
 
   const handleSearch = debounce(async (searchInput) => {
     const searchString = searchInput.toUpperCase().trim();
@@ -16,38 +17,59 @@ const Searchbar = () => {
       return;
     }
 
-    const q = query(
-      collection(db, "courseList"),
-      where("Keywords", "array-contains", searchString),
-      orderBy("Name"),
-      limit(10)
-    );
-    const querySnapshot = await getDocs(q);
-    let results = []
-    querySnapshot.forEach((doc) => {
-      results.push({ Name: doc.data().Name, Id: doc.id });
-    });
-    setResults(results);
-  }, 500); // Adjust the delay as needed
+    // split into words
+    const searchWords = searchString.split(" ");
+    let subject = "";
+    let number = "";
+    // if letters, search for subject
+    for (const word of searchWords) {
+      if (word.match(/[a-z]/i)) {
+        subject = word;
+      } else if (word.match(/[0-9]/i)) {
+        number = word;
+      }
+    }
+
+    try {
+      const entities = await oHandler.get("Courses").query({
+        $expand: `Classes($filter=Campus/Code eq 'PWL'), Subject`,
+        $filter: `startswith(Subject/Abbreviation, '${subject}') and startswith(Number, '${number}')`,
+      });
+
+      // max length 10
+      setMatchedEntities(entities);
+      var results = [];
+      for (const entity of entities.slice(0, 10)) {
+        results.push(entity.Subject.Abbreviation + " " + entity.Number);
+      }
+      setResults(results);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }, 500);
 
   return (
-    <div className='search&display'>
+    <div className="search&display">
       <div className="search">
         <TextField
           id="outlined-basic"
+          display="flex"
+          inputProps={{ style: { fontSize: 15 } }}
+          InputLabelProps={{ style: { fontSize: 13 } }}
+          size="small"
           onChange={(e) => handleSearch(e.target.value)}
           variant="outlined"
-          style={{ width: 200, height: 10 }}
+          style={{ width: 200, height: 5 }}
           label="Search course"
         />
       </div>
       <div>
         {results.map((result, index) => (
-          <div key={index}>{result.Name}</div>
+          <DraggableCourse key={index} course={result} />
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Searchbar
+export default Searchbar;

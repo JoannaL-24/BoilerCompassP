@@ -16,13 +16,14 @@ import "firebase/firestore";
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../models/firebase.ts";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
+import "./AdvisorHomepageFilter.css"
 
 import app from "../models/firebase.ts";
 
 function AdvisorHomepageFilter() {
   const [value, setValue] = useState("female");
   const [userNames, setUserNames] = useState<
-    { name: string; purdue_email: string; prefer_majors: string[] }[]
+    { name: string; purdue_email: string; prefer_majors: { name: string }[] }[]
   >([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
 
@@ -33,15 +34,19 @@ function AdvisorHomepageFilter() {
       const usersData: {
         name: string;
         purdue_email: string;
-        prefer_majors: string[];
+        prefer_majors: { name: string }[];
+        user_type: string;
       }[] = [];
       usersSnapshot.forEach((doc) => {
         const userData = doc.data();
-        usersData.push({
-          name: userData.name,
-          purdue_email: userData.purdue_email,
-          prefer_majors: userData.prefer_majors || [], // Ensure prefer_majors is an array or default to an empty array
-        });
+        if (userData.user_type === "student") {
+          usersData.push({
+            name: userData.name,
+            purdue_email: userData.purdue_email,
+            prefer_majors: userData.prefer_majors || [],
+            user_type: userData.user_type,
+          });
+        }
       });
       setUserNames(usersData);
     };
@@ -58,111 +63,89 @@ function AdvisorHomepageFilter() {
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        borderTop: "1px solid gray",
-        marginTop: "100px",
-        paddingTop: "100px",
-      }}
-    >
-      <FormControl
-        sx={{
-          border: "2px solid black",
-          borderRadius: "5px",
-          padding: "10px",
-        }}
-      >
-        <RadioGroup
-          aria-labelledby="demo-controlled-radio-buttons-group"
-          name="controlled-radio-buttons-group"
-          value={value}
-          onChange={handleChange}
+    <div className="AddsivorHomePageFilter">
+      <div className="studentSearching">
+        <div>
+          <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+          <TextField
+            id="input-with-sx"
+            label="Seach student"
+            variant="standard"
+            style={{ width: "200px" }}
+          />
+        </div>
+        <br/>
+        <FormControl
+          sx={{
+            border: "2px solid black",
+            borderRadius: "5px",
+            padding: "10px",
+          }}
         >
-          <FormControlLabel
-            value="alphabetincrease"
-            control={
-              <Radio
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 35,
-                  },
-                }}
-              />
-            }
-            label="Sort alphabetically (ascending)"
-          />
-          <FormControlLabel
-            value="alphabetdecrease"
-            control={
-              <Radio
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 35,
-                  },
-                }}
-              />
-            }
-            label="Sort alphabetically (descending)"
-          />
-          <FormControlLabel
-            value="yearincrease"
-            control={
-              <Radio
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 35,
-                  },
-                }}
-              />
-            }
-            label="Sort by year (ascending)"
-          />
-          <FormControlLabel
-            value="yeardecrease"
-            control={
-              <Radio
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 35,
-                  },
-                }}
-              />
-            }
-            label="Sort by year (descending)"
-          />
-        </RadioGroup>
-      </FormControl>
-      <div
-        style={{
-          position: "absolute",
-          left: "50%",
-          transform: "translateX(-50%)",
-          bottom: "-10px",
-        }}
-      >
-        <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-        <TextField
-          id="input-with-sx"
-          label="Seach student"
-          variant="standard"
-          style={{ width: "200px", paddingBottom: "800px" }}
-        />
+          <RadioGroup
+            aria-labelledby="demo-controlled-radio-buttons-group"
+            name="controlled-radio-buttons-group"
+            value={value}
+            onChange={handleChange}
+          >
+            <FormControlLabel
+              value="alphabetincrease"
+              control={
+                <Radio
+                  sx={{
+                    "& .MuiSvgIcon-root": {
+                      fontSize: 35,
+                    },
+                  }}
+                />
+              }
+              label="Sort alphabetically (ascending)"
+            />
+            <FormControlLabel
+              value="alphabetdecrease"
+              control={
+                <Radio
+                  sx={{
+                    "& .MuiSvgIcon-root": {
+                      fontSize: 35,
+                    },
+                  }}
+                />
+              }
+              label="Sort alphabetically (descending)"
+            />
+            <FormControlLabel
+              value="yearincrease"
+              control={
+                <Radio
+                  sx={{
+                    "& .MuiSvgIcon-root": {
+                      fontSize: 35,
+                    },
+                  }}
+                />
+              }
+              label="Sort by year (ascending)"
+            />
+            <FormControlLabel
+              value="yeardecrease"
+              control={
+                <Radio
+                  sx={{
+                    "& .MuiSvgIcon-root": {
+                      fontSize: 35,
+                    },
+                  }}
+                />
+              }
+              label="Sort by year (descending)"
+            />
+          </RadioGroup>
+        </FormControl>
       </div>
       {/* brevity */}
 
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          position: "relative",
-          left: "60%",
-          transform: "translateX(-50%)",
-          bottom: "200px",
-          width: "70%",
-        }}
-      >
+      <div className="searchResult">
         {userNames.map((user, index) => (
           <a
             key={index}
@@ -206,9 +189,11 @@ function AdvisorHomepageFilter() {
           <p>Email: {selectedUser.purdue_email}</p>
           <p>Prefer Majors:</p>
           <ul>
-            {selectedUser.prefer_majors.map((major: string, index: number) => (
-              <li key={index}>{major}</li>
-            ))}
+            {selectedUser.prefer_majors.map(
+              (major: { name: string }, index: number) => (
+                <li key={index}>{major.name}</li>
+              )
+            )}
           </ul>
           <button onClick={() => setSelectedUser(null)}>Close</button>
         </div>

@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth } from 'firebase/auth'
+import { getAuth, User } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
-
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 const app = initializeApp({
   apiKey: `${process.env.REACT_APP_FIREBASE_KEY}`,
   authDomain: `${process.env.REACT_APP_FIREBASE_AUTH_DOMAIN}`,
@@ -14,4 +14,13 @@ const app = initializeApp({
 
 export const firestore = getFirestore(app)
 export const auth = getAuth(app)
+export const storage = getStorage(app)
+export const uploadUserPfp = async (picture: Blob, user: User) => {
+  const pfpRef = ref(storage, `${user.uid}.png`)
+  return await uploadBytes(pfpRef, picture)
+}
+export const getUserPfpURL = async (user: User) => {
+  const pfpRef = ref(storage, `${user.uid}.png`)
+  return await getDownloadURL(pfpRef)
+}
 export default app

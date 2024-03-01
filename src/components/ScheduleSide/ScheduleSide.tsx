@@ -14,7 +14,7 @@ import ClassIcon from '@mui/icons-material/Class';
 import SchoolIcon from '@mui/icons-material/School';
 import Searchbar from '../Searchbar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import DarkModeToggle from './DarkModeToggle';
+import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
 //import "./Sidebar.css"
 
 const drawerWidth = 240;
@@ -38,13 +38,6 @@ export default function SceduleSide() {
             <div className='Sidebar' style={{ width: "100%" }}>
                 <Box sx={{ display: 'flex' }}>
                     <CssBaseline />
-                    {/* <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-                <Toolbar>
-                <Typography variant="h6" noWrap component="div">
-                    Topbar
-                </Typography>
-                </Toolbar>
-            </AppBar> */}
                     <Drawer
                         variant="permanent"
                         anchor="right"
