@@ -1,6 +1,5 @@
-import './App.css';
+import "./App.css";
 // import CourseList from "./components/CourseList";
-import DarkModeToggle from './components/DarkModeToggle/DarkModeToggle.js';
 import CoursePopup from './components/CoursePopup/CoursePopup'
 import React from "react";
 import ReactDOM from "react-dom";
@@ -29,16 +28,21 @@ function App() {
           <CoursePopup />
         </header> */}
         <Routes>
-          <Route path="/DegreePlanner" element={<DegreePlanner />}/>
-          <Route path="/" element={<CoverPage />}/>
-          <Route path="/Welcome" element={<Welcome />}/>
-          <Route path="/Profile" element={<Profile />}/>
-          <Route path="/ProfileSetupStudent" element={<ProfileSetupStudent />}/>
-          <Route path="/ProfileSetupAdvisor" element={<ProfileSetupAdvisor />}/>
-          <Route path="/AdvisorHomePage" element={<AdvisorHomepage />}/>
-          <Route path="/Settings" element={<SettingsPage />}/>
+          <Route path="/" element={<CoverPage />} />
+          <Route path="/DegreePlanner" element={<DegreePlanner />} />
+          <Route path="/Welcome" element={<Welcome />} />
+          <Route path="/Profile" element={<Profile />} />
+          <Route
+            path="/ProfileSetupStudent"
+            element={<ProfileSetupStudent />}
+          />
+          <Route
+            path="/ProfileSetupAdvisor"
+            element={<ProfileSetupAdvisor />}
+          />
+          <Route path="/AdvisorHomePage" element={<AdvisorHomepage />} />
+          <Route path="/Settings" element={<SettingsPage />} />
         </Routes>
-        
       </div>
     </AuthProvider>
   );
