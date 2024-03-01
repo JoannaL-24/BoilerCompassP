@@ -25,7 +25,7 @@ const Advisor_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
   const { handleSubmit } = useForm();
   const department_q = setup ? "Choose your department:" : "Your department:";
   const college_q = setup ? "Choose your college:" : "Your college:";
-  const submit_button_text = setup ? "Submit" : "Edit";
+  const submit_button_text = setup ? "Submit" : "Edit/Save";
   const navigate = useNavigate();
   // console.log(userinfo);
 
