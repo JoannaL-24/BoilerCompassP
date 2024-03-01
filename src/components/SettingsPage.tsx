@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import DeleteAccount from "./DeleteAccount";
 import { useAuth } from "../components/contexts/AuthContext";
 import { PfpForm } from "./PfpForm";
+import DegreePlanner from "pages/DegreePlanner";
 
 function GeneralSettings() {
   return <div>{/* Add general settings content here */}</div>;
@@ -44,7 +45,7 @@ function SettingsPage() {
         </div>
         <div style={{ marginLeft: "700px" }}>
           {" "}
-          <Link to={previousPage} style={{ textDecoration: "none" }}>
+          <Link to="/DegreePlanner" style={{ textDecoration: "none" }}>
             <Button>Close</Button>
           </Link>
         </div>
