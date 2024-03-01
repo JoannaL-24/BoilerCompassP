@@ -412,9 +412,9 @@ export default function CoverPage() {
               <h3>Start Without Account</h3>
             </button>
           </div>
-          <button className="mediumBtn" onClick={userSignOut}>
+          {/* <button className="mediumBtn" onClick={userSignOut}>
             Logout
-          </button>
+          </button> */}
           <br />
         </div>
       </div>
