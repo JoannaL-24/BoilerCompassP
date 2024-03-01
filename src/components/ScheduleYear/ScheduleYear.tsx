@@ -6,6 +6,7 @@ export default function ScheduleYear({startYear}) {
 
     return (
         <div className="Year">
+            
             <h4>{startYear}<br/>-<br/>{startYear+1}</h4>
             <Semester term="Fall"/>
             <Semester term="Spring"/>
