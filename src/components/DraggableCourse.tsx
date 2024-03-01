@@ -25,7 +25,7 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({ course }) => {
         nested
       >
         {close => (
-          <div className='modal'>
+          <div className='popupModal'>
             <button className='close' onClick = {close}>
               &times;
             </button>
@@ -34,7 +34,10 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({ course }) => {
               {' '}
               COURSE DESCRIPTION HERE
             </div>
-            <h3>Course Sessions:</h3>
+            <div className="sessionText">
+              <h3>Course Sessions:</h3>
+            </div>
+
             <div className='sessionsScroll'>
               <div style = {{ width: "200px"}}>
                 1 <br/>

@@ -38,6 +38,10 @@ const DarkModeToggle = ({darkmode, setDarkmode}: Props) => {
         }
          console.log("after doc update");
          console.log(darkmode);
+         if (darkmode) {
+            document.querySelector("body").setAttribute("data-theme", "light")
+         }
+         else {document.querySelector("body").setAttribute("data-theme", "dark")}
     }
 
     return (
