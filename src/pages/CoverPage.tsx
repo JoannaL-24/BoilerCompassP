@@ -131,7 +131,7 @@ export default function CoverPage() {
                     setDoc(doc(firestore, `/users/${signedUpUser.uid}/`), {
                         name: user.name,
                         purdue_email: user.email,
-                        dark_mode: false,
+                        dark_mode: true,
                         groups: []
                     })
                         .then(() => {
