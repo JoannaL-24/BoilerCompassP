@@ -52,7 +52,7 @@ export const PfpForm = () => {
             axios({
               method: 'post',
               // url: 'http://127.0.0.1:5001/boilercompass-3135d/us-central1/filter_image',
-              url: 'https://filter-image-jmcmkrvdxa-uc.a.run.app',
+              url: 'https://us-central1-boilercompass-3135d.cloudfunctions.net/checkImageProfanity',
               data: currentUser.uid,
             })
               .then((response) => {
