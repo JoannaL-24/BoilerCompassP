@@ -6,8 +6,7 @@ import { oHandler } from "models/purdueapi"
 
 const Searchbar = () => {
   const [results, setResults] = useState([]);
-
-  const PwlCampusId = "eb70e97b-3583-4ac9-86e5-468ad3869de8"
+  const [matchedEntities, setMatchedEntities] = useState([]);
 
   const handleSearch = debounce(async (searchInput) => {
     const searchString = searchInput.toUpperCase().trim();
@@ -38,6 +37,7 @@ const Searchbar = () => {
       console.log(entities);
       // max length 10
 
+      setMatchedEntities(entities);
       var results = []
       for (const entity of entities.slice(0, 10)) {
         results.push(entity.Subject.Abbreviation + " " + entity.Number);
@@ -56,7 +56,7 @@ const Searchbar = () => {
         <TextField
           id="outlined-basic"
           display="flex"
-          justifyContent="center"
+          // justifyContent="center"
           inputProps = {{style: {fontSize: 15}}}
           InputLabelProps={{style: {fontSize: 13}}}
           size = "small" 

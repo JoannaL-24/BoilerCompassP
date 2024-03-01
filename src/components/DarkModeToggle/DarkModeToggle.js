@@ -6,6 +6,7 @@ import { ReactComponent as Sun } from "./Sun.svg";
 import { ReactComponent as Moon } from "./Moon.svg";
 import "./DarkModeToggle.css"
 // firebase imports
+import { useAuth } from '../../components/contexts/AuthContext.tsx'
 import { doc, updateDoc, Timestamp } from "firebase/firestore";
 import { firestore } from '../../models/firebase.ts';
 

@@ -22,7 +22,7 @@ import app from "../models/firebase.ts";
 function AdvisorHomepageFilter() {
   const [value, setValue] = useState("female");
   const [userNames, setUserNames] = useState<
-    { name: string; purdue_email: string; prefer_majors: string[] }[]
+    { name: string; purdue_email: string; prefer_majors: { name: string }[] }[]
   >([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
 
@@ -33,15 +33,19 @@ function AdvisorHomepageFilter() {
       const usersData: {
         name: string;
         purdue_email: string;
-        prefer_majors: string[];
+        prefer_majors: { name: string }[];
+        user_type: string;
       }[] = [];
       usersSnapshot.forEach((doc) => {
         const userData = doc.data();
-        usersData.push({
-          name: userData.name,
-          purdue_email: userData.purdue_email,
-          prefer_majors: userData.prefer_majors || [], // Ensure prefer_majors is an array or default to an empty array
-        });
+        if (userData.user_type === "student") {
+          usersData.push({
+            name: userData.name,
+            purdue_email: userData.purdue_email,
+            prefer_majors: userData.prefer_majors || [],
+            user_type: userData.user_type,
+          });
+        }
       });
       setUserNames(usersData);
     };
@@ -206,9 +210,11 @@ function AdvisorHomepageFilter() {
           <p>Email: {selectedUser.purdue_email}</p>
           <p>Prefer Majors:</p>
           <ul>
-            {selectedUser.prefer_majors.map((major: string, index: number) => (
-              <li key={index}>{major}</li>
-            ))}
+            {selectedUser.prefer_majors.map(
+              (major: { name: string }, index: number) => (
+                <li key={index}>{major.name}</li>
+              )
+            )}
           </ul>
           <button onClick={() => setSelectedUser(null)}>Close</button>
         </div>
