@@ -26,7 +26,6 @@ function App() {
       <div className="App">
         {/* <header className="App-header">
           <DarkModeToggle />
-          <Sidebar />
           <CoursePopup />
         </header> */}
         <Routes>

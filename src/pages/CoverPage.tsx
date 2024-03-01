@@ -7,7 +7,7 @@ import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebas
 import Popup from "reactjs-popup";
 
 export default function CoverPage() {
-    // const { signUserIn } = useAuth();
+    const { signUserIn, createUser } = useAuth();
     const [user, setUser] = useState({
         name: '',
         email: '',
@@ -32,10 +32,8 @@ export default function CoverPage() {
         e.preventDefault();
         alert(user.email + "\n" + user.password);
         // check input
-        // if(!signUserIn) return;
-        // signUserIn(user.email, user.password);
-
-        signInWithEmailAndPassword(auth, user.email, user.password)
+        if(!signUserIn) return;
+        signUserIn(user.email, user.password)
             .then((useCredential) => {
                 console.log(useCredential);
                 setErrLogin({flag: 0, errDetail:""});
@@ -51,8 +49,8 @@ export default function CoverPage() {
                     case "auth/invalid-credential":
                         setErrLogin({flag: 3, errDetail:"Invalid Credentail!"});
                         break;
-                    case "auth/too-many-requests":
-                        setErrLogin({flag: 3, errDetail:"Failed too Many Times, Try Again Later!"});
+                    case "auth/user-not-found":
+                        setErrLogin({flag: 3, errDetail:"User Not Found"});
                         break;
                     default:
                         console.log("Error Code: " + error.code);
