@@ -140,7 +140,7 @@
     border-radius: 2px;
     transition: 0.2s;
     cursor: pointer;
-    color: var(--black);
+    color: var(--textPrimary);
     text-align: center;
     font-family: inherit;
     h3 {
@@ -236,7 +236,7 @@
         border-radius: 2px;
         transition: 0.2s;
         cursor: pointer;
-        color: var(--black);
+        color: var(--textPrimary);
         text-align: center;
         font-family: initial;
     }
