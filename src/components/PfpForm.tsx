@@ -68,7 +68,7 @@ export const PfpForm = () => {
       getUserPfpURL(currentUser).then((url) => {
         console.log(url)
         setCurrentPfpURL(url)
-      })
+      }).catch((err) => console.log(err))
   }, [currentUser])
 
   return (
