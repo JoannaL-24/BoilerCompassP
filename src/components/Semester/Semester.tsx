@@ -11,14 +11,14 @@ const Semester = ({term}) => {
                 <h3>{term} (16 Hrs) </h3>
             </div>
             <div className="Courses">
-            <Draggable>
+            {/* <Draggable>
                 <Card
                     style={{
                     width: "150px",
                     height: "100px",
                     }}
                 />
-           </Draggable>
+           </Draggable> */}
             </div>
         </div>
     )

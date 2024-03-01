@@ -7,17 +7,36 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { deleteUser } from "firebase/auth";
 
 import { useAuth } from "../components/contexts/AuthContext";
+import RemoteUserdata from "models/RemoteUserData";
+import { useNavigate } from "react-router-dom";
 
 // const { currentUser } = useAuth();
 const currentUser = null;
 function DeleteAccount() {
   const { currentUser } = useAuth();
   const [open, setOpen] = useState(false);
+  const remoteUserData = new RemoteUserdata;
+  const navigate = useNavigate()
 
   const handleDelete = () => {
-    // handle delete here
+    if (currentUser) {
+      remoteUserData.delete().then(() => {
+        console.log("Deleted firestore document for user " + currentUser.uid)
+        navigate("/")
+        // deleteUser(currentUser).then(() => {
+        //     useNavigate()("/")
+        //   }).catch((err) => {
+        //     console.log(err)
+        //     alert("An error occurred - could not delete user account!")
+        //   })
+      }).catch((err) => {
+            console.log(err)
+            alert("An error occurred - could not delete remote user data!")
+          })
+    }
     setOpen(false);
   };
   if (!currentUser) {
@@ -40,7 +59,7 @@ function DeleteAccount() {
             >
               No
             </Button>
-            <Button onClick={handleDelete}>Yes</Button>
+            <Button >Yes</Button>
           </DialogActions>
         </Dialog>
       </div>
