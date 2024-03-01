@@ -17,7 +17,7 @@ const Profile = () => {
     if (currentUser) {
       const user_doc = getDoc(doc(firestore, "users", currentUser.uid))
       .then((docSnapshot) => {
-        setUserinfo(userinfo?userinfo:docSnapshot.data());
+        setUserinfo(docSnapshot.data());
       });
       if (userinfo && convertDate) {
         if (userinfo.user_type === "advisor") {
