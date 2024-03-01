@@ -1,4 +1,4 @@
-type Course = {
+export type Course = {
   id: number
   subject: string
   number: number
@@ -7,7 +7,7 @@ type Course = {
   distribution: string
 }
 
-type Requirement = {
+export type Requirement = {
   id: number
   name: string
   credit_hours: number
@@ -15,20 +15,20 @@ type Requirement = {
   is_fulfilled: boolean
 }
 
-interface RequireSec extends Requirement {
+export interface RequireSec extends Requirement {
   requirements: Requirement[]
 }
 
-interface RequireCourse extends Requirement {
+export interface RequireCourse extends Requirement {
   requirements: Course[]
 }
 
-type Semester = {
+export type Semester = {
   term: Date
   course_list: Course[]
 }
 
-type Degree = {
+export type Degree = {
   id: number
   name: string
   college: string
@@ -36,7 +36,7 @@ type Degree = {
   credit_hours: number
 }
 
-type Schedule = {
+export type Schedule = {
   id: number
   name: string
   start_term: Date
@@ -46,21 +46,21 @@ type Schedule = {
   minors: RequireSec[]
 }
 
-type Group = {
+export type Group = {
   id: number
   name: string
   host: Student
   members: User[]
 }
 
-type User = {
+export type User = {
   name: string
   purdue_email: string
   dark_mode: boolean
   groups: Group[]
 }
 
-interface Student extends User {
+export interface Student extends User {
   prefer_majors: Degree[]
   prefer_minor: RequireSec[]
   start_term: Date
@@ -69,7 +69,7 @@ interface Student extends User {
   groups: Group[]
 }
 
-interface Advisor extends User {
+export interface Advisor extends User {
   department: string
   office: string
   students: Student[]
