@@ -22,61 +22,61 @@ const drawerWidth = 240;
 export default function SceduleSide() {
 
 
-    const theme = createTheme({
-        palette: {
-            mode: "dark",
-            darkTheme: {
-                textPrimary: '#ffffff',
-                textSecondary: '#d7c494',
-                accent: '#79704c',
-            }
-        }
-    });
+  const theme = createTheme({
+    palette: {
+      mode: "dark",
+      darkTheme: {
+        textPrimary: '#ffffff',
+        textSecondary: '#d7c494',
+        accent: '#79704c',
+      }
+    }
+  });
 
-    return (
-        <ThemeProvider theme={theme}>
-            <div className='Sidebar' style={{ width: "100%" }}>
-                <Box sx={{ display: 'flex' }}>
-                    <CssBaseline />
-                    <Drawer
-                        variant="permanent"
-                        anchor="right"
-                        sx={{
-                            width: drawerWidth,
-                            flexShrink: 0,
-                            [`& .MuiDrawer-paper`]: 
-                            { 
-                                width: drawerWidth,
-                                top: 'calc(55px + 2vh)',
-                                zIndex: 1000,
-                                boxSizing: 'border-box' 
-                            },
+  return (
+    <ThemeProvider theme={theme}>
+      <div className='Sidebar' style={{ width: "100%" }}>
+        <Box sx={{ display: 'flex' }}>
+          <CssBaseline />
+          <Drawer
+            variant="permanent"
+            anchor="right"
+            sx={{
+              width: drawerWidth,
+              flexShrink: 0,
+              [`& .MuiDrawer-paper`]:
+              {
+                width: drawerWidth,
+                top: 'calc(55px + 2vh)',
+                zIndex: 1000,
+                boxSizing: 'border-box'
+              },
 
-                        }}
-                    >
-                        <Searchbar />
-                        {/* <Toolbar /> */}
-                        <Box sx={{ overflow: 'auto' }}>
-                            <List>
-                                {['Courses', 'Requirements'].map((text, index) => (
-                                    <ListItem key={text} disablePadding>
-                                        <ListItemButton>
-                                            <ListItemIcon>
-                                                {index % 2 === 0 ? <ClassIcon /> : <SchoolIcon />}
-                                            </ListItemIcon>
-                                            <ListItemText primary={text} />
-                                        </ListItemButton>
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Box>
-                    </Drawer>
-                    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                        <Toolbar />
-                    </Box>
-                </Box>
-            </div>
-        </ThemeProvider>
+            }}
+          >
+            {/* <Toolbar /> */}
+            <Box sx={{ overflow: 'auto' }}>
+              <List>
+                {['Courses', 'Requirements'].map((text, index) => (
+                  <ListItem key={text} disablePadding>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        {index % 2 === 0 ? <ClassIcon /> : <SchoolIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+            <Searchbar />
+          </Drawer>
+          <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Toolbar />
+          </Box>
+        </Box>
+      </div>
+    </ThemeProvider>
 
-    );
+  );
 }
