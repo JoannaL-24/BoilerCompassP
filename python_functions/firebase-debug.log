@@ -1,0 +1,90 @@
+[debug] [2024-03-01T22:21:26.027Z] ----------------------------------------------------------------------
+[debug] [2024-03-01T22:21:26.028Z] Command:       /opt/homebrew/Cellar/node/21.5.0/bin/node /opt/homebrew/bin/firebase deploy --only functions
+[debug] [2024-03-01T22:21:26.028Z] CLI Version:   13.3.0
+[debug] [2024-03-01T22:21:26.028Z] Platform:      darwin
+[debug] [2024-03-01T22:21:26.029Z] Node Version:  v21.5.0
+[debug] [2024-03-01T22:21:26.029Z] Time:          Fri Mar 01 2024 17:21:26 GMT-0500 (Eastern Standard Time)
+[debug] [2024-03-01T22:21:26.029Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-03-01T22:21:26.062Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-03-01T22:21:26.062Z] > authorizing via signed-in user (williamh.coding@gmail.com)
+[debug] [2024-03-01T22:21:26.062Z] [iam] checking project boilercompass-3135d for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2024-03-01T22:21:26.063Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/boilercompass-3135d:testIamPermissions [none]
+[debug] [2024-03-01T22:21:26.063Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/boilercompass-3135d:testIamPermissions x-goog-quota-user=projects/boilercompass-3135d
+[debug] [2024-03-01T22:21:26.063Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/boilercompass-3135d:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-03-01T22:21:26.280Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/boilercompass-3135d:testIamPermissions 200
+[debug] [2024-03-01T22:21:26.280Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/boilercompass-3135d:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-03-01T22:21:26.281Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/boilercompass-3135d/serviceAccounts/boilercompass-3135d@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2024-03-01T22:21:26.281Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/boilercompass-3135d/serviceAccounts/boilercompass-3135d@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2024-03-01T22:21:26.432Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/boilercompass-3135d/serviceAccounts/boilercompass-3135d@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2024-03-01T22:21:26.433Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/boilercompass-3135d/serviceAccounts/boilercompass-3135d@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'boilercompass-3135d'...
+[info] 
+[info] i  deploying functions 
+[debug] [2024-03-01T22:21:26.440Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/boilercompass-3135d [none]
+[debug] [2024-03-01T22:21:26.617Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/boilercompass-3135d 200
+[debug] [2024-03-01T22:21:26.618Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/boilercompass-3135d {"projectId":"boilercompass-3135d","projectNumber":"708802670849","displayName":"BoilerCompass","name":"projects/boilercompass-3135d","resources":{"hostingSite":"boilercompass-3135d","storageBucket":"boilercompass-3135d.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_2cbe1932-e76c-48b8-b22e-425e922a066e"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: preparing codebase python_functions for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2024-03-01T22:21:26.623Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/cloudfunctions.googleapis.com [none]
+[debug] [2024-03-01T22:21:26.623Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/boilercompass-3135d
+[debug] [2024-03-01T22:21:26.626Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/runtimeconfig.googleapis.com [none]
+[debug] [2024-03-01T22:21:26.626Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/boilercompass-3135d
+[debug] [2024-03-01T22:21:26.628Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/cloudbuild.googleapis.com [none]
+[debug] [2024-03-01T22:21:26.628Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/cloudbuild.googleapis.com x-goog-quota-user=projects/boilercompass-3135d
+[debug] [2024-03-01T22:21:26.630Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/artifactregistry.googleapis.com [none]
+[debug] [2024-03-01T22:21:26.630Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/artifactregistry.googleapis.com x-goog-quota-user=projects/boilercompass-3135d
+[debug] [2024-03-01T22:21:26.917Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/runtimeconfig.googleapis.com 200
+[debug] [2024-03-01T22:21:26.917Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2024-03-01T22:21:26.938Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/artifactregistry.googleapis.com 200
+[debug] [2024-03-01T22:21:26.938Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/artifactregistry.googleapis.com [omitted]
+[info] ✔  artifactregistry: required API artifactregistry.googleapis.com is enabled 
+[debug] [2024-03-01T22:21:26.941Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/cloudfunctions.googleapis.com 200
+[debug] [2024-03-01T22:21:26.941Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/cloudfunctions.googleapis.com [omitted]
+[info] ✔  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2024-03-01T22:21:26.960Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/cloudbuild.googleapis.com 200
+[debug] [2024-03-01T22:21:26.960Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/boilercompass-3135d/services/cloudbuild.googleapis.com [omitted]
+[info] ✔  functions: required API cloudbuild.googleapis.com is enabled 
+[debug] [2024-03-01T22:21:26.961Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/boilercompass-3135d/adminSdkConfig [none]
+[debug] [2024-03-01T22:21:27.259Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/boilercompass-3135d/adminSdkConfig 200
+[debug] [2024-03-01T22:21:27.259Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/boilercompass-3135d/adminSdkConfig {"projectId":"boilercompass-3135d","storageBucket":"boilercompass-3135d.appspot.com","locationId":"us-central"}
+[debug] [2024-03-01T22:21:27.261Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/boilercompass-3135d/configs [none]
+[debug] [2024-03-01T22:21:27.744Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/boilercompass-3135d/configs 200
+[debug] [2024-03-01T22:21:27.744Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/boilercompass-3135d/configs {}
+[debug] [2024-03-01T22:21:27.748Z] Validating nodejs source
+[debug] [2024-03-01T22:21:28.132Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "node-fetch": "^3.3.2",
+    "odata": "^2.0.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-03-01T22:21:28.132Z] Building nodejs source
+[info] i  functions: Loading and analyzing source code for codebase default to determine what to deploy 
+[debug] [2024-03-01T22:21:28.133Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-03-01T22:21:28.136Z] Found firebase-functions binary at '/Users/williamhou/Documents/Coding/CS307/BoilerCompass/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8793
+
+[debug] [2024-03-01T22:21:28.385Z] Got response from /__/functions.yaml {"endpoints":{"queryFunction":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"queryFunction"}},"specVersion":"v1alpha1","requiredAPIs":[]}
