@@ -1,3 +1,3 @@
-// const o = require("odata").o;
+const o = require("odata").o;
 
-// export const oHandler = o("https://api.purdue.io/odata/$metadata", {});
+export const oHandler = o("https://api.purdue.io/odata/$metadata", {});
