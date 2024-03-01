@@ -9,12 +9,19 @@ import {
   deleteDoc,
   setDoc,
 } from 'firebase/firestore'
+import { User as AuthUser } from 'firebase/auth'
 import { useAuth } from '../components/contexts/AuthContext'
-import { Student, User } from './BoilerCompass'
+import { User } from './BoilerCompass'
 
 export default class RemoteUserdata implements UserData {
+  currentUser: AuthUser
+
+  constructor() {
+    this.currentUser = useAuth().currentUser
+  }
+
   put(fieldName: string, data: any): Promise<void> {
-    const uid = useAuth()?.currentUser?.uid
+    const uid = this.currentUser?.uid
     if (!uid)
       return Promise.reject('currentUser is null, cannot access remote data')
 
@@ -26,7 +33,7 @@ export default class RemoteUserdata implements UserData {
   }
 
   get(fieldName: string): Promise<any> {
-    const uid = useAuth()?.currentUser?.uid
+    const uid = this.currentUser?.uid
     if (!uid)
       return Promise.reject('currentUser is null, cannot access remote data')
 
@@ -56,7 +63,7 @@ export default class RemoteUserdata implements UserData {
   }
 
   init(user: User): Promise<void> {
-    const uid = useAuth()?.currentUser?.uid
+    const uid = this.currentUser?.uid
     if (!uid)
       return Promise.reject('currentUser is null, cannot initialize a new User')
     return new Promise((resolve, reject) => {
@@ -67,7 +74,7 @@ export default class RemoteUserdata implements UserData {
   }
 
   delete(): Promise<void> {
-    const uid = useAuth()?.currentUser?.uid
+    const uid = this.currentUser?.uid
     if (!uid)
       return Promise.reject('currentUser is null, cannot delete remote data')
     return new Promise((resolve, reject) => {
