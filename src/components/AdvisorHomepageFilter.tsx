@@ -16,6 +16,7 @@ import "firebase/firestore";
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../models/firebase.ts";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
+import "./AdvisorHomepageFilter.css"
 
 import app from "../models/firebase.ts";
 
@@ -62,111 +63,89 @@ function AdvisorHomepageFilter() {
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        borderTop: "1px solid gray",
-        marginTop: "100px",
-        paddingTop: "100px",
-      }}
-    >
-      <FormControl
-        sx={{
-          border: "2px solid black",
-          borderRadius: "5px",
-          padding: "10px",
-        }}
-      >
-        <RadioGroup
-          aria-labelledby="demo-controlled-radio-buttons-group"
-          name="controlled-radio-buttons-group"
-          value={value}
-          onChange={handleChange}
+    <div className="AddsivorHomePageFilter">
+      <div className="studentSearching">
+        <div>
+          <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+          <TextField
+            id="input-with-sx"
+            label="Seach student"
+            variant="standard"
+            style={{ width: "200px" }}
+          />
+        </div>
+        <br/>
+        <FormControl
+          sx={{
+            border: "2px solid black",
+            borderRadius: "5px",
+            padding: "10px",
+          }}
         >
-          <FormControlLabel
-            value="alphabetincrease"
-            control={
-              <Radio
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 35,
-                  },
-                }}
-              />
-            }
-            label="Sort alphabetically (ascending)"
-          />
-          <FormControlLabel
-            value="alphabetdecrease"
-            control={
-              <Radio
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 35,
-                  },
-                }}
-              />
-            }
-            label="Sort alphabetically (descending)"
-          />
-          <FormControlLabel
-            value="yearincrease"
-            control={
-              <Radio
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 35,
-                  },
-                }}
-              />
-            }
-            label="Sort by year (ascending)"
-          />
-          <FormControlLabel
-            value="yeardecrease"
-            control={
-              <Radio
-                sx={{
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 35,
-                  },
-                }}
-              />
-            }
-            label="Sort by year (descending)"
-          />
-        </RadioGroup>
-      </FormControl>
-      <div
-        style={{
-          position: "absolute",
-          left: "50%",
-          transform: "translateX(-50%)",
-          bottom: "-10px",
-        }}
-      >
-        <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-        <TextField
-          id="input-with-sx"
-          label="Seach student"
-          variant="standard"
-          style={{ width: "200px", paddingBottom: "800px" }}
-        />
+          <RadioGroup
+            aria-labelledby="demo-controlled-radio-buttons-group"
+            name="controlled-radio-buttons-group"
+            value={value}
+            onChange={handleChange}
+          >
+            <FormControlLabel
+              value="alphabetincrease"
+              control={
+                <Radio
+                  sx={{
+                    "& .MuiSvgIcon-root": {
+                      fontSize: 35,
+                    },
+                  }}
+                />
+              }
+              label="Sort alphabetically (ascending)"
+            />
+            <FormControlLabel
+              value="alphabetdecrease"
+              control={
+                <Radio
+                  sx={{
+                    "& .MuiSvgIcon-root": {
+                      fontSize: 35,
+                    },
+                  }}
+                />
+              }
+              label="Sort alphabetically (descending)"
+            />
+            <FormControlLabel
+              value="yearincrease"
+              control={
+                <Radio
+                  sx={{
+                    "& .MuiSvgIcon-root": {
+                      fontSize: 35,
+                    },
+                  }}
+                />
+              }
+              label="Sort by year (ascending)"
+            />
+            <FormControlLabel
+              value="yeardecrease"
+              control={
+                <Radio
+                  sx={{
+                    "& .MuiSvgIcon-root": {
+                      fontSize: 35,
+                    },
+                  }}
+                />
+              }
+              label="Sort by year (descending)"
+            />
+          </RadioGroup>
+        </FormControl>
       </div>
       {/* brevity */}
 
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          position: "relative",
-          left: "60%",
-          transform: "translateX(-50%)",
-          bottom: "200px",
-          width: "70%",
-        }}
-      >
+      <div className="searchResult">
         {userNames.map((user, index) => (
           <a
             key={index}
