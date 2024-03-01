@@ -9,6 +9,9 @@ import FormLabel from "@mui/material/FormLabel";
 import AdvisorHomepageFilter from "./AdvisorHomepageFilter";
 import SettingsIcon from "@mui/icons-material/Settings";
 
+import { useAuth } from "../components/contexts/AuthContext";
+//const { currentUser } = useAuth();
+
 function AdvisorHomepage() {
   return <AdvisorHomepageFilter></AdvisorHomepageFilter>;
 }
