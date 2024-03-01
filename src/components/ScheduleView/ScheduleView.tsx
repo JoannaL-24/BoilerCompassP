@@ -37,6 +37,8 @@ export default function ScheduleView () {
             <div className="SemesterYears">
                 <ScheduleYear/>
                 <ScheduleYear/>
+                <ScheduleYear/>
+                <ScheduleYear/>
             </div>
             {/* create seperate component for semester */}
         </div>

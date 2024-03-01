@@ -1,7 +1,7 @@
 import React from 'react';
 import Popup from 'reactjs-popup';
 import "./CoursePopup.css";
-import DraggableCourse from '../DraggableCourse';
+
 
 const CoursePopup = () => {
   return (
