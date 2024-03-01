@@ -4,7 +4,7 @@
   [data-popup='tooltip'].popup-overlay {
     background: transparent;
   }
-.modal {
+.popupModal {
     position: relative;
     font-size: 12px;
     justify-content: center;
@@ -14,18 +14,26 @@
     border-radius: 10px;
     padding: 5px;
   }
-  .modal > .header {
+  .popupModal > .header {
+    background: var(--background);
+    color: var(--textPrimary);
     width: 100%;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid #ceb888;
     font-size: 18px;
     text-align: center;
     padding: 5px;
   }
-  .modal > .content {
+  .popupModal > .content {
+    background: var(--background);
+    color: var(--textPrimary);
     width: 100%;
     padding: 10px 5px;
   }
-  .modal > .sessionsScroll {
+  .popupModal > .sessionText {
+    background: var(--background);
+    color: #ceb888;
+  }
+  .popupModal > .sessionsScroll {
     background-color: var(--background);
     color: var(--textPrimary);
     border: 1px solid gray;
@@ -37,7 +45,7 @@
     overflow-y: scroll;
     border-radius: 10px;
   }
-  .modal > .close {
+  .popupModal > .close {
     cursor: pointer;
     position: absolute;
     display: block;

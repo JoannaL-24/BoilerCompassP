@@ -4,6 +4,8 @@
 
 .DegreeOverview{
     /* width: 100vw; */
+    background: var(--background);
+    color: var(--textPrimary);
     display:flex;
     flex-direction: column;
 }

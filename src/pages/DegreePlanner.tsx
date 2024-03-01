@@ -13,9 +13,6 @@ export default function DegreePlanner () {
     const { currentUser } = useAuth();
     const [darkmode, setDarkmode] = useState<boolean>(true);
 
-    // console.log(setDark_mode)
-    console.log(darkmode)
-
     useEffect(() => {                           
         if (currentUser) {
 

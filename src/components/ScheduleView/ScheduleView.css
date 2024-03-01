@@ -1,5 +1,7 @@
 .ScheduleView {
     width: 100%;
+    /* background: var(--background);
+    color: var(--textPrimary); */
 }
 
 .ScheduleDestribtion{
