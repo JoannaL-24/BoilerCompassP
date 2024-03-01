@@ -7,8 +7,6 @@ import { oHandler } from "models/purdueapi"
 const Searchbar = () => {
   const [results, setResults] = useState([]);
 
-  const PwlCampusId = "eb70e97b-3583-4ac9-86e5-468ad3869de8"
-
   const handleSearch = debounce(async (searchInput) => {
     const searchString = searchInput.toUpperCase().trim();
 
