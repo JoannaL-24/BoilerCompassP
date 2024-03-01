@@ -38,7 +38,7 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
   const prefer_minor_q = setup?"Choose your minor(s):":"Your minor(s):";
   const start_term_q = setup?"When did you start school at Purdue?":"Your start date:";
   const end_term_q = setup?"Expected graduation date:":"Your expected graduation date:";
-  const submit_button_text = setup?"Submit":"Update profile";
+  const submit_button_text = setup?"Submit":"Edit";
   const navigate = useNavigate();
   // console.log(userinfo);
 
