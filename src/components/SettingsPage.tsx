@@ -84,13 +84,20 @@ function SettingsPage() {
               <Button>Close</Button>
             </Link>
           </div>
-        ) : (
+        ) : userTypeValue === "advisor" ? (
           <div style={{ marginLeft: "700px" }}>
             <Link to="/AdvisorHomepage" style={{ textDecoration: "none" }}>
               <Button>Close</Button>
             </Link>
           </div>
+        ) : (
+          <div style={{ marginLeft: "700px" }}>
+            <Link to="/DegreePlanner" style={{ textDecoration: "none" }}>
+              <Button>Close</Button>
+            </Link>
+          </div>
         )}
+
         <div style={{ position: "relative", top: "100px", left: "-380px" }}>
           <DeleteAccount />
         </div>
