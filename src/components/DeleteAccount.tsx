@@ -13,8 +13,6 @@ import { useAuth } from "../components/contexts/AuthContext";
 import RemoteUserdata from "models/RemoteUserData";
 import { useNavigate } from "react-router-dom";
 
-// const { currentUser } = useAuth();
-const currentUser = null;
 function DeleteAccount() {
   const { currentUser } = useAuth();
   const [open, setOpen] = useState(false);
@@ -39,6 +37,7 @@ function DeleteAccount() {
     }
     setOpen(false);
   };
+
   if (!currentUser) {
     return (
       <div>

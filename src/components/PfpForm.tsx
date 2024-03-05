@@ -12,6 +12,8 @@ import { useAuth } from './contexts/AuthContext'
 import AvatarEditor from 'react-avatar-editor'
 import { getUserPfpURL, uploadUserPfp } from 'models/firebase'
 import { ProfilePicture } from './ProfilePicture'
+import axios from 'axios';
+
 export const PfpForm = () => {
   const [currentPfpURL, setCurrentPfpURL] = useState<string>()
   const [pfp, setPfp] = useState<File>()
@@ -43,9 +45,22 @@ export const PfpForm = () => {
           .then(() => {
             alert(
               'Profile picture successfully uploaded for uid ' +
-                currentUser.uid,
+              currentUser.uid,
             )
             setCurrentPfpURL((window.URL || window.webkitURL).createObjectURL(blob))
+            // check if image is good or not
+            axios({
+              method: 'post',
+              // url: 'http://127.0.0.1:5001/boilercompass-3135d/us-central1/filter_image',
+              url: 'https://us-central1-boilercompass-3135d.cloudfunctions.net/checkImageProfanity',
+              data: currentUser.uid,
+            })
+              .then((response) => {
+                console.log('Success:', response.data);
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
           })
           .catch((err) => {
             alert('Profile picture failed to upload!')
@@ -79,7 +94,7 @@ export const PfpForm = () => {
           display='flex'
           style={{ width: 400 }}
         >
-          <ProfilePicture src={currentPfpURL} style={{margin: "1em", alignSelf: "center"}} />
+          <ProfilePicture src={currentPfpURL} style={{ margin: "1em", alignSelf: "center" }} />
           <input
             hidden
             accept='image/*'

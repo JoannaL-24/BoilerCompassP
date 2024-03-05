@@ -1,15 +1,15 @@
 import "./NavBar.css";
 import React, { useState } from "react";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { styled } from '@mui/material/styles';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { styled } from "@mui/material/styles";
 import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
 import Stack from "@mui/material/Stack";
 import SvgIcon, { SvgIconProps } from "@mui/material/SvgIcon";
 import HomeIcon from "@mui/icons-material/Home";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from "../contexts/AuthContext";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -33,11 +33,11 @@ const options = [
 const ITEM_HEIGHT = 48;
 
 type Props = {
-  darkmode:boolean;
+  darkmode: boolean;
   setDarkmode: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};
 
-export default function NavBar({darkmode, setDarkmode}: Props) {
+export default function NavBar({ darkmode, setDarkmode }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [homeAnchorEl, setHomeAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -60,13 +60,13 @@ export default function NavBar({darkmode, setDarkmode}: Props) {
   const navigate = useNavigate();
   const userSignOut = () => {
     signUserOut()
-        .then(() => {
-            console.log("sign out successful");
-            handleHomeClose();
-            navigate("/");
-        })
-        .catch((error) => console.log(error));
-};
+      .then(() => {
+        console.log("sign out successful");
+        handleHomeClose();
+        navigate("/");
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <div className="navBarContainer">
@@ -93,9 +93,7 @@ export default function NavBar({darkmode, setDarkmode}: Props) {
           </a>
         </li>
         <li className="navBtnList">
-          <DarkModeToggle 
-            darkmode = {darkmode}
-            setDarkmode = {setDarkmode}/>
+          <DarkModeToggle darkmode={darkmode} setDarkmode={setDarkmode} />
         </li>
         <li className="navBtnList">
           {/* work inside here */}
@@ -126,7 +124,6 @@ export default function NavBar({darkmode, setDarkmode}: Props) {
                 <Link
                   to={{
                     pathname: "/settings",
-                    state: { previousPage: "/DegreePlanner" },
                   }}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
