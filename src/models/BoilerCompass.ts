@@ -7,14 +7,14 @@ export type Course = {
   distribution: string
 }
 
-export type Requirement = {
-  id: number
-  name: string
-  credit_hours: number
-  is_required: boolean
-  is_fulfilled: boolean
-}
-
+// export type Requirement = {
+//   id: number
+//   name: string
+//   credit_hours: number
+//   is_required: boolean
+//   is_fulfilled: boolean
+// }
+//
 export interface RequireSec extends Requirement {
   requirements: Requirement[]
 }
@@ -73,4 +73,52 @@ export interface Advisor extends User {
   department: string
   office: string
   students: Student[]
+}
+
+export interface CourseCriterion {
+  type: 'course'
+  course: Course
+}
+
+export interface RequirementCriterion {
+  type: 'requirement'
+  requirement: Requirement
+}
+
+/* Requirement interface
+ * A requirement consists of a list of "criteria": either a list of actual
+ * courses or a list of requirements, plus a number of the listed element that
+ * needs to be satisfied in order for the requirement itself to be satisfied.
+ *
+ * A "pick N of the following" requirement can be achieved with a numNeeded of
+ * N, and a "must satisfy all" requirement can be achieved with a numNeeded
+ * equal to the size of the list of criteria.
+ */
+export interface Requirement {
+  numNeeded: number
+  criteria: (CourseCriterion | RequirementCriterion)[]
+}
+
+export function isSatisfied(
+  req: Requirement,
+  coursesCompleted: Set<Course>,
+): boolean {
+  let ct = 0
+
+  req.criteria.forEach((criterion) => {
+    if (criterion.type === 'course') {
+      if (coursesCompleted.has(criterion.course) && ++ct >= req.numNeeded)
+        return
+    }
+
+    if (criterion.type === 'requirement') {
+      if (
+        isSatisfied(criterion.requirement, coursesCompleted) &&
+        ++ct >= req.numNeeded
+      )
+        return
+    }
+  })
+
+  return ct >= req.numNeeded
 }
