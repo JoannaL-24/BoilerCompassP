@@ -84,6 +84,8 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
     <div>
       <Box className="Ctn">
         <FormControl display="flex" style={{width: 400}}>
+          {!setup && <h3 className="Question">Name: {userinfo.name}</h3>}
+          {!setup && <h3 className="Question">Email: {userinfo.purdue_email}</h3>}
           <h3 className="Question">{prefer_majors_q}</h3>
           <Autocomplete
           className="Input"
