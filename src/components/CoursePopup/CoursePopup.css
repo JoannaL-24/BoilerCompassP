@@ -21,13 +21,13 @@
     border-bottom: 1px solid #ceb888;
     font-size: 18px;
     text-align: center;
-    padding: 5px;
+    /* padding: 5px; */
   }
   .popupModal > .content {
     background: var(--background);
     color: var(--textPrimary);
     width: 100%;
-    padding: 10px 5px;
+    padding: 10px 0px;
   }
   .popupModal > .sessionText {
     background: var(--background);
