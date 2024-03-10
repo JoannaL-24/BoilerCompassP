@@ -23,15 +23,17 @@ const DarkModeToggle = ({darkmode, setDarkmode}: Props) => {
     const toggleTheme = (e) => {
         // if (e.target.checked) {setDarkmode(false);}
         // else {setDarkmode(true);}
-        console.log("mode: "+ darkmode)
-        console.log("checked: " + e.target.checked)
-        // if (e.target.checked === true) {setDarkmode(true);}
+        console.log("mode: " + darkmode)
+        var dark_state = e.target.checked;
+        console.log("checked: " + dark_state)
+        // if (e.target.checked === true) {setDarkmode(true);} 
         // else {setDarkmode(false);}
-        setDarkmode(e.target.checked)
+        setDarkmode(dark_state);
         console.log(darkmode)
         console.log("set")
         if (currentUser) {
             const user_doc = doc(firestore, "users", currentUser.uid);
+            //TODO: fix guest user
             updateDoc(user_doc, {
                 dark_mode: !darkmode
             });
@@ -39,19 +41,32 @@ const DarkModeToggle = ({darkmode, setDarkmode}: Props) => {
          console.log("after doc update");
          console.log(darkmode);
          if (darkmode) {
-            document.querySelector("body").setAttribute("data-theme", "light")
+            document.querySelector("body").setAttribute("data-theme", "dark");
+            console.log("dark");
          }
-         else {document.querySelector("body").setAttribute("data-theme", "dark")}
+         else {
+            document.querySelector("body").setAttribute("data-theme", "light")
+            console.log("light");
+        }
+    }
+
+    if (darkmode) {
+        document.querySelector("body").setAttribute("data-theme", "dark");
+        console.log("dark-out");
+     }
+     else {
+        document.querySelector("body").setAttribute("data-theme", "light")
+        console.log("light-out");
     }
 
     return (
         <div className='dark_mode'>
             <input
-                checked = {darkmode}
+                defaultChecked = {darkmode}
                 className='dark_mode_input'
                 type='checkbox'
                 id='darkmode-toggle'
-                onChange = {toggleTheme}
+                onClick = {toggleTheme}
             />
             <label className='dark_mode_label' htmlFor='darkmode-toggle'>
                 <Sun />
