@@ -1,10 +1,10 @@
 export type Course = {
-  id: number
+  id: string
   subject: string
   number: number
   credit_hours: number
-  prerequisite_course_ids: number[]
-  distribution: string
+  prerequisite_course_ids?: number[]
+  distribution?: string
 }
 
 // export type Requirement = {
@@ -101,19 +101,19 @@ export interface Requirement {
 
 export function isSatisfied(
   req: Requirement,
-  coursesCompleted: Set<Course>,
+  completedCourseIds: Set<string>,
 ): boolean {
   let ct = 0
 
   req.criteria.forEach((criterion) => {
     if (criterion.type === 'course') {
-      if (coursesCompleted.has(criterion.course) && ++ct >= req.numNeeded)
+      if (completedCourseIds.has(criterion.course.id) && ++ct >= req.numNeeded)
         return
     }
 
     if (criterion.type === 'requirement') {
       if (
-        isSatisfied(criterion.requirement, coursesCompleted) &&
+        isSatisfied(criterion.requirement, completedCourseIds) &&
         ++ct >= req.numNeeded
       )
         return
