@@ -60,7 +60,7 @@ const Searchbar = () => {
           size="small"
           onChange={(e) => handleSearch(e.target.value)}
           variant="outlined"
-          style={{ width: 200, height: 5 }}
+          style={{ width: 200 }}
           label="Search course"
         />
       </div>
