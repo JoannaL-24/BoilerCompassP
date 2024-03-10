@@ -1,23 +1,32 @@
 .AddsivorHomePageFilter {
-    width: 100vw;
-    position: absolute;
-    top: calc(55px + 2vh);
-    padding: 30px 30px 0px;
+  width: 100vw;
+  position: absolute;
+  top: calc(55px + 2vh);
+  padding: 30px 30px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .studentSearching {
+    width: 20%;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+  }
 
-    .studentSearching {
-        width: 20%;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .searchResult {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        bottom: 200p;
-        width: 70%;
-    }
+  .searchResult {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    bottom: 200p;
+    width: 70%;
+  }
+  .clicked {
+    transform: scale(0.9);
+    transition: transform 0.5s ease;
+  }
+  .searchResult a.hovered {
+    transform: scale(1.1); /* Enlarge on hover */
+    background-color: #bf960d; /* Change background color on hover */
+    color: white; /* Change text color on hover */
+  }
 }

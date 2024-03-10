@@ -27,6 +27,9 @@ function AdvisorHomepageFilter() {
     { name: string; purdue_email: string; prefer_majors: { name: string }[] }[]
   >([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [clickedUser, setClickedUser] = useState(null);
+  const [hoveredUser, setHoveredUser] = useState(null);
+
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -62,6 +65,10 @@ function AdvisorHomepageFilter() {
 
   const handleUserClick = (userData: any) => {
     setSelectedUser(userData);
+    setClickedUser(userData);
+    setTimeout(() => {
+      setClickedUser(null);
+    }, 50); // time
   };
 
   return (
@@ -145,7 +152,6 @@ function AdvisorHomepageFilter() {
           </RadioGroup>
         </FormControl>
       </div>
-      {/* brevity */}
 
       <div className="searchResult">
         {userNames.map((user, index) => (
@@ -153,6 +159,8 @@ function AdvisorHomepageFilter() {
             key={index}
             href="#"
             onClick={() => handleUserClick(user)}
+            onMouseEnter={() => setHoveredUser(user)}
+            onMouseLeave={() => setHoveredUser(null)}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -164,6 +172,13 @@ function AdvisorHomepageFilter() {
               padding: "10px",
               marginRight: "50px",
               marginBottom: "10px",
+              transform: `${clickedUser === user ? "scale(0.3)" : "scale(1)"} ${
+                hoveredUser === user ? "scale(1.2)" : "scale(1)"
+              }`,
+              transition: "transform 0.5s ease",
+
+              backgroundColor: hoveredUser === user ? "#bf960d" : "", // Change background color on hover
+              color: hoveredUser === user ? "white" : "", // Change text color on hover
             }}
           >
             <AccountCircle sx={{ color: "action.active", fontSize: "40px" }} />
