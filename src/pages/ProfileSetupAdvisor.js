@@ -7,7 +7,7 @@ import '../css/Profile.css';
 const Profile_setup_advisors = () => {
   const { currentUser } = useAuth();
   const [userinfo, setUserinfo] = useState({
-    role: "advisor",
+    user_type: "advisor",
     college: null,
     department: null,
     students: [],
