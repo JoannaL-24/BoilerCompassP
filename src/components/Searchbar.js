@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import DraggableCourse from "./DraggableCourse";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import "./Searchbar.css";
 import { debounce } from "lodash";
 import { oHandler } from "models/purdueapi";
@@ -49,7 +50,7 @@ const Searchbar = () => {
   }, 500);
 
   return (
-    <div className="search&display">
+    <div className="searchDisplay">
       <div className="search">
         <TextField
           id="outlined-basic"
@@ -63,11 +64,29 @@ const Searchbar = () => {
           label="Search course"
         />
       </div>
-      <div>
-        {results.map((result, index) => (
-          <DraggableCourse key={index} course={result} />
-        ))}
-      </div>
+      <Droppable droppableId="ROOT">
+        {(provided) => (
+          <div className="searchResults" {...provided.droppableProps} ref={provided.innerRef}>
+            {/* {results.map((result, index) => (
+              <Draggable
+                draggableId={index}
+                index={index}
+              >
+                {(provided) => {
+                  <div
+                    {...provided.dragHandleProps}
+                    {...provided.draggableProps}
+                    ref={provided.innerRef}
+                  >
+                    {result}
+                  </div>
+                }}
+              </Draggable>
+            ))} */}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </div>
   );
 };

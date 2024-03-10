@@ -39,7 +39,6 @@ export default function ScheduleView () {
                 <ScheduleYear startYear={2024}/>
                 <ScheduleYear startYear={2025}/>
             </div>
-            {/* create seperate component for semester */}
         </div>
     )
 }
