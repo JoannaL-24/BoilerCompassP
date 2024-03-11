@@ -30,6 +30,7 @@ function AdvisorHomepageFilter() {
   const [clickedUser, setClickedUser] = useState(null);
   const [hoveredUser, setHoveredUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [popupVisible, setPopupVisible] = useState(false);
 
   const { currentUser } = useAuth();
 
@@ -67,9 +68,17 @@ function AdvisorHomepageFilter() {
   const handleUserClick = (userData: any) => {
     setSelectedUser(userData);
     setClickedUser(userData);
+    setPopupVisible(true);
     setTimeout(() => {
       setClickedUser(null);
     }, 50); // time
+  };
+
+  const handleCloseButtonClick = () => {
+    setPopupVisible(false); // Hide popup when close button is clicked
+    setTimeout(() => {
+      setSelectedUser(null); // Reset selectedUser after animation
+    }, 500); // Adjust timeout to match animation duration
   };
 
   const filteredUserNames = userNames.filter((user) => {
@@ -215,31 +224,60 @@ function AdvisorHomepageFilter() {
       {/* Popup to display user data */}
       {selectedUser && (
         <div
+          className="popup-window"
           style={{
             position: "fixed",
 
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            backgroundColor: "white",
+            //backgroundColor: "white",
             padding: "20px",
             borderRadius: "10px",
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
-            animation: "dropTop 0.3s ease-in",
+
+            animation: "dropTop 0.5s linear",
+            backgroundColor: "#87ceeb",
           }}
         >
-          <h2>User Details</h2>
+          <button
+            onClick={() => {
+              const popupWindow = document.querySelector(
+                ".popup-window"
+              ) as HTMLElement;
+              if (popupWindow) {
+                popupWindow.style.animation = "dropBottom 0.5s linear";
+              }
+              setTimeout(() => setSelectedUser(null), 500);
+            }}
+            style={{
+              position: "fixed",
+              top: "10px",
+              right: "10px",
+              padding: "3px 8px",
+              borderRadius: "5px",
+              //backgroundColor: "white",
+              //color: "black",
+              border: "none",
+              cursor: "pointer",
+              //animation: "dropBottom 0.5s linear",
+            }}
+          >
+            Close
+          </button>
+          <h2 style={{ paddingTop: "20px" }}>User Details</h2>
           <p>Name: {selectedUser.name}</p>
           <p>Email: {selectedUser.purdue_email}</p>
           <p>Prefer Majors:</p>
           <ul>
             {selectedUser.prefer_majors.map(
               (major: { name: string }, index: number) => (
-                <li key={index}>{major.name}</li>
+                <li key={index} style={{ textAlign: "left" }}>
+                  {major.name}
+                </li>
               )
             )}
           </ul>
-          <button onClick={() => setSelectedUser(null)}>Close</button>
         </div>
       )}
     </div>

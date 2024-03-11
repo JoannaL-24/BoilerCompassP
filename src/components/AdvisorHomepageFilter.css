@@ -43,3 +43,14 @@
     opacity: 1;
   }
 }
+
+@keyframes dropBottom {
+  0% {
+    transform: translateY(-50%) translateX(-50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) translateX(-50%) scale(0.5);
+    opacity: 0;
+  }
+}
