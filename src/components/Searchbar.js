@@ -44,6 +44,7 @@ const Searchbar = () => {
         results.push(entity.Subject.Abbreviation + " " + entity.Number);
       }
       setResults(results);
+      console.log(results);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -67,27 +68,15 @@ const Searchbar = () => {
       <Droppable droppableId="ROOT">
         {(provided) => (
           <div className="searchResults" {...provided.droppableProps} ref={provided.innerRef}>
-            {/* {results.map((result, index) => (
-              <Draggable
-                draggableId={index}
-                index={index}
-              >
-                {(provided) => {
-                  <div
-                    {...provided.dragHandleProps}
-                    {...provided.draggableProps}
-                    ref={provided.innerRef}
-                  >
-                    {result}
-                  </div>
-                }}
-              </Draggable>
-            ))} */}
+            {results.map((result, index) => (
+              <DraggableCourse key={index} course={result} index={index} />
+            ))}
             {provided.placeholder}
           </div>
-        )}
-      </Droppable>
-    </div>
+        )
+        }
+      </Droppable >
+    </div >
   );
 };
 

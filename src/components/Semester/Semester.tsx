@@ -9,7 +9,7 @@ const Semester = ({ term, dropId }) => {
             <div className="SemesterDescription">
                 <h3>{term} (16 Hrs) </h3>
             </div>
-            <Droppable droppableId={dropId}>
+            <Droppable droppableId={dropId+""}>
                 {(provided) => (
                     <div className="Courses" {...provided.droppableProps} ref={provided.innerRef}>
                         {provided.placeholder}
