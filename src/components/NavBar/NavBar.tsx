@@ -10,7 +10,6 @@ import HomeIcon from "@mui/icons-material/Home";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 const options = [

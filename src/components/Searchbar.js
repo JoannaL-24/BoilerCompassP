@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
-import DraggableCourse from "./DraggableCourse";
+import DraggableCourse from "./DraggableCourse/DraggableCourse";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import "./Searchbar.css";
 import { debounce } from "lodash";

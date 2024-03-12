@@ -16,7 +16,7 @@ import RunStudentHomepage from "./components/RunStudentHomepage";
 import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
-import DraggableCourse from "./components/DraggableCourse";
+import DraggableCourse from "./components/DraggableCourse/DraggableCourse";
 import { AuthProvider } from "./components/contexts/AuthContext";
 
 function App() {

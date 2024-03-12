@@ -1,9 +1,8 @@
 import React from "react";
-import Card from "@mui/material/Card";
 import Popup from 'reactjs-popup';
-import "./CoursePopup/CoursePopup.css";
-import CardContent from "@mui/material/CardContent";
 import { Draggable } from "react-beautiful-dnd";
+import "./DraggableCourse.css"
+import "../CoursePopup/CoursePopup.css";
 
 type DraggableCourseProps = {
   course: string;
@@ -34,15 +33,13 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({ course, index }) => {
                 </button>
                 <div className='header'>{course}</div>
                 <div className='content'>
-                  {' '}
                   COURSE DESCRIPTION HERE
                 </div>
                 <div className="sessionText">
                   <h3>Course Sessions:</h3>
                 </div>
-
-                <div className='sessionsScroll'>
-                  <div style={{ width: "200px" }}>
+                <div className='sessionsScroll' style={{ overflow: "hidden" }}>
+                  <div style={{ overflowY:"auto", height: "80px" }}>
                     1 <br />
                     2 <br />
                     3 <br />
@@ -55,6 +52,7 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({ course, index }) => {
                     10 <br />
                   </div>
                 </div>
+
               </div>
             )}
           </Popup>
