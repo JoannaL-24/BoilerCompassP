@@ -38,8 +38,8 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({ course, index }) => {
                 <div className="sessionText">
                   <h3>Course Sessions:</h3>
                 </div>
-                <div className='sessionsScroll' style={{ overflow: "hidden" }}>
-                  <div style={{ overflowY:"auto", height: "80px" }}>
+                <div className='sessionsList'>
+                  <div style={{ overflowY:"scroll", height: "100px" }}>
                     1 <br />
                     2 <br />
                     3 <br />
