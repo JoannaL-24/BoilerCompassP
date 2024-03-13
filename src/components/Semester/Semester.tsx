@@ -4,10 +4,11 @@ import Card from "@mui/material/Card";
 import "./Semester.css"
 
 const Semester = ({ term, dropId }) => {
+    let credits = 0;
     return (
         <div className="Semester">
             <div className="SemesterDescription">
-                <h3>{term} (16 Hrs) </h3>
+                <h3>{term} ({credits} Hrs) </h3>
             </div>
             <Droppable droppableId={dropId+""}>
                 {(provided) => (

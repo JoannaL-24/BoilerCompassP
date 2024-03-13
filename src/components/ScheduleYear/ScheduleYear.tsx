@@ -5,6 +5,7 @@ import Semester from "../Semester/Semester";
 export default function ScheduleYear({startYear, idBase}) {
     return (
         <div className="Year">
+            
             <h4>{startYear}<br/>-<br/>{startYear+1}</h4>
             <Semester term="Fall" dropId={idBase}/>
             <Semester term="Spring" dropId={idBase+1}/>

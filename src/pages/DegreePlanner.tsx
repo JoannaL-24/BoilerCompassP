@@ -21,11 +21,10 @@ import Semester from "components/Semester/Semester.tsx";
 export default function DegreePlanner() {
     //get current user and mode preference
     const { currentUser } = useAuth();
-    const [darkmode, setDarkmode] = useState<boolean>(true);
+    const [darkmode, setDarkmode] = useState<boolean>(null);
 
     useEffect(() => {
         if (currentUser) {
-
             const user_doc = getDoc(doc(firestore, "users", currentUser.uid))
                 .then((docSnapshot) => {
                     setDarkmode(docSnapshot.data().dark_mode);
