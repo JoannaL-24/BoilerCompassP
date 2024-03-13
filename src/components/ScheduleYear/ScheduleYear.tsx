@@ -2,9 +2,7 @@ import React from "react";
 import "./ScheduleYear.css"
 import Semester from "../Semester/Semester";
 
-export default function ScheduleYear({startYear}) {
-
-    let idBase = startYear * 10;
+export default function ScheduleYear({startYear, idBase}) {
     return (
         <div className="Year">
             <h4>{startYear}<br/>-<br/>{startYear+1}</h4>

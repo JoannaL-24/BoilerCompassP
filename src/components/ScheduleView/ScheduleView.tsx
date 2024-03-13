@@ -34,10 +34,10 @@ export default function ScheduleView () {
             </div>
             <ProgressBar completed={20} total={50} planned={40}/>
             <div className="SemesterYears">
-                <ScheduleYear startYear={2022}/>
-                <ScheduleYear startYear={2023}/>
-                <ScheduleYear startYear={2024}/>
-                <ScheduleYear startYear={2025}/>
+                <ScheduleYear startYear={2022} idBase={1}/>
+                <ScheduleYear startYear={2023} idBase={4}/>
+                <ScheduleYear startYear={2024} idBase={7}/>
+                <ScheduleYear startYear={2025} idBase={10}/>
             </div>
         </div>
     )

@@ -80,11 +80,7 @@ export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      // if (user) {
-      //   setCurrentUser(user);
-      // }
       setCurrentUser(user);
-      console.log("Firebase User:" + user);
     })
 
     return unsubscribe

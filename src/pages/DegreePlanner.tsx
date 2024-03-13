@@ -33,15 +33,18 @@ export default function DegreePlanner() {
         }
     }, [currentUser]);
 
+    const handleDragDrop = (result) => {
+        console.log("drag occured");
+        console.log(result);
+    }
+
     return (
         <div className="DegreeOverview">
             <NavBar
                 darkmode={darkmode}
                 setDarkmode={setDarkmode} />
             <div className="DegreeContent">
-                <DragDropContext onDragEnd = {() => {
-                        console.log("drag occured");
-                }}>
+                <DragDropContext onDragEnd={handleDragDrop}>
                 <ScheduleView />
                 <div className="ScheduleSide">
                     <button className="mediumBtn goldBtn"><h3>Requirement</h3></button>
