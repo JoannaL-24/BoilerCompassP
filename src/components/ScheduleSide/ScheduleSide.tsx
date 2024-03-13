@@ -46,7 +46,7 @@ export default function SceduleSide() {
               {
                 width: drawerWidth,
                 top: 'calc(55px + 2vh)',
-                zIndex: 1000,
+                zIndex: 100,
                 boxSizing: 'border-box'
               },
 
