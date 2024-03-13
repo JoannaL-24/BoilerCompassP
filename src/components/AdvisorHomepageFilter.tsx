@@ -31,6 +31,9 @@ function AdvisorHomepageFilter() {
   const [hoveredUser, setHoveredUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
+  const [clickedLabel, setClickedLabel] = useState(null);
+  const [selectedLabel, setSelectedLabel] = useState(null);
+  const [hoveredLabel, setHoveredLabel] = useState(null);
 
   const { currentUser } = useAuth();
 
@@ -69,6 +72,7 @@ function AdvisorHomepageFilter() {
     setSelectedUser(userData);
     setClickedUser(userData);
     setPopupVisible(true);
+    setClickedLabel(userData);
     setTimeout(() => {
       setClickedUser(null);
     }, 50); // time
@@ -126,6 +130,7 @@ function AdvisorHomepageFilter() {
             onChange={handleChange}
           >
             <FormControlLabel
+              className="radio-group-shadow"
               value="alphabetincrease"
               control={
                 <Radio
@@ -137,8 +142,11 @@ function AdvisorHomepageFilter() {
                 />
               }
               label="Sort alphabetically (ascending)"
+              //onMouseEnter={() => setHoveredLabel("alphabetincrease")} //
+              //onMouseLeave={() => setHoveredLabel(null)} //
             />
             <FormControlLabel
+              className="radio-group-shadow"
               value="alphabetdecrease"
               control={
                 <Radio
@@ -152,6 +160,7 @@ function AdvisorHomepageFilter() {
               label="Sort alphabetically (descending)"
             />
             <FormControlLabel
+              className="radio-group-shadow"
               value="yearincrease"
               control={
                 <Radio
@@ -165,6 +174,7 @@ function AdvisorHomepageFilter() {
               label="Sort by year (ascending)"
             />
             <FormControlLabel
+              className="radio-group-shadow"
               value="yeardecrease"
               control={
                 <Radio
