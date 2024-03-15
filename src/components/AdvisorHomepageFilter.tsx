@@ -79,10 +79,10 @@ function AdvisorHomepageFilter() {
   };
 
   const handleCloseButtonClick = () => {
-    setPopupVisible(false); // Hide popup when close button is clicked
+    setPopupVisible(false);
     setTimeout(() => {
-      setSelectedUser(null); // Reset selectedUser after animation
-    }, 500); // Adjust timeout to match animation duration
+      setSelectedUser(null);
+    }, 500); // timeout to match animation
   };
 
   const filteredUserNames = userNames.filter((user) => {
