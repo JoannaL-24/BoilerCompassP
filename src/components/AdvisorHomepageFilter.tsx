@@ -141,8 +141,6 @@ function AdvisorHomepageFilter() {
                 />
               }
               label="Sort alphabetically (ascending)"
-              //onMouseEnter={() => setHoveredLabel("alphabetincrease")} //
-              //onMouseLeave={() => setHoveredLabel(null)} //
             />
             <FormControlLabel
               className="radio-group-shadow"
