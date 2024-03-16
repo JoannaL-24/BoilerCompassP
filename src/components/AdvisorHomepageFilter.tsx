@@ -17,7 +17,6 @@ import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../models/firebase.ts";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import "./AdvisorHomepageFilter.css";
-
 import app from "../models/firebase.ts";
 import { useAuth } from "../components/contexts/AuthContext";
 
