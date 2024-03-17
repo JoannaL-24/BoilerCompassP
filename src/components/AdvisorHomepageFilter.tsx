@@ -263,11 +263,8 @@ function AdvisorHomepageFilter() {
               right: "10px",
               padding: "3px 8px",
               borderRadius: "5px",
-              //backgroundColor: "white",
-              //color: "black",
               border: "none",
               cursor: "pointer",
-              //animation: "dropBottom 0.5s linear",
             }}
           >
             Close
