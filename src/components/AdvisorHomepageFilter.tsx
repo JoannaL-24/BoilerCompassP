@@ -110,7 +110,7 @@ function AdvisorHomepageFilter() {
             id="input-with-sx"
             label="Search student"
             variant="standard"
-            style={{ width: "200px" }}
+            style={{ width: "201px" }}
             onChange={(e) => setSearchQuery(e.target.value)} // update search state
           />
         </div>
