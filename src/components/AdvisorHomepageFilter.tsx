@@ -15,6 +15,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../models/firebase.ts";
+import "firebase/firestore";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import "./AdvisorHomepageFilter.css";
 import app from "../models/firebase.ts";
@@ -23,7 +24,12 @@ import { useAuth } from "../components/contexts/AuthContext";
 function AdvisorHomepageFilter() {
   const [value, setValue] = useState("female");
   const [userNames, setUserNames] = useState<
-    { name: string; purdue_email: string; prefer_majors: { name: string }[] }[]
+    {
+      name: string;
+      start_term: any;
+      purdue_email: string;
+      prefer_majors: { name: string }[];
+    }[]
   >([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [clickedUser, setClickedUser] = useState(null);
@@ -45,6 +51,7 @@ function AdvisorHomepageFilter() {
         purdue_email: string;
         prefer_majors: { name: string }[];
         user_type: string;
+        start_term: any;
       }[] = [];
       usersSnapshot.forEach((doc) => {
         const userData = doc.data();
@@ -54,6 +61,7 @@ function AdvisorHomepageFilter() {
             purdue_email: userData.purdue_email,
             prefer_majors: userData.prefer_majors || [],
             user_type: userData.user_type,
+            start_term: userData.start_term,
           });
         }
       });
@@ -94,6 +102,12 @@ function AdvisorHomepageFilter() {
 
     return (
       user.name.toLowerCase().includes(query) ||
+      (user.start_term &&
+        user.start_term
+          .toDate()
+          .toLocaleString()
+          .toLowerCase()
+          .includes(query)) ||
       user.purdue_email.toLowerCase().includes(query) ||
       user.prefer_majors.some((major) =>
         major.name.toLowerCase().includes(query)
@@ -271,6 +285,7 @@ function AdvisorHomepageFilter() {
           </button>
           <h2 style={{ paddingTop: "20px" }}>User Details</h2>
           <p>Name: {selectedUser.name}</p>
+          <p>Year: {selectedUser.start_term?.toDate().toLocaleString()}</p>
           <p>Email: {selectedUser.purdue_email}</p>
           <p>Prefer Majors:</p>
           <ul>
