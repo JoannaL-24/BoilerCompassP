@@ -22,6 +22,7 @@
     "odata": "^2.0.0",
     "react": "^18.2.0",
     "react-avatar-editor": "^13.0.2",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
     "react-hook-form": "^7.50.1",

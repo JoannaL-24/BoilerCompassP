@@ -27,6 +27,11 @@ function AdvisorHomepageFilter() {
     { name: string; purdue_email: string; prefer_majors: { name: string }[] }[]
   >([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [clickedUser, setClickedUser] = useState(null);
+  const [hoveredUser, setHoveredUser] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [popupVisible, setPopupVisible] = useState(false);
+
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -62,7 +67,36 @@ function AdvisorHomepageFilter() {
 
   const handleUserClick = (userData: any) => {
     setSelectedUser(userData);
+    setClickedUser(userData);
+    setPopupVisible(true);
+    setTimeout(() => {
+      setClickedUser(null);
+    }, 50); // time
   };
+
+  const handleCloseButtonClick = () => {
+    setPopupVisible(false); // Hide popup when close button is clicked
+    setTimeout(() => {
+      setSelectedUser(null); // Reset selectedUser after animation
+    }, 500); // Adjust timeout to match animation duration
+  };
+
+  const filteredUserNames = userNames.filter((user) => {
+    const query = searchQuery?.toLowerCase() || "";
+    console.log("user:", user);
+    console.log("query:", query);
+    console.log("user.name:", user.name);
+    console.log("user.purdue_email:", user.purdue_email);
+    console.log("user.prefer_majors:", user.prefer_majors);
+
+    return (
+      user.name.toLowerCase().includes(query) ||
+      user.purdue_email.toLowerCase().includes(query) ||
+      user.prefer_majors.some((major) =>
+        major.name.toLowerCase().includes(query)
+      )
+    );
+  });
 
   return (
     <div className="AddsivorHomePageFilter">
@@ -71,9 +105,10 @@ function AdvisorHomepageFilter() {
           <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
           <TextField
             id="input-with-sx"
-            label="Seach student"
+            label="Search student"
             variant="standard"
             style={{ width: "200px" }}
+            onChange={(e) => setSearchQuery(e.target.value)} // update search state
           />
         </div>
         <br />
@@ -145,59 +180,104 @@ function AdvisorHomepageFilter() {
           </RadioGroup>
         </FormControl>
       </div>
-      {/* brevity */}
 
       <div className="searchResult">
-        {userNames.map((user, index) => (
+        {filteredUserNames.map((user, index) => (
           <a
             key={index}
             href="#"
             onClick={() => handleUserClick(user)}
+            onMouseEnter={() => setHoveredUser(user)}
+            onMouseLeave={() => setHoveredUser(null)}
             style={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               textDecoration: "none",
-              border: "1px solid black",
+              //border: "1px solid black",
               borderRadius: "20px",
               width: "160px",
               padding: "10px",
               marginRight: "50px",
               marginBottom: "10px",
+              transform: `${clickedUser === user ? "scale(0.3)" : "scale(1)"} ${
+                hoveredUser === user ? "scale(1.2)" : "scale(1)"
+              }`,
+              transition: "transform 0.5s ease",
+
+              backgroundColor: hoveredUser === user ? "#87ceeb" : "", // background color
+              color: hoveredUser === user ? "white" : "", // text color
+              boxShadow:
+                hoveredUser === user
+                  ? "10px 10px 20px rgba(128, 229, 216, 1)"
+                  : "", // shadow
+
+              border:
+                hoveredUser === user ? "1px solid white" : "1px solid black",
             }}
           >
             <AccountCircle sx={{ color: "action.active", fontSize: "40px" }} />
-            <span style={{ marginTop: "5px" }}>{user.name}</span>
+            <span style={{ marginTop: "5px" }}>{user.name}</span>{" "}
           </a>
         ))}
       </div>
-
       {/* Popup to display user data */}
       {selectedUser && (
         <div
+          className="popup-window"
           style={{
             position: "fixed",
+
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            backgroundColor: "white",
+            //backgroundColor: "white",
             padding: "20px",
             borderRadius: "10px",
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+
+            animation: "dropTop 0.5s linear",
+            backgroundColor: "#87ceeb",
           }}
         >
-          <h2>User Details</h2>
+          <button
+            onClick={() => {
+              const popupWindow = document.querySelector(
+                ".popup-window"
+              ) as HTMLElement;
+              if (popupWindow) {
+                popupWindow.style.animation = "dropBottom 0.5s linear";
+              }
+              setTimeout(() => setSelectedUser(null), 500);
+            }}
+            style={{
+              position: "fixed",
+              top: "10px",
+              right: "10px",
+              padding: "3px 8px",
+              borderRadius: "5px",
+              //backgroundColor: "white",
+              //color: "black",
+              border: "none",
+              cursor: "pointer",
+              //animation: "dropBottom 0.5s linear",
+            }}
+          >
+            Close
+          </button>
+          <h2 style={{ paddingTop: "20px" }}>User Details</h2>
           <p>Name: {selectedUser.name}</p>
           <p>Email: {selectedUser.purdue_email}</p>
           <p>Prefer Majors:</p>
           <ul>
             {selectedUser.prefer_majors.map(
               (major: { name: string }, index: number) => (
-                <li key={index}>{major.name}</li>
+                <li key={index} style={{ textAlign: "left" }}>
+                  {major.name}
+                </li>
               )
             )}
           </ul>
-          <button onClick={() => setSelectedUser(null)}>Close</button>
         </div>
       )}
     </div>

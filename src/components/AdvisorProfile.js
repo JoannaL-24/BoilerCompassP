@@ -49,6 +49,7 @@ const Advisor_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
         updateDoc(user_doc, {
           college: userinfo.college,
           department: userinfo.department,
+          user_type: "advisor",
         });
 
 
@@ -66,6 +67,8 @@ const Advisor_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
     <div>
       <Box className="Ctn">
         <FormControl display="flex" style={{ width: 400 }}>
+          {!setup && <h3 className="Question">Name: {userinfo.name}</h3>}
+          {!setup && <h3 className="Question">Email: {userinfo.purdue_email}</h3>}
           <h3 className="Question">{college_q}</h3>
           <Autocomplete
             className="Input"

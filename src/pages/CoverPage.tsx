@@ -107,8 +107,7 @@ export default function CoverPage() {
             groups: [],
           })
             .then(() => {
-              console.log("success");
-              // navigate("/Welcome");
+              console.log("New User Signed Up");
               sendEmailVerification(signedUpUser, {
                 url: "http://localhost:3000/Welcome",
               })
@@ -188,7 +187,7 @@ export default function CoverPage() {
     localUserData
       .init(newUser)
       .then(() => {
-        console.log("success");
+        console.log("Guest User Signed In");
         navigate("/ProfileSetupStudent");
       })
       .catch((error: unknown) => {
@@ -199,7 +198,7 @@ export default function CoverPage() {
   const userSignOut = () => {
     signOut(auth)
       .then(() => {
-        console.log("sign out successful");
+        console.log("Sign Out Successful");
       })
       .catch((error) => console.log(error));
   };

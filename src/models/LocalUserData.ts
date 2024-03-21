@@ -43,7 +43,8 @@ export default class LocalUserData implements UserData {
         groups: [],
         name: '',
         purdue_email: '',
-        dark_mode: false
+        dark_mode: false,
+        completed_courses: []
     }
     const tmpA: Advisor = {
         department: '',
@@ -52,7 +53,7 @@ export default class LocalUserData implements UserData {
         name: '',
         purdue_email: '',
         dark_mode: false,
-        groups: []
+        groups: [],
     }
     Object.keys(tmpS).forEach((key) => {
       window.localStorage.removeItem(key)

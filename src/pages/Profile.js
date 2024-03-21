@@ -30,18 +30,11 @@ const Profile = () => {
       if (userinfo.user_type === "advisor") {
         setConverDate(false);
       } else {
-        if (
-          userinfo &&
-          convertDate &&
-          userinfo.start_term &&
-          userinfo.end_term
-        ) {
-          setUserinfo((prev) => ({
-            ...prev,
-            start_term: dayjs(userinfo.start_term.toDate()),
-            end_term: dayjs(userinfo.end_term.toDate()),
-          }));
-        }
+        setUserinfo((prev) => ({
+          ...prev,
+          start_term: dayjs(userinfo.start_term.toDate()),
+          end_term: dayjs(userinfo.end_term.toDate()),
+        }));
         setConverDate(false);
         // console.log(userinfo);
       }
@@ -75,7 +68,7 @@ const Profile = () => {
       >
         {"Your profile was updated successfully!"}
       </Alert>
-      {currentUser && <h1 className="paget">Your Profile</h1>}
+      {currentUser && userinfo && <h1 className="paget">Your Profile</h1>}
       <PfpForm />
       {userinfo &&
         userinfo.user_type === "student" && ( // add user&&

@@ -2,7 +2,6 @@ import "./ScheduleSide.css";
 import React, { useState } from "react";
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
@@ -14,7 +13,6 @@ import ClassIcon from '@mui/icons-material/Class';
 import SchoolIcon from '@mui/icons-material/School';
 import Searchbar from '../Searchbar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
 //import "./Sidebar.css"
 
 const drawerWidth = 240;
@@ -48,13 +46,12 @@ export default function SceduleSide() {
               {
                 width: drawerWidth,
                 top: 'calc(55px + 2vh)',
-                zIndex: 1000,
+                zIndex: 100,
                 boxSizing: 'border-box'
               },
 
             }}
           >
-            {/* <Toolbar /> */}
             <Box sx={{ overflow: 'auto' }}>
               <List>
                 {['Courses', 'Requirements'].map((text, index) => (

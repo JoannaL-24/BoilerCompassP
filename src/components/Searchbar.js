@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
-import DraggableCourse from "./DraggableCourse";
+import DraggableCourse from "./DraggableCourse/DraggableCourse";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import "./Searchbar.css";
 import { debounce } from "lodash";
 import { oHandler } from "models/purdueapi";
@@ -43,13 +44,14 @@ const Searchbar = () => {
         results.push(entity.Subject.Abbreviation + " " + entity.Number);
       }
       setResults(results);
+      console.log(results);
     } catch (error) {
       console.error("Error:", error);
     }
   }, 500);
 
   return (
-    <div className="search&display">
+    <div className="searchDisplay">
       <div className="search">
         <TextField
           id="outlined-basic"
@@ -59,16 +61,22 @@ const Searchbar = () => {
           size="small"
           onChange={(e) => handleSearch(e.target.value)}
           variant="outlined"
-          style={{ width: 200, height: 5 }}
+          style={{ width: 200 }}
           label="Search course"
         />
       </div>
-      <div>
-        {results.map((result, index) => (
-          <DraggableCourse key={index} course={result} />
-        ))}
-      </div>
-    </div>
+      <Droppable droppableId="ROOT">
+        {(provided) => (
+          <div className="searchResults" {...provided.droppableProps} ref={provided.innerRef}>
+            {results.map((result, index) => (
+              <DraggableCourse key={index} course={result} index={index} />
+            ))}
+            {provided.placeholder}
+          </div>
+        )
+        }
+      </Droppable >
+    </div >
   );
 };
 
