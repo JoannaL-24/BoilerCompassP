@@ -107,6 +107,7 @@ function AdvisorHomepageFilter() {
           .toDate()
           .toLocaleString()
           .toLowerCase()
+          .substring(0, user.start_term.toDate().toLocaleString().indexOf(",")) //delete time
           .includes(query)) ||
       user.purdue_email.toLowerCase().includes(query) ||
       user.prefer_majors.some((major) =>
@@ -285,7 +286,16 @@ function AdvisorHomepageFilter() {
           </button>
           <h2 style={{ paddingTop: "20px" }}>User Details</h2>
           <p>Name: {selectedUser.name}</p>
-          <p>Year: {selectedUser.start_term?.toDate().toLocaleString()}</p>
+          <p>
+            Start Year:{" "}
+            {selectedUser.start_term
+              ?.toDate()
+              .toLocaleString()
+              .substring(
+                0,
+                selectedUser.start_term?.toDate().toLocaleString().indexOf(",")
+              )}
+          </p>
           <p>Email: {selectedUser.purdue_email}</p>
           <p>Prefer Majors:</p>
           <ul>
