@@ -42,16 +42,18 @@ const Advisor_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
     if (go) {
       console.log(userinfo); // for testing purposes
       if (currentUser) {
-        const uid = currentUser.uid;
+        // const uid = currentUser.uid;
 
-        const user_doc = doc(firestore, "users", uid);
+        // const user_doc = doc(firestore, "users", uid);
 
-        updateDoc(user_doc, {
-          college: userinfo.college,
-          department: userinfo.department,
-          user_type: "advisor",
-        });
-
+        // updateDoc(user_doc, {
+        //   college: userinfo.college,
+        //   department: userinfo.department,
+        //   user_type: "advisor",
+        // });
+        userData.put("college", userinfo.college);
+        userData.put("department", userinfo.deparment);
+        userData.put("user_type", userinfo.user_type);
 
         (!setup && setUpdated(true));
         if (setup) navigate('/AdvisorHomePage');

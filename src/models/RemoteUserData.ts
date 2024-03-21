@@ -75,7 +75,7 @@ export default class RemoteUserdata implements UserData {
           else {
             getDocFromServer(docRef)
               .then((snapshot) => {
-                if (snapshot.exists()) resolve(snapshot.data)
+                if (snapshot.exists()) resolve(snapshot.data())
                 else reject('Document does not exist')
               })
               .catch((err) => reject(err))
@@ -84,7 +84,7 @@ export default class RemoteUserdata implements UserData {
         .catch(() => {
           getDocFromServer(docRef)
             .then((snapshot) => {
-              if (snapshot.exists()) resolve(snapshot.data)
+              if (snapshot.exists()) resolve(snapshot.data())
               else reject('Document does not exist')
             })
             .catch((err) => reject(err))
