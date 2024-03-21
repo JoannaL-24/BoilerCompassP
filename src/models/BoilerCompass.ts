@@ -67,6 +67,7 @@ export interface Student extends User {
   end_term: Date
   advisors: Advisor[]
   groups: Group[]
+  completed_courses: string[]
 }
 
 export interface Advisor extends User {
