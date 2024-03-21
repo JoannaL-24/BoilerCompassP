@@ -15,22 +15,30 @@ import "firebase/auth";
 import "firebase/firestore";
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../models/firebase.ts";
+import "firebase/firestore";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import "./AdvisorHomepageFilter.css";
-
 import app from "../models/firebase.ts";
 import { useAuth } from "../components/contexts/AuthContext";
 
 function AdvisorHomepageFilter() {
   const [value, setValue] = useState("female");
   const [userNames, setUserNames] = useState<
-    { name: string; purdue_email: string; prefer_majors: { name: string }[] }[]
+    {
+      name: string;
+      start_term: any;
+      purdue_email: string;
+      prefer_majors: { name: string }[];
+    }[]
   >([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [clickedUser, setClickedUser] = useState(null);
   const [hoveredUser, setHoveredUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
+  const [clickedLabel, setClickedLabel] = useState(null);
+  const [selectedLabel, setSelectedLabel] = useState(null);
+  const [hoveredLabel, setHoveredLabel] = useState(null);
 
   const { currentUser } = useAuth();
 
@@ -43,6 +51,7 @@ function AdvisorHomepageFilter() {
         purdue_email: string;
         prefer_majors: { name: string }[];
         user_type: string;
+        start_term: any;
       }[] = [];
       usersSnapshot.forEach((doc) => {
         const userData = doc.data();
@@ -52,6 +61,7 @@ function AdvisorHomepageFilter() {
             purdue_email: userData.purdue_email,
             prefer_majors: userData.prefer_majors || [],
             user_type: userData.user_type,
+            start_term: userData.start_term,
           });
         }
       });
@@ -69,16 +79,17 @@ function AdvisorHomepageFilter() {
     setSelectedUser(userData);
     setClickedUser(userData);
     setPopupVisible(true);
+    setClickedLabel(userData);
     setTimeout(() => {
       setClickedUser(null);
     }, 50); // time
   };
 
   const handleCloseButtonClick = () => {
-    setPopupVisible(false); // Hide popup when close button is clicked
+    setPopupVisible(false);
     setTimeout(() => {
-      setSelectedUser(null); // Reset selectedUser after animation
-    }, 500); // Adjust timeout to match animation duration
+      setSelectedUser(null);
+    }, 500); // timeout to match animation
   };
 
   const filteredUserNames = userNames.filter((user) => {
@@ -91,12 +102,30 @@ function AdvisorHomepageFilter() {
 
     return (
       user.name.toLowerCase().includes(query) ||
+      (user.start_term &&
+        getSemester(user.start_term.toDate()) // Check semester
+          .toLowerCase()
+          .includes(query)) ||
       user.purdue_email.toLowerCase().includes(query) ||
       user.prefer_majors.some((major) =>
         major.name.toLowerCase().includes(query)
       )
     );
   });
+
+  function getSemester(date: Date) {
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    if (month >= 1 && month <= 6) {
+      if (month == 1) {
+        return "Bruh " + year;
+      }
+      return "Spring " + year;
+    } else if (month >= 7 && month <= 12) {
+      return "Fall " + year;
+    }
+    return "";
+  }
 
   return (
     <div className="AddsivorHomePageFilter">
@@ -107,7 +136,7 @@ function AdvisorHomepageFilter() {
             id="input-with-sx"
             label="Search student"
             variant="standard"
-            style={{ width: "200px" }}
+            style={{ width: "201px" }}
             onChange={(e) => setSearchQuery(e.target.value)} // update search state
           />
         </div>
@@ -126,6 +155,7 @@ function AdvisorHomepageFilter() {
             onChange={handleChange}
           >
             <FormControlLabel
+              className="radio-group-shadow"
               value="alphabetincrease"
               control={
                 <Radio
@@ -139,6 +169,7 @@ function AdvisorHomepageFilter() {
               label="Sort alphabetically (ascending)"
             />
             <FormControlLabel
+              className="radio-group-shadow"
               value="alphabetdecrease"
               control={
                 <Radio
@@ -152,6 +183,7 @@ function AdvisorHomepageFilter() {
               label="Sort alphabetically (descending)"
             />
             <FormControlLabel
+              className="radio-group-shadow"
               value="yearincrease"
               control={
                 <Radio
@@ -165,6 +197,7 @@ function AdvisorHomepageFilter() {
               label="Sort by year (ascending)"
             />
             <FormControlLabel
+              className="radio-group-shadow"
               value="yeardecrease"
               control={
                 <Radio
@@ -256,17 +289,21 @@ function AdvisorHomepageFilter() {
               right: "10px",
               padding: "3px 8px",
               borderRadius: "5px",
-              //backgroundColor: "white",
-              //color: "black",
               border: "none",
               cursor: "pointer",
-              //animation: "dropBottom 0.5s linear",
             }}
           >
             Close
           </button>
           <h2 style={{ paddingTop: "20px" }}>User Details</h2>
           <p>Name: {selectedUser.name}</p>
+          <p>
+            Start Year:{" "}
+            {
+              selectedUser.start_term &&
+                getSemester(selectedUser.start_term.toDate()) // check semester
+            }
+          </p>
           <p>Email: {selectedUser.purdue_email}</p>
           <p>Prefer Majors:</p>
           <ul>
