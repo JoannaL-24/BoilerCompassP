@@ -79,7 +79,10 @@
         "name": "Aviation Management"
     },
     {
-        "name": "BiochemistryBiochemistry (Chemistry)"
+        "name": "Biochemistry"
+    },
+    {
+        "name": "Biochemistry (Chemistry)"
     },
     {
         "name": "Biological Engineering (College of Agriculture)"
@@ -112,10 +115,16 @@
         "name": "Chemical Engineering"
     },
     {
-        "name": "ChemistryChemistry - American Chemical Society"
+        "name": "Chemistry"
     },
     {
-        "name": "Chinese StudiesCivil Engineering"
+        "name": "Chemistry - American Chemical Society"
+    },
+    {
+        "name": "Chinese Studies"
+    },
+    {
+        "name": "Civil Engineering"
     },
     {
         "name": "Classical Studies"

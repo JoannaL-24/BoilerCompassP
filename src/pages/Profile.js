@@ -8,9 +8,11 @@ import dayjs from "dayjs";
 import { doc, updateDoc, getDoc, Timestamp } from "firebase/firestore";
 import "../css/Profile.css";
 import { PfpForm } from "components/PfpForm";
+import RemoteUserdata from "../models/RemoteUserData";
 
 const Profile = () => {
   const { currentUser } = useAuth();
+  const userData: UserData = new RemoteUserdata();
   const [userinfo, setUserinfo] = useState(null);
   const [convertDate, setConverDate] = useState(true);
   const [updated, setUpdated] = useState(false);
@@ -26,6 +28,16 @@ const Profile = () => {
         //setUserinfo(userinfo?userinfo:docSnapshot.data());
       }
     );
+    // if (!userinfo) {
+    //   userData.get("user_type", "purdue_email")
+    //     .then((user_type, purdue_email) => {
+    //       setUserinfo((prev) => ({...prev, user_type: user_type, purdue_email: purdue_email}));
+    //       console.log(purdue_email);
+    //     })
+    //     .catch((error) => {
+    //       console.error('Error fetching user type:', error);
+    //     });
+    // }
     if (userinfo && convertDate) {
       if (userinfo.user_type === "advisor") {
         setConverDate(false);
