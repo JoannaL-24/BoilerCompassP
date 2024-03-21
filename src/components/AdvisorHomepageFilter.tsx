@@ -103,11 +103,8 @@ function AdvisorHomepageFilter() {
     return (
       user.name.toLowerCase().includes(query) ||
       (user.start_term &&
-        user.start_term
-          .toDate()
-          .toLocaleString()
+        getSemester(user.start_term.toDate()) // Check semester
           .toLowerCase()
-          .substring(0, user.start_term.toDate().toLocaleString().indexOf(",")) //delete time
           .includes(query)) ||
       user.purdue_email.toLowerCase().includes(query) ||
       user.prefer_majors.some((major) =>
@@ -115,6 +112,20 @@ function AdvisorHomepageFilter() {
       )
     );
   });
+
+  function getSemester(date: Date) {
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    if (month >= 1 && month <= 6) {
+      if (month == 1) {
+        return "Bruh " + year;
+      }
+      return "Spring " + year;
+    } else if (month >= 7 && month <= 12) {
+      return "Fall " + year;
+    }
+    return "";
+  }
 
   return (
     <div className="AddsivorHomePageFilter">
@@ -288,13 +299,10 @@ function AdvisorHomepageFilter() {
           <p>Name: {selectedUser.name}</p>
           <p>
             Start Year:{" "}
-            {selectedUser.start_term
-              ?.toDate()
-              .toLocaleString()
-              .substring(
-                0,
-                selectedUser.start_term?.toDate().toLocaleString().indexOf(",")
-              )}
+            {
+              selectedUser.start_term &&
+                getSemester(selectedUser.start_term.toDate()) // check semester
+            }
           </p>
           <p>Email: {selectedUser.purdue_email}</p>
           <p>Prefer Majors:</p>
