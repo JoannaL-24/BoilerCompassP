@@ -191,8 +191,7 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
           </LocalizationProvider>
         </FormControl>
         <FormControl display="flex" style={{width: 400}}>
-          {!setup && <h3 className="Question">Your advisor:</h3>}
-          {!setup && <h3 style={{fontWeight:"normal"}}>{userinfo.advisor}</h3>}
+          {!setup && <h3 className="Question">Your advisor: {userinfo.advisor}</h3>}
         </FormControl>
         <Box className="Btn">
           <Button type="submit" onClick={handleSubmit(submit)} variant="outlined">{submit_button_text}</Button>
