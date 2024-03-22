@@ -43,7 +43,7 @@ function AdvisorHomepageFilter() {
 
   const { currentUser } = useAuth();
 
-  const exampleStyle = {
+  const textStyle = {
     //display: "inline-block",
 
     marginBottom: "1em",
@@ -60,11 +60,11 @@ function AdvisorHomepageFilter() {
   };
 
   const Wave1 = () => (
-    <div style={exampleStyle}>
+    <div style={textStyle}>
       <Wave
         text="NO RESULTS FOUND"
         effect="fadeOut"
-        effectChange={10}
+        effectChange={0.1}
         effectDuration={0.01}
       />
 
@@ -147,9 +147,6 @@ function AdvisorHomepageFilter() {
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
     if (month >= 1 && month <= 6) {
-      if (month == 1) {
-        return "Bruh " + year;
-      }
       return "Spring " + year;
     } else if (month >= 7 && month <= 12) {
       return "Fall " + year;
