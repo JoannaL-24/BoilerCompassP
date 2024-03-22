@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Wave, Random } from "react-animated-text";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Radio from "@mui/material/Radio";
@@ -41,6 +42,35 @@ function AdvisorHomepageFilter() {
   const [hoveredLabel, setHoveredLabel] = useState(null);
 
   const { currentUser } = useAuth();
+
+  const exampleStyle = {
+    //display: "inline-block",
+
+    marginBottom: "1em",
+    padding: "2em 1em 1em 1em",
+    width: "80%",
+    fontSize: "2rem",
+  };
+
+  const codeDivStyle = {
+    marginTop: "2em",
+    padding: "1px 1em",
+    overflow: "scroll",
+    fontSize: "2rem",
+  };
+
+  const Wave1 = () => (
+    <div style={exampleStyle}>
+      <Wave
+        text="NO RESULTS FOUND"
+        effect="fadeOut"
+        effectChange={10}
+        effectDuration={0.01}
+      />
+
+      <div style={codeDivStyle}></div>
+    </div>
+  );
 
   useEffect(() => {
     const firestore = getFirestore(app);
@@ -215,44 +245,50 @@ function AdvisorHomepageFilter() {
       </div>
 
       <div className="searchResult">
-        {filteredUserNames.map((user, index) => (
-          <a
-            key={index}
-            href="#"
-            onClick={() => handleUserClick(user)}
-            onMouseEnter={() => setHoveredUser(user)}
-            onMouseLeave={() => setHoveredUser(null)}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textDecoration: "none",
-              //border: "1px solid black",
-              borderRadius: "20px",
-              width: "160px",
-              padding: "10px",
-              marginRight: "50px",
-              marginBottom: "10px",
-              transform: `${clickedUser === user ? "scale(0.3)" : "scale(1)"} ${
-                hoveredUser === user ? "scale(1.2)" : "scale(1)"
-              }`,
-              transition: "transform 0.5s ease",
+        {filteredUserNames.length === 0 ? (
+          <Wave1 />
+        ) : (
+          filteredUserNames.map((user, index) => (
+            <a
+              key={index}
+              href="#"
+              onClick={() => handleUserClick(user)}
+              onMouseEnter={() => setHoveredUser(user)}
+              onMouseLeave={() => setHoveredUser(null)}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                textDecoration: "none",
+                //border: "1px solid black",
+                borderRadius: "20px",
+                width: "160px",
+                padding: "10px",
+                marginRight: "50px",
+                marginBottom: "10px",
+                transform: `${
+                  clickedUser === user ? "scale(0.3)" : "scale(1)"
+                } ${hoveredUser === user ? "scale(1.2)" : "scale(1)"}`,
+                transition: "transform 0.5s ease",
 
-              backgroundColor: hoveredUser === user ? "#87ceeb" : "", // background color
-              color: hoveredUser === user ? "white" : "", // text color
-              boxShadow:
-                hoveredUser === user
-                  ? "10px 10px 20px rgba(128, 229, 216, 1)"
-                  : "", // shadow
+                backgroundColor: hoveredUser === user ? "#87ceeb" : "", // background color
+                color: hoveredUser === user ? "white" : "", // text color
+                boxShadow:
+                  hoveredUser === user
+                    ? "10px 10px 20px rgba(128, 229, 216, 1)"
+                    : "", // shadow
 
-              border:
-                hoveredUser === user ? "1px solid white" : "1px solid black",
-            }}
-          >
-            <AccountCircle sx={{ color: "action.active", fontSize: "40px" }} />
-            <span style={{ marginTop: "5px" }}>{user.name}</span>{" "}
-          </a>
-        ))}
+                border:
+                  hoveredUser === user ? "1px solid white" : "1px solid black",
+              }}
+            >
+              <AccountCircle
+                sx={{ color: "action.active", fontSize: "40px" }}
+              />
+              <span style={{ marginTop: "5px" }}>{user.name}</span>{" "}
+            </a>
+          ))
+        )}
       </div>
       {/* Popup to display user data */}
       {selectedUser && (
