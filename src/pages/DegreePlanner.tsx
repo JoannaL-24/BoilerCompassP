@@ -17,11 +17,88 @@ import Searchbar from "components/Searchbar.js";
 import "../components/Searchbar.css";
 import Semester from "components/Semester/Semester.tsx";
 
+// temperary data for semester_blocks in Schedule
+const DATA = [
+    {
+        id: 1,
+        year: 2022,
+        term: "Fall",
+        course_list: [],
+    },
+    {
+        id: 2,
+        year: 2023,
+        term: "Spring",
+        course_list: [],
+    },
+    {
+        id: 3,
+        year: 2023,
+        term: "Summer",
+        course_list: [],
+    },
+    {
+        id: 4,
+        year: 2023,
+        term: "Fall",
+        course_list: [],
+    },
+    {
+        id: 5,
+        year: 2024,
+        term: "Spring",
+        course_list: [],
+    },
+    {
+        id: 6,
+        year: 2024,
+        term: "Summer",
+        course_list: [],
+    },
+    {
+        id: 7,
+        year: 2024,
+        term: "Fall",
+        course_list: [],
+    },
+    {
+        id: 8,
+        year: 2025,
+        term: "Spring",
+        course_list: [],
+    },
+    {
+        id: 9,
+        year: 2025,
+        term: "Summer",
+        course_list: [],
+    },
+    {
+        id: 10,
+        year: 2025,
+        term: "Fall",
+        course_list: [],
+    },
+    {
+        id: 11,
+        year: 2026,
+        term: "Spring",
+        course_list: [],
+    },
+    {
+        id: 12,
+        year: 2026,
+        term: "Summer",
+        course_list: [],
+    },
+]
 
 export default function DegreePlanner() {
     //get current user and mode preference
     const { currentUser } = useAuth();
     const [darkmode, setDarkmode] = useState<boolean>(null);
+    const [semesterBlocks, setSemesterBlocks] = useState(DATA);
+    const [searchResult, setSearchResult] = useState([]);
 
     useEffect(() => {
         if (currentUser) {
@@ -33,8 +110,33 @@ export default function DegreePlanner() {
     }, [currentUser]);
 
     const handleDragDrop = (result) => {
+        const { source, destination } = result;
         console.log("drag occured");
         console.log(result);
+        if (!destination) return;
+        if (destination.droppableId === "ROOT") return;
+        if (source.droppableId === destination.droppableId && source.index === destination.index)
+            return;
+
+        if (source.droppableId === "ROOT" && searchResult.length > 0) {
+            console.log("Root to Semester");
+            const newSourceCourses = searchResult;
+            const newDestinationCourses = semesterBlocks[destination.droppableId-1].course_list;
+
+            const [deletedCourse]  = newSourceCourses.splice(source.index, 1);
+            newDestinationCourses.splice(destination.index, 0, deletedCourse);
+
+            const newSemesterBlocks = [...semesterBlocks];
+            newSemesterBlocks[destination.droppableId-1] = {
+                ...semesterBlocks[destination.droppableId-1],
+                course_list: newDestinationCourses,
+            };
+            // console.log(deletedCourse);
+            // console.log(newSourceCourses);
+            // console.log(newSemesterBlocks);
+            setSearchResult(newSourceCourses);
+            setSemesterBlocks(newSemesterBlocks);
+        }
     }
 
     return (
@@ -44,10 +146,10 @@ export default function DegreePlanner() {
                 setDarkmode={setDarkmode} />
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                <ScheduleView />
+                <ScheduleView semesterBlocks={semesterBlocks} />
                 <div className="ScheduleSide">
                     <button className="mediumBtn goldBtn"><h3>Requirement</h3></button>
-                    <Searchbar />
+                    <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} />
                 </div>
                 </DragDropContext>
             </div>

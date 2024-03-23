@@ -36,3 +36,13 @@
     transition: 200ms;
 }
 
+.Year{
+    width: 100%;
+    margin: 20px 0px 20px;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: flex-start;
+    align-content: center;
+    justify-content: space-evenly;
+    text-align: center;
+}

@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import DraggableCourse from "./DraggableCourse/DraggableCourse";
-import { Draggable, Droppable } from "react-beautiful-dnd";
+import { Droppable } from "react-beautiful-dnd";
 import "./Searchbar.css";
 import { debounce } from "lodash";
 import { oHandler } from "models/purdueapi";
 
-const Searchbar = () => {
+const Searchbar = ({parentSearch, updateParentSearch}) => {
   const [results, setResults] = useState([]);
   const [matchedEntities, setMatchedEntities] = useState([]);
+  
 
   const handleSearch = debounce(async (searchInput) => {
     const searchString = searchInput.toUpperCase().trim();
@@ -40,11 +41,17 @@ const Searchbar = () => {
       // max length 10
       setMatchedEntities(entities);
       var results = [];
+      let result;
       for (const entity of entities.slice(0, 10)) {
-        results.push(entity.Subject.Abbreviation + " " + entity.Number);
+        result = {
+          id: entity.Id,
+          number: entity.Subject.Abbreviation + " " + entity.Number,
+        };
+        results.push(result);
       }
-      setResults(results);
       console.log(results);
+      setResults(results);
+      updateParentSearch(results);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -69,12 +76,11 @@ const Searchbar = () => {
         {(provided) => (
           <div className="searchResults" {...provided.droppableProps} ref={provided.innerRef}>
             {results.map((result, index) => (
-              <DraggableCourse key={index} course={result} index={index} />
+              <DraggableCourse key={index} index={index} course={result.number} id={result.id} />
             ))}
             {provided.placeholder}
           </div>
-        )
-        }
+        )}
       </Droppable >
     </div >
   );
