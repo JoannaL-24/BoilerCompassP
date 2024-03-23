@@ -8,6 +8,10 @@ import AddLinkIcon from '@mui/icons-material/AddLink';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Semester from "../Semester/Semester";
 import ProgressBar from '../ProgressBar'
+import { getSatisfied } from '../models/BoilerCompass';
+import { CS } from '../models/BoilerCompass'
+import { useAuth } from "../components/contexts/AuthContext";
+import RemoteUserdata from "../models/RemoteUserData";
 
 export default function ScheduleView({ semesterBlocks }) {
     const [semesterRender, setSemesterRender] = useState([]);
@@ -28,6 +32,28 @@ export default function ScheduleView({ semesterBlocks }) {
         }
         setSemesterRender(newRender);
     }, [semesterBlocks])
+
+    // get numbers for calculating degree progress
+    const [completed, setCompleted] = useState(0);
+    const [total, setTotal] = useState(100);
+    const [planned, setPlanned] = useState(0);
+    const userData: UserData = new RemoteUserdata();
+    const { currentUser } = useAuth();
+    // useEffect(() => {
+    if (currentUser) {
+        // get completed and total
+        userData.get("completed_courses")
+          .then((completed) => {
+            let c = getSatisfied(CS, completed);
+            setCompleted(c[0]);
+            setTotal(c[1]);
+          })
+        
+        // get planned
+        
+    } 
+    // }, []) // trigger?
+    
 
     return (
         <div className="ScheduleView">
