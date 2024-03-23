@@ -38,8 +38,6 @@ function AdvisorHomepageFilter() {
   const [searchQuery, setSearchQuery] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
   const [clickedLabel, setClickedLabel] = useState(null);
-  const [selectedLabel, setSelectedLabel] = useState(null);
-  const [hoveredLabel, setHoveredLabel] = useState(null);
 
   const { currentUser } = useAuth();
 
