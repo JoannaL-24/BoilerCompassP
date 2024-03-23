@@ -100,26 +100,35 @@ export interface Requirement {
   criteria: (CourseCriterion | RequirementCriterion)[]
 }
 
-export function isSatisfied(
+export function getSatisfied(
   req: Requirement,
   completedCourseIds: Set<string>,
-): boolean {
-  let ct = 0
-
+): [number, number] {
+  const crits: Array<Array<number>> = []
   req.criteria.forEach((criterion) => {
     if (criterion.type === 'course') {
-      if (completedCourseIds.has(criterion.course.id) && ++ct >= req.numNeeded)
-        return
+      let c = [0, 1]
+      if (completedCourseIds.has(criterion.course.id)) c[0] = 1
+      crits.push(c)
     }
 
     if (criterion.type === 'requirement') {
-      if (
-        isSatisfied(criterion.requirement, completedCourseIds) &&
-        ++ct >= req.numNeeded
-      )
-        return
+      let c = getSatisfied(criterion.requirement, completedCourseIds)
+      crits.push(c)
     }
   })
 
-  return ct >= req.numNeeded
+  crits.sort((a, b) => {
+    return a[0] / a[1] - b[0] / b[1]
+  })
+
+  let completedCt = 0
+  let totalCt = 0
+  for (let i = 0; i < req.numNeeded; ++i) {
+    let crit = crits.pop()
+    completedCt += crit[0]
+    totalCt += crit[1]
+  }
+
+  return [completedCt, totalCt]
 }

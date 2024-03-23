@@ -54,3 +54,16 @@
     opacity: 0;
   }
 }
+
+.radio-group-shadow {
+  transition: box-shadow 0.3s ease;
+}
+
+.radio-group-shadow:focus-within,
+.radio-group-shadow:hover {
+  box-shadow: 0 0 10px rgba(232, 192, 12, 1);
+}
+
+.glow {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3) !important;
+}
