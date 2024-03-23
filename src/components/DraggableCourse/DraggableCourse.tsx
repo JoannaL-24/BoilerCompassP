@@ -5,14 +5,16 @@ import "./DraggableCourse.css"
 import "../CoursePopup/CoursePopup.css";
 
 type DraggableCourseProps = {
-  course: string;
   index: number;
+  id: string;
+  course: string;
 };
 
-const DraggableCourse: React.FC<DraggableCourseProps> = ({ course, index }) => {
+const DraggableCourse: React.FC<DraggableCourseProps> = ({ index, id, course }) => {
   return (
     <Draggable
-      draggableId={"" + index}
+      key={id}
+      draggableId={id}
       index={index}
     >
       {(provided) => (
