@@ -21,16 +21,9 @@ const DarkModeToggle = ({darkmode, setDarkmode}: Props) => {
     console.log(darkmode)
 
     const toggleTheme = (e) => {
-        // if (e.target.checked) {setDarkmode(false);}
-        // else {setDarkmode(true);}
         console.log("mode: " + darkmode)
         var dark_state = e.target.checked;
-        console.log("checked: " + dark_state)
-        // if (e.target.checked === true) {setDarkmode(true);} 
-        // else {setDarkmode(false);}
         setDarkmode(dark_state);
-        console.log(darkmode)
-        console.log("set")
         if (currentUser) {
             const user_doc = doc(firestore, "users", currentUser.uid);
             //TODO: fix guest user
