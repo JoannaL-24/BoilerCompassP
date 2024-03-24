@@ -139,6 +139,31 @@ export default function DegreePlanner() {
         }
     }
 
+    const calculateProgress = () => {
+        // get numbers for calculating degree progress
+        const [completed, setCompleted] = useState(0);
+        const [total, setTotal] = useState(100);
+        const [planned, setPlanned] = useState(0);
+        const userData: UserData = new RemoteUserdata();
+        const { currentUser } = useAuth();
+        if (currentUser) {
+            // get completed and total
+            userData.get("completed_courses")
+            .then((completed) => {
+                let c = getSatisfied(CS, completed);
+                setCompleted(c[0]);
+                setTotal(c[1]);
+            })
+            
+            // get planned
+            userData.get("planned_courses")
+            .then((planned) => {
+                let c = getSatisfied(CS, planned);
+                setPlanned(c[0]);
+            })
+        } 
+    }
+
     return (
         <div className="DegreeOverview">
             <NavBar
