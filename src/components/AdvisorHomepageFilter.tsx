@@ -188,7 +188,7 @@ function AdvisorHomepageFilter() {
         <br />
         <FormControl
           sx={{
-            border: "2px solid black",
+            border: "2px solid var(--textPrimary)",
             borderRadius: "5px",
             padding: "10px",
           }}
@@ -276,7 +276,7 @@ function AdvisorHomepageFilter() {
                 flexDirection: "column",
                 alignItems: "center",
                 textDecoration: "none",
-                //border: "1px solid black",
+                // border: "1px solid red",
                 borderRadius: "20px",
                 width: "160px",
                 padding: "10px",
@@ -295,7 +295,7 @@ function AdvisorHomepageFilter() {
                     : "", // shadow
 
                 border:
-                  hoveredUser === user ? "1px solid white" : "1px solid black",
+                  hoveredUser === user ? "1px solid white" : "1px solid var(--textPrimary)",
               }}
             >
               <AccountCircle

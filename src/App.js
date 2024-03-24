@@ -44,7 +44,9 @@ function App() {
             path="/ProfileSetupAdvisor"
             element={<ProfileSetupAdvisor />}
           />
-          <Route path="/AdvisorHomePage" element={<AdvisorHomepage />} />
+          <Route path="/AdvisorHomePage" element={<AdvisorHomepage 
+            darkmode={darkmode}
+            setDarkmode={setDarkmode}/>} />
           <Route path="/Settings" element={<SettingsPage />} />
         </Routes>
       </div>

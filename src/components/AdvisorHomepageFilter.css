@@ -1,11 +1,15 @@
 .AddsivorHomePageFilter {
   width: 100vw;
+  min-height: calc(98vh - 55px);
   position: absolute;
   top: calc(55px + 2vh);
   padding: 30px 30px 0px;
   display: flex;
+  align-items: flex-start;
   flex-direction: row;
   justify-content: space-between;
+  background: var(--background);
+  color: var(--textPrimary);
 }
 
 .studentSearching {
