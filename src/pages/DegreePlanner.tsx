@@ -93,6 +93,7 @@ const DATA = [
         course_list: [],
     },
 ]
+
 type Props = {
     darkmode:boolean;
     setDarkmode: React.Dispatch<React.SetStateAction<boolean>>;
