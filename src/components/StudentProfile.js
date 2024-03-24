@@ -14,7 +14,8 @@ import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../components/contexts/AuthContext'
 import { useNavigate } from 'react-router-dom';
-import RemoteUserdata from "../models/RemoteUserData";
+import RemoteUserdata from '../models/RemoteUserData';
+import { Schedule, Semester } from '../models/BoilerCompass';
 // firebase imports
 import { doc, updateDoc, Timestamp } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
@@ -62,7 +63,20 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
     }
     else setEnd("");
     if (go) {
-      // console.log(userinfo); // for testing purposes
+      if (setup) {
+        let total_semesters = (userinfo.end_term.year - userinfo.start_term.year + 1) * 3;
+        let semester_blocks = [];
+        for (let i = 0; i < total_semesters; i++) {
+          let term = (i%3==0?"Spring":(i%3==1?"Summer":"Fall"));
+          let semester: Semester = {
+            id: -1,
+            year: (userinfo.start_term.year+(i/3)),
+            term: term,
+            course_list: [],
+          }
+          semester_blocks[i] = semeester;
+        }
+      }
       if (currentUser) {
 
         // const uid = currentUser.uid;
@@ -79,12 +93,14 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
         userData.put("user_type", userinfo.user_type);
         userData.put("start_term", Timestamp.fromDate(new Date(userinfo.start_term)));
         userData.put("end_term", Timestamp.fromDate(new Date(userinfo.end_term)));
+        userData.put("completed_courses", userinfo.completed_courses);
+        userData.put("planned_courses", userinfo.planned_courses);
+        userData.put("schedule", userinfo.schedule);
         (!setup && setUpdated(true));
         if (setup) navigate('/DegreePlanner');
       }
       else {
-        (!setup && setUpdated(true));
-        if (setup) navigate('/DegreePlanner');
+        // local
       }
     }
   }

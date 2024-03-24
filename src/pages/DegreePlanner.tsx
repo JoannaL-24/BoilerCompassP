@@ -104,6 +104,10 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
     // const [darkmode, setDarkmode] = useState<boolean>(null);
     const [semesterBlocks, setSemesterBlocks] = useState(DATA);
     const [searchResult, setSearchResult] = useState([]);
+    // progress bar data
+    const [completed, setCompleted] = useState(0);
+    const [total, setTotal] = useState(100);
+    const [planned, setPlanned] = useState(0);
 
     useEffect(() => {
         if (currentUser) {
@@ -160,6 +164,28 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
         }
     }
 
+    const calculateProgress = () => {
+        // get numbers for calculating degree progress
+        const userData: UserData = new RemoteUserdata();
+        const { currentUser } = useAuth();
+        if (currentUser) {
+            // get completed and total
+            userData.get("completed_courses")
+            .then((completed) => {
+                let c = getSatisfied(CS, completed);
+                setCompleted(c[0]);
+                setTotal(c[1]);
+            })
+            
+            // get planned
+            userData.get("planned_courses")
+            .then((planned) => {
+                let c = getSatisfied(CS, planned);
+                setPlanned(c[0]);
+            })
+        } 
+    }
+
     return (
         <div className="DegreeOverview">
             <NavBar
@@ -167,7 +193,7 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
                 setDarkmode={setDarkmode} />
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                <ScheduleView semesterBlocks={semesterBlocks} />
+                <ScheduleView semesterBlocks={semesterBlocks} semesterBlocks={semesterBlocks} completed={completed} planned={planned} total={total}/>
 
                 <ThemeProvider theme = {mode}>
                     <div className="ScheduleSide" style={darkmode ? {backgroundColor: '#3b3a39'} : {backgroundColor: '#f5f3eb'}}>
@@ -175,10 +201,8 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
                         <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} />
                     </div>
                 </ThemeProvider>
-
                 </DragDropContext>
             </div>
-
         </div>
     )
 }
