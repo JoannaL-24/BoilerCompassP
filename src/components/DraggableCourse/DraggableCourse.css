@@ -1,0 +1,8 @@
+.course {
+    width: calc(100% - 6px);
+    min-height: 10px;
+    color: var(--textPrimary);
+    background-color: var(--background);
+    padding: 10px 3px;
+    margin-bottom: 10px;
+}

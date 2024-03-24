@@ -62,6 +62,36 @@ export default class RemoteUserdata implements UserData {
     })
   }
 
+  getAll(): Promise<any> {
+    const uid = this.currentUser?.uid
+    if (!uid)
+      return Promise.reject('currentUser is null, cannot access remote data')
+
+    return new Promise((resolve, reject) => {
+      const docRef = doc(firestore, `/users/${uid}/`)
+      getDocFromCache(docRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) resolve(snapshot.data())
+          else {
+            getDocFromServer(docRef)
+              .then((snapshot) => {
+                if (snapshot.exists()) resolve(snapshot.data())
+                else reject('Document does not exist')
+              })
+              .catch((err) => reject(err))
+          }
+        })
+        .catch(() => {
+          getDocFromServer(docRef)
+            .then((snapshot) => {
+              if (snapshot.exists()) resolve(snapshot.data())
+              else reject('Document does not exist')
+            })
+            .catch((err) => reject(err))
+        })
+    })
+  }
+
   init(user: User): Promise<void> {
     const uid = this.currentUser?.uid
     if (!uid)

@@ -8,39 +8,48 @@ import dayjs from "dayjs";
 import { doc, updateDoc, getDoc, Timestamp } from "firebase/firestore";
 import "../css/Profile.css";
 import { PfpForm } from "components/PfpForm";
+import RemoteUserdata from "../models/RemoteUserData";
 
 const Profile = () => {
   const { currentUser } = useAuth();
+  const userData: UserData = new RemoteUserdata();
   const [userinfo, setUserinfo] = useState(null);
   const [convertDate, setConverDate] = useState(true);
   const [updated, setUpdated] = useState(false);
 
-  // useEffect(() => {
-  if (currentUser) {
-    const user_doc = getDoc(doc(firestore, "users", currentUser.uid)).then(
-      (docSnapshot) => {
-        const userData = docSnapshot.data();
-        if (userData) {
-          setUserinfo(userinfo ? userinfo : userData);
-        }
-        //setUserinfo(userinfo?userinfo:docSnapshot.data());
-      }
-    );
-    if (userinfo && convertDate) {
-      if (userinfo.user_type === "advisor") {
-        setConverDate(false);
-      } else {
-        setUserinfo((prev) => ({
-          ...prev,
-          start_term: dayjs(userinfo.start_term.toDate()),
-          end_term: dayjs(userinfo.end_term.toDate()),
-        }));
-        setConverDate(false);
-        // console.log(userinfo);
-      }
+  useEffect(() => {
+    if (currentUser) {
+      // const user_doc = getDoc(doc(firestore, "users", currentUser.uid)).then(
+      //   (docSnapshot) => {
+      //     const userData = docSnapshot.data();
+      //     if (userData) {
+      //       setUserinfo(userinfo ? userinfo : userData);
+      //     }
+      //     //setUserinfo(userinfo?userinfo:docSnapshot.data());
+      //   }
+      // );
+      userData.getAll()
+        .then((data) => {
+          setUserinfo(data);
+          if (convertDate) {
+            if (data.user_type === "advisor") {
+              setConverDate(false);
+            } else {
+              setUserinfo((prev) => ({
+                ...prev,
+                start_term: dayjs(data.start_term.toDate()),
+                end_term: dayjs(data.end_term.toDate()),
+              }));
+              setConverDate(false);
+            }
+          }
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error('Error fetching user type:', error);
+        });
     }
-  }
-  // }, [currentUser]);
+  }, [currentUser]);
 
   return (
     <div>

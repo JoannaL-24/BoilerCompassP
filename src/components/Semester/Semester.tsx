@@ -1,26 +1,27 @@
 import React from "react";
-import Draggable from "react-draggable";
-import Card from "@mui/material/Card";
+import { Droppable } from "react-beautiful-dnd";
+import DraggableCourse from "components/DraggableCourse/DraggableCourse";
 import "./Semester.css"
 
-const Semester = ({term}) => {
+
+const Semester = ({ semesterInfo }) => {
     let credits = 0;
-    
     return (
         <div className="Semester">
             <div className="SemesterDescription">
-                <h3>{term} ({credits} Hrs) </h3>
+                <h3>{semesterInfo.term} ({credits} Hrs) </h3>
             </div>
-            <div className="Courses">
-            {/* <Draggable>
-                <Card
-                    style={{
-                    width: "150px",
-                    height: "100px",
-                    }}
-                />
-           </Draggable> */}
-            </div>
+            <Droppable droppableId={semesterInfo.id+""}>
+                {(provided) => (
+                    <div className="Courses" {...provided.droppableProps} ref={provided.innerRef}>
+                        {semesterInfo.course_list.map((course, index) => (
+                            <DraggableCourse key={index} index={index} course={course.number} id={course.id} />
+                        ))}
+                        {provided.placeholder}
+                    </div>
+                )}
+            </Droppable>
+
         </div>
     )
 }

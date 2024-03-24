@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../components/contexts/AuthContext'
 import { useNavigate } from 'react-router-dom';
+import RemoteUserdata from "../models/RemoteUserData";
 // firebase imports
 import { doc, updateDoc, Timestamp } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
@@ -40,6 +41,7 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
   const end_term_q = setup?"Expected graduation date:":"Your expected graduation date:";
   const submit_button_text = setup?"Submit":"Edit/Save";
   const navigate = useNavigate();
+  const userData: UserData = new RemoteUserdata();
   // console.log(userinfo);
 
   const submit = () => {
@@ -62,18 +64,25 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
     if (go) {
       // console.log(userinfo); // for testing purposes
       if (currentUser) {
-        const uid = currentUser.uid;
-        const user_doc = doc(firestore, "users", uid);
-        updateDoc(user_doc, {
-          prefer_majors: userinfo.prefer_majors,
-          prefer_minor: userinfo.prefer_minor,
-          user_type: userinfo.user_type,
-          start_term: Timestamp.fromDate(new Date(userinfo.start_term)),
-          end_term: Timestamp.fromDate(new Date(userinfo.end_term)),
-        });
+
+        // const uid = currentUser.uid;
+        // const user_doc = doc(firestore, "users", uid);
+        // updateDoc(user_doc, {
+        //   prefer_majors: userinfo.prefer_majors,
+        //   prefer_minor: userinfo.prefer_minor,
+        //   user_type: userinfo.user_type,
+        //   start_term: Timestamp.fromDate(new Date(userinfo.start_term)),
+        //   end_term: Timestamp.fromDate(new Date(userinfo.end_term)),
+        // });
+        userData.put("prefer_majors", userinfo.prefer_majors);
+        userData.put("prefer_minor", userinfo.prefer_minor);
+        userData.put("user_type", userinfo.user_type);
+        userData.put("start_term", Timestamp.fromDate(new Date(userinfo.start_term)));
+        userData.put("end_term", Timestamp.fromDate(new Date(userinfo.end_term)));
         (!setup && setUpdated(true));
         if (setup) navigate('/DegreePlanner');
-      } else {
+      }
+      else {
         (!setup && setUpdated(true));
         if (setup) navigate('/DegreePlanner');
       }
@@ -191,8 +200,7 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
           </LocalizationProvider>
         </FormControl>
         <FormControl display="flex" style={{width: 400}}>
-          {!setup && <h3 className="Question">Your advisor:</h3>}
-          {!setup && <h3 style={{fontWeight:"normal"}}>{userinfo.advisor}</h3>}
+          {!setup && <h3 className="Question">Your advisor: {userinfo.advisor}</h3>}
         </FormControl>
         <Box className="Btn">
           <Button type="submit" onClick={handleSubmit(submit)} variant="outlined">{submit_button_text}</Button>
