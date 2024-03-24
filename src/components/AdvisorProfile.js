@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 // firebase imports
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../models/firebase.ts";
+import RemoteUserdata from '../models/RemoteUserData';
 // data imports
 import major_data from "../json/majors.json";
 import college_data from "../json/colleges.json";
@@ -26,6 +27,7 @@ const Advisor_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
   const department_q = setup ? "Choose your department:" : "Your department:";
   const college_q = setup ? "Choose your college:" : "Your college:";
   const submit_button_text = setup ? "Submit" : "Edit/Save";
+  const userData: UserData = new RemoteUserdata();
   const navigate = useNavigate();
   // console.log(userinfo);
 
@@ -52,18 +54,21 @@ const Advisor_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
         //   user_type: "advisor",
         // });
         userData.put("college", userinfo.college);
-        userData.put("department", userinfo.deparment);
+        userData.put("department", userinfo.department);
         userData.put("user_type", userinfo.user_type);
+        userData.put("students", userinfo.students);
 
         (!setup && setUpdated(true));
         if (setup) navigate('/AdvisorHomePage');
       }
       else {
-
         setSignedIn(false);
       }
     }
   };
+
+  console.log("jenny");
+  console.log(userinfo);
 
   return (
     <div>
