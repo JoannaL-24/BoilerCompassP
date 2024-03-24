@@ -1,3 +1,2 @@
-const o = require("odata").o;
-export const oHandler = o("https://api.purdue.io/odata/$metadata", {});
+export const purdueApiUrl = "http://0.0.0.0:5000/odata/$metadata"
 

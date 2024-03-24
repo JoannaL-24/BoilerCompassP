@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import TextField from "@mui/material/TextField";
 import DraggableCourse from "./DraggableCourse/DraggableCourse";
 import { Droppable } from "react-beautiful-dnd";
 import "./Searchbar.css";
 import { debounce } from "lodash";
-import { oHandler } from "models/purdueapi";
+import { purdueApiUrl } from "models/purdueapi";
+import { o } from 'odata';
 
-const Searchbar = ({parentSearch, updateParentSearch}) => {
+const Searchbar = ({ parentSearch, updateParentSearch }) => {
   const [results, setResults] = useState([]);
   const [matchedEntities, setMatchedEntities] = useState([]);
-  
+  const activeSearchId = useRef(0);
 
   const handleSearch = debounce(async (searchInput) => {
+    activeSearchId.current += 1; // Increment the ID for each new search
+    const currentSearchId = activeSearchId.current;
+
     const searchString = searchInput.toUpperCase().trim();
 
     if (searchString === "") {
@@ -31,27 +35,29 @@ const Searchbar = ({parentSearch, updateParentSearch}) => {
         number = word;
       }
     }
+    console.log("Subject:", subject);
+    console.log("Number:", number);
+
+    if (currentSearchId !== activeSearchId.current) return;
 
     try {
+      const oHandler = o(purdueApiUrl);
       const entities = await oHandler.get("Courses").query({
+        $top: `15`,
+        $orderby: `Number`,
         $expand: `Classes($filter=Campus/Code eq 'PWL'), Subject`,
         $filter: `startswith(Subject/Abbreviation, '${subject}') and startswith(Number, '${number}')`,
       });
 
-      // max length 10
-      setMatchedEntities(entities);
-      var results = [];
-      let result;
-      for (const entity of entities.slice(0, 10)) {
-        result = {
-          id: entity.Id,
-          number: entity.Subject.Abbreviation + " " + entity.Number,
-        };
-        results.push(result);
+      // Before updating the state, check if this is still the active request
+      if (currentSearchId === activeSearchId.current) {
+        console.log("Entites:", entities);
+        setMatchedEntities(entities);
+
+        const results = entities.map(entity => ({ id: entity.Id, number: entity.Subject.Abbreviation + " " + entity.Number }));
+        setResults(results);
+        updateParentSearch(results);
       }
-      console.log(results);
-      setResults(results);
-      updateParentSearch(results);
     } catch (error) {
       console.error("Error:", error);
     }
