@@ -61,9 +61,12 @@
 
 .radio-group-shadow:focus-within,
 .radio-group-shadow:hover {
-  box-shadow: 0 0 10px rgba(232, 192, 12, 1);
-}
-
-.glow {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 0 30px rgb(237, 148, 6);
+  background-color: #ffe1359a;
+  color: #333;
+  /* //padding: 8px 12px; */
+  font-size: 16px;
+  font-weight: bold;
+  /* transition: background-color 0.3s ease, color 0.3s ease; */
+  cursor: pointer;
 }
