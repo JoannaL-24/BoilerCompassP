@@ -94,11 +94,15 @@ const DATA = [
 ]
 
 export default function DegreePlanner() {
-    //get current user and mode preference
+    // get current user and mode preference
     const { currentUser } = useAuth();
     const [darkmode, setDarkmode] = useState<boolean>(null);
     const [semesterBlocks, setSemesterBlocks] = useState(DATA);
     const [searchResult, setSearchResult] = useState([]);
+    // progress bar data
+    const [completed, setCompleted] = useState(0);
+    const [total, setTotal] = useState(100);
+    const [planned, setPlanned] = useState(0);
 
     useEffect(() => {
         if (currentUser) {
@@ -141,9 +145,6 @@ export default function DegreePlanner() {
 
     const calculateProgress = () => {
         // get numbers for calculating degree progress
-        const [completed, setCompleted] = useState(0);
-        const [total, setTotal] = useState(100);
-        const [planned, setPlanned] = useState(0);
         const userData: UserData = new RemoteUserdata();
         const { currentUser } = useAuth();
         if (currentUser) {
@@ -171,7 +172,7 @@ export default function DegreePlanner() {
                 setDarkmode={setDarkmode} />
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                <ScheduleView semesterBlocks={semesterBlocks} />
+                <ScheduleView semesterBlocks={semesterBlocks} completed={completed} planned={planned} total={total} />
                 <div className="ScheduleSide">
                     <button className="mediumBtn goldBtn"><h3>Requirement</h3></button>
                     <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} />

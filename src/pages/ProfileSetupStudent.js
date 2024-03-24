@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import StudentProfile from '../components/StudentProfile'
 import Alert from '@mui/material/Alert';
 import { useAuth } from '../components/contexts/AuthContext'
+import { Schedule } from '../models/BoilerCompass'
 import '../css/Profile.css';
 
 const ProfileSetupStudents = () => {
@@ -25,6 +26,8 @@ const ProfileSetupStudents = () => {
     start_term: null,
     end_term: null,
     advisor: "Purdue Pete",
+    completed_courses: [],
+    planned_courses: [],
   });
 
   return (
