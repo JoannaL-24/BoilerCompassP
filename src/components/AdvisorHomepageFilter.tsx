@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Wave, Random } from "react-animated-text";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -38,6 +38,9 @@ function AdvisorHomepageFilter() {
   const [searchQuery, setSearchQuery] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
   const [clickedLabel, setClickedLabel] = useState(null);
+
+  // Add a state variable to hold the sorting option
+  const [sortingOption, setSortingOption] = useState(null);
 
   const { currentUser } = useAuth();
 
@@ -141,6 +144,23 @@ function AdvisorHomepageFilter() {
     );
   });
 
+  // sort the filteredUserNames array based on the sorting option
+  const sortedUserNames = useMemo(() => {
+    let sortedUsers = [...filteredUserNames];
+    switch (sortingOption) {
+      case "alphabetincrease":
+        sortedUsers.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "alphabetdecrease":
+        sortedUsers.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      // Add other sorting options
+      default:
+        break;
+    }
+    return sortedUsers;
+  }, [filteredUserNames, sortingOption]);
+
   function getSemester(date: Date) {
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
@@ -177,7 +197,8 @@ function AdvisorHomepageFilter() {
             aria-labelledby="demo-controlled-radio-buttons-group"
             name="controlled-radio-buttons-group"
             value={value}
-            onChange={handleChange}
+            //onChange={handleChange}
+            onChange={(e) => setSortingOption(e.target.value)}
           >
             <FormControlLabel
               className="radio-group-shadow"
