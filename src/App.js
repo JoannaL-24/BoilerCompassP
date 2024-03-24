@@ -1,7 +1,7 @@
 import "./App.css";
 // import CourseList from "./components/CourseList";
 import CoursePopup from './components/CoursePopup/CoursePopup'
-import React from "react";
+import React, {useState} from "react";
 import ReactDOM from "react-dom";
 import { Routes, Route } from "react-router-dom";
 import Welcome from "./pages/Welcome";
@@ -20,6 +20,7 @@ import DraggableCourse from "./components/DraggableCourse/DraggableCourse";
 import { AuthProvider } from "./components/contexts/AuthContext";
 
 function App() {
+  const [darkmode, setDarkmode] = useState(null);
   return (
     <AuthProvider>
       <div className="App">
@@ -29,9 +30,12 @@ function App() {
         </header> */}
         <Routes>
           <Route path="/" element={<CoverPage />} />
-          <Route path="/DegreePlanner" element={<DegreePlanner />} />
+          <Route path="/DegreePlanner" element={<DegreePlanner 
+            darkmode={darkmode}
+            setDarkmode={setDarkmode}/>} />
           <Route path="/Welcome" element={<Welcome />} />
-          <Route path="/Profile" element={<Profile />} />
+          <Route path="/Profile" element={<Profile 
+            darkmode={darkmode}/>} />
           <Route
             path="/ProfileSetupStudent"
             element={<ProfileSetupStudent />}
