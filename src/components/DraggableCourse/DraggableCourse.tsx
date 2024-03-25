@@ -8,9 +8,11 @@ type DraggableCourseProps = {
   index: number;
   id: string;
   course: string;
+  description: string;
+  credit: number;
 };
 
-const DraggableCourse: React.FC<DraggableCourseProps> = ({ index, id, course }) => {
+const DraggableCourse: React.FC<DraggableCourseProps> = ({ index, id, course, description, credit }) => {
   return (
     <Draggable
       key={id}
@@ -35,7 +37,13 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({ index, id, course }) 
                 </button>
                 <div className='header'>{course}</div>
                 <div className='content'>
-                  COURSE DESCRIPTION HERE
+                  Course Description: <br />
+                  <div style={{ fontSize: 12, color:'var(--textPrimary)' }}>
+                    {description} <br />
+                  </div>
+                  
+                  <br />
+                  Credit Hours: {credit}
                 </div>
                 <div className="sessionText">
                   <h3>Course Sessions:</h3>

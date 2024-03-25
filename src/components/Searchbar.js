@@ -46,6 +46,8 @@ const Searchbar = ({parentSearch, updateParentSearch}) => {
         result = {
           id: entity.Id,
           number: entity.Subject.Abbreviation + " " + entity.Number,
+          description: entity.Description,
+          credit: entity.CreditHours
         };
         results.push(result);
       }
@@ -76,7 +78,7 @@ const Searchbar = ({parentSearch, updateParentSearch}) => {
         {(provided) => (
           <div className="searchResults" {...provided.droppableProps} ref={provided.innerRef}>
             {results.map((result, index) => (
-              <DraggableCourse key={index} index={index} course={result.number} id={result.id} />
+              <DraggableCourse key={index} index={index} course={result.number} id={result.id} description={result.description} credit={result.credit} />
             ))}
             {provided.placeholder}
           </div>
