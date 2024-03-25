@@ -1,0 +1,6 @@
+.advisorHome {
+    display: "flex";
+    flex-direction: "column";
+    background: var(--background);
+    color: var(--textPrimary);
+}

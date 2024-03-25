@@ -43,24 +43,20 @@ const LinearProgressWithLabel = (props) => {
 }
 
 LinearProgressWithLabel.propTypes = {
-  /**
-   * The value of the progress indicator for the determinate and buffer variants.
-   * Value between 0 and 100.
-   */
   value: PropTypes.number.isRequired,
 };
 
-const ProgressBar = (numbers) => {
+const ProgressBar = ({completed, planned, total}) => {
   // get the total number of requirements the user has completed from the database here
   // total number of requirements that needs to be satisfied
   // set progress to be {have completed / total requirements}
-  const [completedReq, setCompletedReq] = useState(parseInt(numbers.completed));
-  const [totalReq, setTotalReq] = useState(parseInt(numbers.total));
-  const [plannedReq, setPlannedReq] = useState(parseInt(numbers.planned));
-
+  console.log("wow")
+  console.log(completed);
+  console.log(planned);
+  console.log(total);
   return (
     <Box sx={{ marginLeft: "120px",  marginRight: "120px", width: "80%", marginTop: "1.5em"}}>
-      <LinearProgressWithLabel value={(completedReq/totalReq)*100} valueBuffer={(plannedReq/totalReq)*100}/>
+      <LinearProgressWithLabel value={(completed/total)*100} valueBuffer={(planned/total)*100}/>
     </Box>
   );
 }

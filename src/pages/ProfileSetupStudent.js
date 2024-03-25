@@ -2,22 +2,33 @@ import React, { useState } from 'react';
 import StudentProfile from '../components/StudentProfile'
 import Alert from '@mui/material/Alert';
 import { useAuth } from '../components/contexts/AuthContext'
+import { Schedule } from '../models/BoilerCompass'
 import '../css/Profile.css';
 
 const ProfileSetupStudents = () => {
   const { currentUser } = useAuth();
+
+  const schedule: Schedule = {
+    id: -1,
+    name: "",
+    start_term: null,
+    end_term: null,
+    semester_blocks: [],
+    majors: [],
+    minors: [],
+  }
+
   const [userinfo, setUserinfo] = useState({
     user_type: "student",
     prefer_majors: [],
     prefer_minor: [],
+    schedule: schedule,
     start_term: null,
     end_term: null,
     advisor: "Purdue Pete",
+    completed_courses: [],
+    planned_courses: [],
   });
-  // if (currentUser) {
-  //   console.log("here");
-  //   console.log(currentUser.uid);
-  // }
 
   return (
     <div>

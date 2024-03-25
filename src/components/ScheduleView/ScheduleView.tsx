@@ -8,8 +8,12 @@ import AddLinkIcon from '@mui/icons-material/AddLink';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Semester from "../Semester/Semester";
 import ProgressBar from '../ProgressBar'
+import { getSatisfied } from '../models/BoilerCompass';
+import { CS } from '../models/BoilerCompass'
+import { useAuth } from "../components/contexts/AuthContext";
+import RemoteUserdata from "../models/RemoteUserData";
 
-export default function ScheduleView({ semesterBlocks }) {
+export default function ScheduleView({ semesterBlocks, completed, planned, total }) {
     const [semesterRender, setSemesterRender] = useState([]);
     useEffect(() => {
         let newRender = [];
@@ -28,6 +32,7 @@ export default function ScheduleView({ semesterBlocks }) {
         }
         setSemesterRender(newRender);
     }, [semesterBlocks])
+    
 
     return (
         <div className="ScheduleView">
@@ -51,7 +56,7 @@ export default function ScheduleView({ semesterBlocks }) {
                     </li>
                 </ul>
             </div>
-            <ProgressBar completed={20} total={50} planned={40} />
+            <ProgressBar completed={completed} planned={planned} total={total} />
             <div className="SemesterYears">
                 {semesterRender}
             </div>

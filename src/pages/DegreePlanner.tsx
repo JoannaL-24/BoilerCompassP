@@ -16,6 +16,7 @@ import Searchbar from "components/Searchbar.js";
 // search bar input
 import "../components/Searchbar.css";
 import Semester from "components/Semester/Semester.tsx";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 // temperary data for semester_blocks in Schedule
 const DATA = [
@@ -92,13 +93,21 @@ const DATA = [
         course_list: [],
     },
 ]
+type Props = {
+    darkmode:boolean;
+    setDarkmode: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-export default function DegreePlanner() {
+export default function DegreePlanner({darkmode, setDarkmode}: Props) {
     //get current user and mode preference
     const { currentUser } = useAuth();
-    const [darkmode, setDarkmode] = useState<boolean>(null);
+    // const [darkmode, setDarkmode] = useState<boolean>(null);
     const [semesterBlocks, setSemesterBlocks] = useState(DATA);
     const [searchResult, setSearchResult] = useState([]);
+    // progress bar data
+    const [completed, setCompleted] = useState(0);
+    const [total, setTotal] = useState(100);
+    const [planned, setPlanned] = useState(0);
 
     useEffect(() => {
         if (currentUser) {
@@ -108,6 +117,22 @@ export default function DegreePlanner() {
                 });
         }
     }, [currentUser]);
+
+    var mode_str;
+    if (darkmode) {
+        mode_str = "dark";
+    }
+    else {
+        mode_str = "light"
+    }
+    const mode = createTheme({
+        palette: {
+          mode: mode_str,
+          // primary: {
+          //   // main: orange[500]
+          // }
+        },
+    });
 
     const handleDragDrop = (result) => {
         const { source, destination } = result;
@@ -139,6 +164,28 @@ export default function DegreePlanner() {
         }
     }
 
+    const calculateProgress = () => {
+        // get numbers for calculating degree progress
+        const userData: UserData = new RemoteUserdata();
+        const { currentUser } = useAuth();
+        if (currentUser) {
+            // get completed and total
+            userData.get("completed_courses")
+            .then((completed) => {
+                let c = getSatisfied(CS, completed);
+                setCompleted(c[0]);
+                setTotal(c[1]);
+            })
+            
+            // get planned
+            userData.get("planned_courses")
+            .then((planned) => {
+                let c = getSatisfied(CS, planned);
+                setPlanned(c[0]);
+            })
+        } 
+    }
+
     return (
         <div className="DegreeOverview">
             <NavBar
@@ -146,14 +193,16 @@ export default function DegreePlanner() {
                 setDarkmode={setDarkmode} />
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                <ScheduleView semesterBlocks={semesterBlocks} />
-                <div className="ScheduleSide">
-                    <button className="mediumBtn goldBtn"><h3>Requirement</h3></button>
-                    <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} />
-                </div>
+                <ScheduleView semesterBlocks={semesterBlocks} semesterBlocks={semesterBlocks} completed={completed} planned={planned} total={total}/>
+
+                <ThemeProvider theme = {mode}>
+                    <div className="ScheduleSide" style={darkmode ? {backgroundColor: '#3b3a39'} : {backgroundColor: '#f5f3eb'}}>
+                        <button className="mediumBtn goldBtn"><h3>Requirement</h3></button>
+                        <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} />
+                    </div>
+                </ThemeProvider>
                 </DragDropContext>
             </div>
-
         </div>
     )
 }
