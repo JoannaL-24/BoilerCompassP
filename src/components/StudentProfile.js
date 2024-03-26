@@ -64,8 +64,9 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
     else setEnd("");
     if (go) {
       if (setup) {
-        let total_semesters = (userinfo.end_term.year - userinfo.start_term.year + 1) * 3;
+        let total_semesters = (userinfo.end_term.get('year') - userinfo.start_term.get('year') + 1) * 3;
         let semester_blocks = [];
+        console.log("total semesters:", total_semesters)
         for (let i = 0; i < total_semesters; i++) {
           let term = (i%3==0?"Spring":(i%3==1?"Summer":"Fall"));
           let semester: Semester = {
@@ -74,8 +75,11 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
             term: term,
             course_list: [],
           }
-          semester_blocks[i] = semeester;
+          console.log(semester);
+          console.log(semester_blocks);
+          semester_blocks[i] = semester;
         }
+        userinfo.schedule.semester_blocks = semester_blocks;
       }
       if (currentUser) {
 
