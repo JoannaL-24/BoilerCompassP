@@ -24,12 +24,16 @@
   }
   .popupModal > .content {
     background: var(--background);
-    color: var(--textPrimary);
+    color: var(--textSecondary);
     width: 100%;
     padding: 10px 0px;
   }
+  .popupModal > .descriptionText {
+    color: var(--textPrimary);
+    font-size: 12;
+  }
   .popupModal > .sessionText {
-    color: #ceb888;
+    color: var(--textSecondary);
   }
   .popupModal > .sessionsList {
     border: 1px solid gray;
