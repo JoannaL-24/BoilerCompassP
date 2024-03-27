@@ -104,6 +104,7 @@ function AdvisorHomepageFilter() {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+    setSortingOption(event.target.value); // Set the sorting option
   };
 
   const handleUserClick = (userData: any) => {
@@ -144,17 +145,14 @@ function AdvisorHomepageFilter() {
     );
   });
 
-  // sort the filteredUserNames array based on the sorting option
+  // Modify the sortedUserNames useMemo hook to sort based on the sorting option
   const sortedUserNames = useMemo(() => {
     let sortedUsers = [...filteredUserNames];
     switch (sortingOption) {
       case "alphabetincrease":
-        sortedUsers.sort((a, b) => a.name.localeCompare(b.name));
+        sortedUsers.sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically in ascending order
         break;
-      case "alphabetdecrease":
-        sortedUsers.sort((a, b) => b.name.localeCompare(a.name));
-        break;
-      // Add other sorting options
+      // Add other sorting options here if needed
       default:
         break;
     }
@@ -196,10 +194,24 @@ function AdvisorHomepageFilter() {
           <RadioGroup
             aria-labelledby="demo-controlled-radio-buttons-group"
             name="controlled-radio-buttons-group"
-            value={value}
-            //onChange={handleChange}
-            onChange={(e) => setSortingOption(e.target.value)}
+            value={sortingOption}
+            onChange={handleChange}
+            //onChange={(e) => setSortingOption(e.target.value)}
           >
+            <FormControlLabel
+              className="radio-group-shadow"
+              value="default"
+              control={
+                <Radio
+                  sx={{
+                    "& .MuiSvgIcon-root": {
+                      fontSize: 35,
+                    },
+                  }}
+                />
+              }
+              label="Reset"
+            />
             <FormControlLabel
               className="radio-group-shadow"
               value="alphabetincrease"
@@ -261,8 +273,49 @@ function AdvisorHomepageFilter() {
       </div>
 
       <div className="searchResult">
-        {filteredUserNames.length === 0 ? (
+        {(sortingOption && sortedUserNames.length === 0) ||
+        filteredUserNames.length === 0 ? (
           <Wave1 />
+        ) : sortingOption ? (
+          sortedUserNames.map((user, index) => (
+            <a
+              key={index}
+              href="#"
+              onClick={() => handleUserClick(user)}
+              onMouseEnter={() => setHoveredUser(user)}
+              onMouseLeave={() => setHoveredUser(null)}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                textDecoration: "none",
+                borderRadius: "20px",
+                width: "160px",
+                padding: "10px",
+                marginRight: "50px",
+                marginBottom: "10px",
+                transform: `${
+                  clickedUser === user ? "scale(0.3)" : "scale(1)"
+                } ${hoveredUser === user ? "scale(1.2)" : "scale(1)"}`,
+                transition: "transform 0.5s ease",
+                backgroundColor: hoveredUser === user ? "#87ceeb" : "",
+                color: hoveredUser === user ? "white" : "",
+                boxShadow:
+                  hoveredUser === user
+                    ? "10px 10px 20px rgba(128, 229, 216, 1)"
+                    : "",
+                border:
+                  hoveredUser === user
+                    ? "1px solid white"
+                    : "1px solid var(--textPrimary)",
+              }}
+            >
+              <AccountCircle
+                sx={{ color: "action.active", fontSize: "40px" }}
+              />
+              <span style={{ marginTop: "5px" }}>{user.name}</span>{" "}
+            </a>
+          ))
         ) : (
           filteredUserNames.map((user, index) => (
             <a
@@ -276,7 +329,6 @@ function AdvisorHomepageFilter() {
                 flexDirection: "column",
                 alignItems: "center",
                 textDecoration: "none",
-                // border: "1px solid red",
                 borderRadius: "20px",
                 width: "160px",
                 padding: "10px",
@@ -286,16 +338,16 @@ function AdvisorHomepageFilter() {
                   clickedUser === user ? "scale(0.3)" : "scale(1)"
                 } ${hoveredUser === user ? "scale(1.2)" : "scale(1)"}`,
                 transition: "transform 0.5s ease",
-
-                backgroundColor: hoveredUser === user ? "#87ceeb" : "", // background color
-                color: hoveredUser === user ? "white" : "", // text color
+                backgroundColor: hoveredUser === user ? "#87ceeb" : "",
+                color: hoveredUser === user ? "white" : "",
                 boxShadow:
                   hoveredUser === user
                     ? "10px 10px 20px rgba(128, 229, 216, 1)"
-                    : "", // shadow
-
+                    : "",
                 border:
-                  hoveredUser === user ? "1px solid white" : "1px solid var(--textPrimary)",
+                  hoveredUser === user
+                    ? "1px solid white"
+                    : "1px solid var(--textPrimary)",
               }}
             >
               <AccountCircle
@@ -306,6 +358,7 @@ function AdvisorHomepageFilter() {
           ))
         )}
       </div>
+
       {/* Popup to display user data */}
       {selectedUser && (
         <div
