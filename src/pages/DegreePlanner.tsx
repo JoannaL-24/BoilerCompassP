@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar/NavBar";
 import ScheduleView from "../components/ScheduleView/ScheduleView";
-import SceduleSide from "../components/ScheduleSide/ScheduleSide";
 import './DegreePlanner.css';
 // firebase imports
 import { useAuth } from '../components/contexts/AuthContext.tsx'
 import { doc, getDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
-// react beautiful dnd imports
 import { DragDropContext } from "react-beautiful-dnd";      
-
 // sidebar import
 import "../components/ScheduleSide/ScheduleSide.css";
 import Searchbar from "components/Searchbar.js";
 // search bar input
 import "../components/Searchbar.css";
-import Semester from "components/Semester/Semester.tsx";
 import { ThemeProvider, createTheme } from "@mui/material";
 
 // temperary data for semester_blocks in Schedule
@@ -114,6 +110,7 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
             const user_doc = getDoc(doc(firestore, "users", currentUser.uid))
                 .then((docSnapshot) => {
                     setDarkmode(docSnapshot.data().dark_mode);
+                    setSemesterBlocks(docSnapshot.data().schedule[0].semester_blocks);
                 });
         }
     }, [currentUser]);
@@ -143,23 +140,64 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
         if (source.droppableId === destination.droppableId && source.index === destination.index)
             return;
 
+        // from the search result to semester
         if (source.droppableId === "ROOT" && searchResult.length > 0) {
             console.log("Root to Semester");
             const newSourceCourses = searchResult;
-            const newDestinationCourses = semesterBlocks[destination.droppableId-1].course_list;
+            const newDestinationCourses = semesterBlocks[destination.droppableId].course_list;
 
             const [deletedCourse]  = newSourceCourses.splice(source.index, 1);
             newDestinationCourses.splice(destination.index, 0, deletedCourse);
 
             const newSemesterBlocks = [...semesterBlocks];
-            newSemesterBlocks[destination.droppableId-1] = {
-                ...semesterBlocks[destination.droppableId-1],
+            newSemesterBlocks[destination.droppableId] = {
+                ...semesterBlocks[destination.droppableId],
                 course_list: newDestinationCourses,
             };
             // console.log(deletedCourse);
             // console.log(newSourceCourses);
             // console.log(newSemesterBlocks);
             setSearchResult(newSourceCourses);
+            setSemesterBlocks(newSemesterBlocks);
+        }
+        // from semester to another semester
+        else if (source.droppableId != destination.droppableI) {
+            console.log("Semester to Semester");
+            const newSourceCourses = semesterBlocks[source.droppableId].course_list;
+            const newDestinationCourses = semesterBlocks[destination.droppableId].course_list;
+
+            const [deletedCourse]  = newSourceCourses.splice(source.index, 1);
+            newDestinationCourses.splice(destination.index, 0, deletedCourse);
+
+            const newSemesterBlocks = [...semesterBlocks];
+            newSemesterBlocks[source.droppableId] = {
+                ...semesterBlocks[source.droppableId],
+                course_list: newSourceCourses,
+            };
+            newSemesterBlocks[destination.droppableId] = {
+                ...semesterBlocks[destination.droppableId],
+                course_list: newDestinationCourses,
+            };
+            // console.log(deletedCourse);
+            // console.log(newSourceCourses);
+            // console.log(newDestinationCourses);
+            setSemesterBlocks(newSemesterBlocks);
+        }
+        // change within semester
+        else if (source.droppableId == destination.droppableId) {
+            console.log("Within Semester");
+            const newCourses = semesterBlocks[destination.droppableId].course_list;
+
+            const [deletedCourse]  = newCourses.splice(source.index, 1);
+            newCourses.splice(destination.index, 0, deletedCourse);
+
+            const newSemesterBlocks = [...semesterBlocks];
+            newSemesterBlocks[destination.droppableId] = {
+                ...semesterBlocks[destination.droppableId],
+                course_list: newCourses,
+            };
+            // console.log(deletedCourse);
+            // console.log(newCourses);
             setSemesterBlocks(newSemesterBlocks);
         }
     }
@@ -194,7 +232,6 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
                 <ScheduleView semesterBlocks={semesterBlocks} semesterBlocks={semesterBlocks} completed={completed} planned={planned} total={total}/>
-
                 <ThemeProvider theme = {mode}>
                     <div className="ScheduleSide" style={darkmode ? {backgroundColor: '#3b3a39'} : {backgroundColor: '#f5f3eb'}}>
                         <button className="mediumBtn goldBtn"><h3>Requirement</h3></button>
