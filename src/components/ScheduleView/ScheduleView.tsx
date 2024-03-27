@@ -20,13 +20,10 @@ export default function ScheduleView({ semesterBlocks, completed, planned, total
         for (var i = 0; i < semesterBlocks.length; i += 3) {
             newRender.push(
                 <div key={i} className="Year">
-                    <h4>{semesterBlocks[i].year}<br />-<br />{semesterBlocks[i].year + 1}</h4>
-                    {
-                        semesterBlocks.slice(i, i + 3)
-                            .map(semester => (
-                                <Semester key={semester.id} semesterInfo={semester}/>
-                            ))
-                    }
+                    <h3 style={{padding: "150px 0px"}}>{semesterBlocks[i].year}<br />-<br />{semesterBlocks[i].year + 1}</h3>
+                    <Semester key={i} semesterInfo={semesterBlocks[i]}/>
+                    <Semester key={i+1} semesterInfo={semesterBlocks[i+1]}/>
+                    <Semester key={i+2} semesterInfo={semesterBlocks[i+2]}/>
                 </div>
             );
         }
