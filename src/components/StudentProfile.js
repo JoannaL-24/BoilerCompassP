@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/system/Box';
@@ -15,9 +16,12 @@ import { useForm } from 'react-hook-form'
 import { useAuth } from '../components/contexts/AuthContext'
 import { useNavigate } from 'react-router-dom';
 import RemoteUserdata from '../models/RemoteUserData';
+
 import { Schedule, Semester } from '../models/BoilerCompass';
 // firebase imports
+
 import { doc, updateDoc, Timestamp } from "firebase/firestore";
+
 import { firestore } from '../models/firebase.ts';
 // data imports
 import major_data from '../json/majors.json';
@@ -25,23 +29,24 @@ import minor_data from '../json/minors.json';
 // css imports
 import '../css/Profile.css';
 
-const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
+const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const { currentUser } = useAuth();
   const year = dayjs().get('year');
-  const validStartYear = (date) => !(( year  - date.get('year') >= 0) && (year - date.get('year') <= 10));
-  const validEndYear = (date) => !(( date.get('year') - year >= 0) && (date.get('year') - year <= 10));
+  const validStartYear = (date) => !((year - date.get('year') >= 0) && (year - date.get('year') <= 10));
+  const validEndYear = (date) => !((date.get('year') - year >= 0) && (date.get('year') - year <= 10));
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [missingMajor, setMissingMajor] = useState("");
   const { handleSubmit } = useForm();
-  const prefer_majors_q = setup?"Choose your major(s):":"Your major:";
-  const prefer_minor_q = setup?"Choose your minor(s):":"Your minor(s):";
-  const start_term_q = setup?"When did you start school at Purdue?":"Your start date:";
-  const end_term_q = setup?"Expected graduation date:":"Your expected graduation date:";
-  const submit_button_text = setup?"Submit":"Edit/Save";
+  const prefer_majors_q = setup ? "Choose your major(s):" : "Your major:";
+  const prefer_minor_q = setup ? "Choose your minor(s):" : "Your minor(s):";
+  const start_term_q = setup ? "When did you start school at Purdue?" : "Your start date:";
+  const end_term_q = setup ? "Expected graduation date:" : "Your expected graduation date:";
+  const submit_button_text = setup ? "Submit" : "Edit/Save";
   const navigate = useNavigate();
+
   const userData: UserData = new RemoteUserdata();
   // console.log(userinfo);
 
@@ -64,21 +69,35 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
     else setEnd("");
     if (go) {
       if (setup) {
-        let total_semesters = (userinfo.end_term.get('year') - userinfo.start_term.get('year') + 1) * 3;
+        let total_semesters = (userinfo.end_term.get('year') - userinfo.start_term.get('year')) * 3;
         let semester_blocks = [];
-        console.log("total semesters:", total_semesters)
+        console.log("total semesters:", total_semesters);
+        console.log("typeof date: ", userinfo.start_term);
+        let term = "Summer";
+        let addYear = 0;
         for (let i = 0; i < total_semesters; i++) {
-          let term = (i%3==0?"Spring":(i%3==1?"Summer":"Fall"));
+          term = "Summer";
+          if (i % 3 == 0) {
+            term = "Fall";
+          }
+          else if (i % 3 == 1) {
+            term = "Spring";
+            addYear++;
+          }
           let semester: Semester = {
-            id: -1,
-            year: (userinfo.start_term.year+(i/3)),
+            year: userinfo.start_term.$y + addYear,
             term: term,
             course_list: [],
           }
-          console.log(semester);
-          console.log(semester_blocks);
+          // console.log(semester);
           semester_blocks[i] = semester;
         }
+        console.log(semester_blocks);
+        userinfo.schedule.name = "Schedule1";
+        userinfo.schedule.start_term = Timestamp.fromDate(new Date(userinfo.start_term));
+        userinfo.schedule.end_term = Timestamp.fromDate(new Date(userinfo.end_term));
+        userinfo.schedule.majors = userinfo.prefer_majors;
+        userinfo.schedule.minors = userinfo.prefer_minor;
         userinfo.schedule.semester_blocks = semester_blocks;
       }
       if (currentUser) {
@@ -99,7 +118,7 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
         userData.put("end_term", Timestamp.fromDate(new Date(userinfo.end_term)));
         userData.put("completed_courses", userinfo.completed_courses);
         userData.put("planned_courses", userinfo.planned_courses);
-        userData.put("schedule", userinfo.schedule);
+        userData.put("schedule", [userinfo.schedule]);
         (!setup && setUpdated(true));
         if (setup) navigate('/DegreePlanner');
       }
@@ -112,119 +131,132 @@ const Student_profile = ({userinfo, setUserinfo, setup, setUpdated}) => {
   return (
     <div>
       <Box className="Ctn">
-        <FormControl display="flex" style={{width: 400}}>
+        <FormControl display="flex" style={{ width: 400 }}>
           {!setup && <h3 className="Question">Name: {userinfo.name}</h3>}
           {!setup && <h3 className="Question">Email: {userinfo.purdue_email}</h3>}
           <h3 className="Question">{prefer_majors_q}</h3>
           <Autocomplete
-          className="Input"
-          multiple
-          id="majors"
-          options={major_data.majors}
-          disableCloseOnSelect
-          value={userinfo.prefer_majors}
-          required={true}
-          getOptionLabel={(option) => option.name}
-          // isOptionEqualToValue={(option, value) => option.value === value.value}
-          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, prefer_majors: value}));
-                                     setMissingMajor("");
-                                     (!setup && setUpdated(false))}}
-          renderOption={(props, option, { selected }) => (
-            <li {...props}>
-              <Checkbox
-                icon={icon}
-                checkedIcon={checkedIcon}
-                style={{ marginRight: 8 }}
-                checked={selected}
+            className="Input"
+            multiple
+            id="majors"
+            options={major_data.majors}
+            disableCloseOnSelect
+            value={userinfo.prefer_majors}
+            required={true}
+            getOptionLabel={(option) => option.name}
+            // isOptionEqualToValue={(option, value) => option.value === value.value}
+
+            onChange={(e, value) => {
+              setUserinfo((previous) => ({ ...previous, prefer_majors: value }));
+              setMissingMajor("");
+              (!setup && setUpdated(false))
+            }}
+            renderOption={(props, option, { selected }) => (
+              <li {...props}>
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                />
+                {option.name}
+              </li>
+            )}
+            renderInput={(params) => (
+              <TextField {...params}
+                label="Select one or more"
+                placeholder="Select one or more"
+                required
+                error={missingMajor && missingMajor.length ? true : false}
+                helperText={missingMajor}
               />
-              {option.name}
-            </li>
-          )}
-          renderInput={(params) => (
-            <TextField {...params}
-            label="Select one or more"
-            placeholder="Select one or more"
-            required
-            error={missingMajor && missingMajor.length?true:false}
-            helperText={missingMajor}
-            />
-          )}
-        />
+            )}
+          />
         </FormControl>
-        <FormControl display="flex" style={{width: 400}}>
+        <FormControl display="flex" style={{ width: 400 }}>
           <h3 className="Question">{prefer_minor_q}</h3>
           <Autocomplete
-          className="Input"
-          multiple
-          id="minors"
-          required={true}
-          options={minor_data.minors}
-          disableCloseOnSelect
-          value={userinfo.prefer_minor}
-          getOptionLabel={(option) => option.name}
-          // isOptionEqualToValue={(option, value) => option.value === value.value}
-          onChange = {(e, value) => {setUserinfo((previous) => ({...previous, prefer_minor: value}));
-                                     (!setup && setUpdated(false))}}
-          renderOption={(props, option, { selected }) => (
-            <li {...props}>
-              <Checkbox
-                icon={icon}
-                checkedIcon={checkedIcon}
-                style={{ marginRight: 8 }}
-                checked={selected}
-              />
-              {option.name}
-            </li>
-          )}
-          renderInput={(params) => (
-            <TextField {...params}
-            label="Select one or more"
-            placeholder="Select one or more"/>
-          )}
-        />
+            className="Input"
+            multiple
+            id="minors"
+
+            required={true}
+            options={minor_data.minors}
+            disableCloseOnSelect
+            value={userinfo.prefer_minor}
+            getOptionLabel={(option) => option.name}
+            // isOptionEqualToValue={(option, value) => option.value === value.value}
+
+            onChange={(e, value) => {
+              setUserinfo((previous) => ({ ...previous, prefer_minor: value }));
+              (!setup && setUpdated(false))
+            }}
+            renderOption={(props, option, { selected }) => (
+              <li {...props}>
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                />
+                {option.name}
+              </li>
+            )}
+            renderInput={(params) => (
+              <TextField {...params}
+                label="Select one or more"
+                placeholder="Select one or more" />
+            )}
+          />
         </FormControl>
-        <FormControl display="flex" style={{width: 400}}>
+        <FormControl display="flex" style={{ width: 400 }}>
           <h3 className="Question">{start_term_q}</h3>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              sx={{ mt: "1em", mb: "2em"}}
-              label="Select start date *"
+              sx={{ mt: "1em", mb: "2em" }}
+              label="Select start year *"
+              views={["year"]}
               shouldDisableYear={validStartYear}
               value={userinfo.start_term}
-              onChange = {(value) => {setUserinfo((previous) => ({...previous, start_term: value}));
-                                      setStart("");
-                                      (!setup && setUpdated(false))}}
+              onChange={(value) => {
+                setUserinfo((previous) => ({ ...previous, start_term: value }));
+                setStart("");
+                (!setup && setUpdated(false))
+              }}
               slotProps={{
                 textField: {
-                  error: start && start.length?true:false,
+                  error: start && start.length ? true : false,
                   helperText: start,
                 },
               }}
             />
             <h3 className="Question">{end_term_q}</h3>
             <DatePicker
-              sx={{ mt: "1em", mb: "2em"}}
-              label="Select end date *"
+              sx={{ mt: "1em", mb: "2em" }}
+              label="Select end year *"
+              views={["year"]}
               shouldDisableYear={validEndYear}
               value={userinfo.end_term}
-              onChange = {(value) => {setUserinfo((previous) => ({...previous, end_term: value}));
-                                      setEnd("");
-                                      (!setup && setUpdated(false))}}
+              onChange={(value) => {
+                setUserinfo((previous) => ({ ...previous, end_term: value }));
+                setEnd("");
+                (!setup && setUpdated(false))
+              }}
               slotProps={{
                 textField: {
-                  error: end && end.length?true:false,
+                  error: end && end.length ? true : false,
                   helperText: end,
                 },
               }}
             />
           </LocalizationProvider>
         </FormControl>
-        <FormControl display="flex" style={{width: 400}}>
+        <FormControl display="flex" style={{ width: 400 }}>
           {!setup && <h3 className="Question">Your advisor: {userinfo.advisor}</h3>}
         </FormControl>
         <Box className="Btn">
           <Button type="submit" onClick={handleSubmit(submit)} variant="outlined">{submit_button_text}</Button>
-          {!setup && <Button sx={{mt: "0.5em"}} type="submit" className="Btn" href='/DegreePlanner' variant="outlined">Back to home</Button>}
+          {!setup && <Button sx={{ mt: "0.5em" }} type="submit" className="Btn" href='/DegreePlanner' variant="outlined">Back to home</Button>}
         </Box>
       </Box>
     </div>
