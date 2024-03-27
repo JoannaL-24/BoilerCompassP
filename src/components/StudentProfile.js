@@ -16,6 +16,7 @@ import { useForm } from 'react-hook-form'
 import { useAuth } from '../components/contexts/AuthContext'
 import { useNavigate } from 'react-router-dom';
 import RemoteUserdata from '../models/RemoteUserData';
+import LocalUserdata from '../models/LocalUserData';
 
 import { Schedule, Semester } from '../models/BoilerCompass';
 // firebase imports
@@ -47,7 +48,7 @@ const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
   const submit_button_text = setup ? "Submit" : "Edit/Save";
   const navigate = useNavigate();
 
-  const userData: UserData = new RemoteUserdata();
+  const userData: UserData = currentUser?new RemoteUserdata():new LocalUserdata();
   // console.log(userinfo);
 
   const submit = () => {
@@ -101,17 +102,7 @@ const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
         userinfo.schedule.minors = userinfo.prefer_minor;
         userinfo.schedule.semester_blocks = semester_blocks;
       }
-      if (currentUser) {
-
-        // const uid = currentUser.uid;
-        // const user_doc = doc(firestore, "users", uid);
-        // updateDoc(user_doc, {
-        //   prefer_majors: userinfo.prefer_majors,
-        //   prefer_minor: userinfo.prefer_minor,
-        //   user_type: userinfo.user_type,
-        //   start_term: Timestamp.fromDate(new Date(userinfo.start_term)),
-        //   end_term: Timestamp.fromDate(new Date(userinfo.end_term)),
-        // });
+      // if (currentUser) {
         userData.put("prefer_majors", userinfo.prefer_majors);
         userData.put("prefer_minor", userinfo.prefer_minor);
         userData.put("user_type", userinfo.user_type);
@@ -122,10 +113,10 @@ const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
         userData.put("schedule", [userinfo.schedule]);
         (!setup && setUpdated(true));
         if (setup) navigate('/DegreePlanner');
-      }
-      else {
-        // local
-      }
+      // }
+      // else {
+      //   // local
+      // }
     }
   }
 
