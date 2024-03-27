@@ -85,6 +85,7 @@ const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
             addYear++;
           }
           let semester: Semester = {
+            id: i,
             year: userinfo.start_term.$y + addYear,
             term: term,
             course_list: [],

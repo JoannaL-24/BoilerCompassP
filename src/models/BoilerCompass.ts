@@ -24,6 +24,7 @@ export interface RequireCourse extends Requirement {
 }
 
 export type Semester = {
+  id: number
   year: number
   term: string
   course_list: Course[]
