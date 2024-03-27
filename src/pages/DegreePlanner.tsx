@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar/NavBar";
 import ScheduleView from "../components/ScheduleView/ScheduleView";
-import SceduleSide from "../components/ScheduleSide/ScheduleSide";
 import './DegreePlanner.css';
 // firebase imports
 import { useAuth } from '../components/contexts/AuthContext.tsx'
 import { doc, getDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
-// react beautiful dnd imports
 import { DragDropContext } from "react-beautiful-dnd";      
-
 // sidebar import
 import "../components/ScheduleSide/ScheduleSide.css";
 import Searchbar from "components/Searchbar.js";
 // search bar input
 import "../components/Searchbar.css";
-import Semester from "components/Semester/Semester.tsx";
 import { ThemeProvider, createTheme } from "@mui/material";
 
 // temperary data for semester_blocks in Schedule
