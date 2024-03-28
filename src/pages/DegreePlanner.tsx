@@ -6,7 +6,10 @@ import './DegreePlanner.css';
 import { useAuth } from '../components/contexts/AuthContext.tsx'
 import { doc, getDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
-import { DragDropContext } from "react-beautiful-dnd";      
+import { DragDropContext } from "react-beautiful-dnd";
+import RemoteUserdata from '../models/RemoteUserData';
+import { getSatisfied } from '../models/BoilerCompass';
+import { CS } from '../models/CS';
 // sidebar import
 import "../components/ScheduleSide/ScheduleSide.css";
 import Searchbar from "components/Searchbar.js";
@@ -200,6 +203,7 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
             // console.log(newCourses);
             setSemesterBlocks(newSemesterBlocks);
         }
+        calculateProgress();
     }
 
     const calculateProgress = () => {
@@ -210,7 +214,7 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
             // get completed and total
             userData.get("completed_courses")
             .then((completed) => {
-                let c = getSatisfied(CS, completed);
+                let c = getSatisfied(CS, new Set(completed));
                 setCompleted(c[0]);
                 setTotal(c[1]);
             })
@@ -218,7 +222,7 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
             // get planned
             userData.get("planned_courses")
             .then((planned) => {
-                let c = getSatisfied(CS, planned);
+                let c = getSatisfied(CS, new Set(planned));
                 setPlanned(c[0]);
             })
         } 

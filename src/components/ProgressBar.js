@@ -31,6 +31,7 @@ const LinearProgressWithLabel = (props) => {
           color="barColor"
           sx={{"& .MuiLinearProgress-dashed": {
             animation: "none",
+            display: "flex",
           }}}/>
         </Box>
         <Box sx={{ marginLeft: "0.3em", display: 'flex', minWidth: 250 }}>
@@ -56,7 +57,7 @@ const ProgressBar = ({completed, planned, total}) => {
   console.log(total);
   return (
     <Box sx={{ marginLeft: "120px",  marginRight: "120px", width: "80%", marginTop: "1.5em"}}>
-      <LinearProgressWithLabel value={(completed/total)*100} valueBuffer={(planned/total)*100}/>
+      <LinearProgressWithLabel value={(completed/total)*100} valueBuffer={((planned+completed)/total)*100}/>
     </Box>
   );
 }
