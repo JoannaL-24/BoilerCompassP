@@ -166,7 +166,7 @@ function AdvisorHomepageFilter() {
             const semesterA = getSemester(a.start_term.toDate());
             const semesterB = getSemester(b.start_term.toDate());
             if (semesterA === semesterB) return 0;
-            return semesterA < semesterB ? -1 : 1;
+            return semesterA < semesterB ? 1 : -1;
           }
         });
         break;
@@ -181,7 +181,7 @@ function AdvisorHomepageFilter() {
             const semesterA = getSemester(a.start_term.toDate());
             const semesterB = getSemester(b.start_term.toDate());
             if (semesterA === semesterB) return 0;
-            return semesterA < semesterB ? 1 : -1;
+            return semesterA < semesterB ? -1 : 1;
           }
         });
         break;
