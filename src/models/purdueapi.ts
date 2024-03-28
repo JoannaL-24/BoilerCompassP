@@ -1,2 +1,2 @@
-export const purdueApiUrl = "http://0.0.0.0:5000/odata/$metadata"
+export const purdueApiUrl = "https://api.purdue.io/odata/$metadata"
 
