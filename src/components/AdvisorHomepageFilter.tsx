@@ -145,12 +145,45 @@ function AdvisorHomepageFilter() {
     );
   });
 
-  // Modify the sortedUserNames useMemo hook to sort based on the sorting option
+  // sort based on options
   const sortedUserNames = useMemo(() => {
     let sortedUsers = [...filteredUserNames];
     switch (sortingOption) {
       case "alphabetincrease":
-        sortedUsers.sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically in ascending order
+        sortedUsers.sort((a, b) => a.name.localeCompare(b.name)); // sort alphabetically in ascending order
+        break;
+      case "alphabetdecrease":
+        sortedUsers.sort((a, b) => b.name.localeCompare(a.name)); // sort alphabetically in descending order
+        break;
+      case "yearincrease":
+        sortedUsers.sort((a, b) => {
+          const yearA = a.start_term && a.start_term.toDate().getFullYear();
+          const yearB = b.start_term && b.start_term.toDate().getFullYear();
+          if (yearA !== yearB) {
+            return yearA - yearB; // year in ascending order
+          } else {
+            // compare semester spring before fall
+            const semesterA = getSemester(a.start_term.toDate());
+            const semesterB = getSemester(b.start_term.toDate());
+            if (semesterA === semesterB) return 0;
+            return semesterA < semesterB ? -1 : 1;
+          }
+        });
+        break;
+      case "yeardecrease":
+        sortedUsers.sort((a, b) => {
+          const yearA = a.start_term && a.start_term.toDate().getFullYear();
+          const yearB = b.start_term && b.start_term.toDate().getFullYear();
+          if (yearA !== yearB) {
+            return yearB - yearA; // year descending
+          } else {
+            //compare semester
+            const semesterA = getSemester(a.start_term.toDate());
+            const semesterB = getSemester(b.start_term.toDate());
+            if (semesterA === semesterB) return 0;
+            return semesterA < semesterB ? 1 : -1;
+          }
+        });
         break;
       // Add other sorting options here if needed
       default:
