@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import TextField from "@mui/material/TextField";
 import DraggableCourse from "./DraggableCourse/DraggableCourse";
 import { Droppable } from "react-beautiful-dnd";
 import "./Searchbar.css";
 import { debounce } from "lodash";
-import { oHandler } from "models/purdueapi";
+import { purdueApiUrl } from "models/purdueapi";
+import { o } from 'odata';
 
-const Searchbar = ({parentSearch, updateParentSearch}) => {
+const Searchbar = ({ parentSearch, updateParentSearch }) => {
   const [results, setResults] = useState([]);
   const [matchedEntities, setMatchedEntities] = useState([]);
-  
+  const activeSearchId = useRef(0);
 
   const handleSearch = debounce(async (searchInput) => {
+    activeSearchId.current += 1; // Increment the ID for each new search
+    const currentSearchId = activeSearchId.current;
+
     const searchString = searchInput.toUpperCase().trim();
 
     if (searchString === "") {
@@ -31,29 +35,57 @@ const Searchbar = ({parentSearch, updateParentSearch}) => {
         number = word;
       }
     }
+    console.log("Subject:", subject);
+    console.log("Number:", number);
+
+    if (currentSearchId !== activeSearchId.current) return;
 
     try {
-      const entities = await oHandler.get("Courses").query({
-        $expand: `Classes($filter=Campus/Code eq 'PWL'), Subject`,
+      const oHandler = o(purdueApiUrl);
+      let entities = await oHandler.get("Courses").query({
+        $top: `10`,
+        $orderby: `Number`,
+        $expand: `Classes($filter=Campus/Code eq 'PWL';$orderby=Term/Code desc;$top=1),Subject`,
         $filter: `startswith(Subject/Abbreviation, '${subject}') and startswith(Number, '${number}')`,
       });
+      // $expand: `Classes($filter=Campus/Code eq 'PWL';$orderby=Term/Code desc;$top=1;$expand=Sections($filter=Type eq 'Lecture';$expand=Meetings($expand=Instructors,Room($expand=Building)))),Subject`,
 
-      // max length 10
-      setMatchedEntities(entities);
-      var results = [];
-      let result;
-      for (const entity of entities.slice(0, 10)) {
-        result = {
+      // let entities = await oHandler.get("Classes").query({
+      //   $top: `1`,
+      //   $expand: `Sections($filter=Type eq 'Lecture';$expand=Meetings($expand=Instructors,Room($expand=Building)))`,
+      //   $filter: `id eq 41f7d2f2-cef6-42ef-8c89-5c0a460883cf`,
+      // });
+      // const queryString = "Classes?$top=1&$expand=Sections($filter=Type eq 'Lecture';$expand=Meetings($expand=Instructors,Room($expand=Building)))&$filter=id eq 41f7d2f2-cef6-42ef-8c89-5c0a460883cf";
+
+      // const meetings = Class.Sections[0].Meetings.map(meeting => ({
+      //   instructors: meeting.Instructors.map(instructor => instructor.Name),
+      //   building: meeting.Room.Building.ShortCode,
+      //   room: meeting.Room.Number,
+      //   daysOfWeek: meeting.DaysOfWeek,
+      //   startTime: meeting.StartTime,
+      //   duration: meeting.Duration,
+      // }));
+
+      // Before updating the state, check if this is still the active request
+      if (currentSearchId === activeSearchId.current) {
+        console.log("Entites:", entities);
+        setMatchedEntities(entities);
+
+        // remove entities with no classes
+        entities = entities.filter(entity => entity.Classes.length > 0);
+
+        const results = entities.map(entity => ({
           id: entity.Id,
-          number: entity.Subject.Abbreviation + " " + entity.Number,
+          course: entity.Subject.Abbreviation + " " + entity.Number,
           description: entity.Description,
-          credit: entity.CreditHours
-        };
-        results.push(result);
+          credit: entity.CreditHours,
+          classId: entity.Classes[0].Id,
+        }));
+
+        console.log("Results:", results);
+        setResults(results);
+        updateParentSearch(results);
       }
-      console.log(results);
-      setResults(results);
-      updateParentSearch(results);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -78,7 +110,16 @@ const Searchbar = ({parentSearch, updateParentSearch}) => {
         {(provided) => (
           <div className="searchResults" {...provided.droppableProps} ref={provided.innerRef}>
             {results.map((result, index) => (
-              <DraggableCourse key={index} index={index} course={result.number} id={result.id} description={result.description} credit={result.credit} />
+              <DraggableCourse
+                key={index}
+                index={index}
+
+                id={result.id}
+                course={result.course}
+                description={result.description}
+                credit={result.credit}
+                meetings={result.meetings}
+              />
             ))}
             {provided.placeholder}
           </div>

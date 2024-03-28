@@ -4,12 +4,26 @@ import { Draggable } from "react-beautiful-dnd";
 import "./DraggableCourse.css"
 import "../CoursePopup/CoursePopup.css";
 
+type Meeting = {
+  instructors: Array<string>,
+  building: string,
+  room: number,
+  daysOfWeek: string,
+  startTime: string,
+
+  // for example - PT50M
+  // means period of time 50 minutes
+  // https://stackoverflow.com/questions/51168022/what-does-pt-prefix-stand-for-in-duration
+  duration: string,
+}
+
 type DraggableCourseProps = {
   index: number;
   id: string;
   course: string;
   description: string;
   credit: number;
+  classId: string;  // use this to query meetings info when opening popup
 };
 
 const DraggableCourse: React.FC<DraggableCourseProps> = ({ index, id, course, description, credit }) => {
@@ -38,10 +52,10 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({ index, id, course, de
                 <div className='header'>{course}</div>
                 <div className='content'>
                   Course Description: <br />
-                  <div style={{ fontSize: 12, color:'var(--textPrimary)' }}>
+                  <div style={{ fontSize: 12, color: 'var(--textPrimary)' }}>
                     {description} <br />
                   </div>
-                  
+
                   <br />
                   Credit Hours: {credit}
                 </div>
@@ -49,7 +63,7 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({ index, id, course, de
                   <h3>Course Sessions:</h3>
                 </div>
                 <div className='sessionsList'>
-                  <div style={{ overflowY:"scroll", height: "100px" }}>
+                  <div style={{ overflowY: "scroll", height: "100px" }}>
                     1 <br />
                     2 <br />
                     3 <br />
