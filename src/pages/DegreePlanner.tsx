@@ -203,6 +203,7 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
             // console.log(newCourses);
             setSemesterBlocks(newSemesterBlocks);
         }
+        calculateProgress();
     }
 
     const calculateProgress = () => {
@@ -215,8 +216,6 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
             .then((completed) => {
                 let c = getSatisfied(CS, new Set(completed));
                 setCompleted(c[0]);
-                console.log(c);
-                console.log(completed);
                 setTotal(c[1]);
             })
             
@@ -228,11 +227,6 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
             })
         } 
     }
-    calculateProgress();
-    console.log("jenny start");
-    console.log(completed);
-    console.log(planned);
-    console.log(total);
 
     return (
         <div className="DegreeOverview">
