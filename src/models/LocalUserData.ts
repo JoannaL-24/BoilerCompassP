@@ -64,7 +64,7 @@ export default class LocalUserData implements UserData {
   }
 
   exportAndDownload(): void {
-    let data: Record<string, string>
+    let data = {}
     Object.keys(tmpS).forEach((key) => {
       let val = window.localStorage.getItem(key)
       if (val != null)

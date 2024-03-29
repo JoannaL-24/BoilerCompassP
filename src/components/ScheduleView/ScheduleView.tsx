@@ -1,6 +1,6 @@
 import "./ScheduleView.css"
 import "../Semester/Semester.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SettingsIcon from '@mui/icons-material/Settings';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
@@ -8,13 +8,19 @@ import AddLinkIcon from '@mui/icons-material/AddLink';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Semester from "../Semester/Semester";
 import ProgressBar from '../ProgressBar'
-import { getSatisfied } from '../models/BoilerCompass';
-import { CS } from '../models/BoilerCompass'
-import { useAuth } from "../components/contexts/AuthContext";
-import RemoteUserdata from "../models/RemoteUserData";
+import { useAuth } from "../contexts/AuthContext";
+import UserData from "models/UserData";
+import LocalUserData from "models/LocalUserData";
+import RemoteUserdata from "models/RemoteUserData";
+import { useNavigate } from "react-router-dom";
 
 export default function ScheduleView({ name, semesterBlocks, completed, planned, total }) {
     const [semesterRender, setSemesterRender] = useState([]);
+    const { currentUser } = useAuth();
+    const hiddenFileInput = useRef(null);
+    const navigate = useNavigate();
+    const [userData, setUserData] = useState<UserData>(new LocalUserData)
+
     useEffect(() => {
         let newRender = [];
         for (var i = 0; i < semesterBlocks.length; i += 3) {
@@ -29,6 +35,29 @@ export default function ScheduleView({ name, semesterBlocks, completed, planned,
         }
         setSemesterRender(newRender);
     }, [semesterBlocks])
+
+    useEffect(() => {
+      if (currentUser)
+        setUserData(new RemoteUserdata)
+    }, [currentUser])
+
+  const handleClickImport = (e) => {
+    hiddenFileInput.current.click();
+  }
+
+  const handleClickExport = (e) => {
+    (userData as LocalUserData).exportAndDownload()
+  }
+
+  const handleChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) {
+      return;
+    }
+
+    (userData as LocalUserData).import(file)
+    navigate(0);
+  }
     
 
     return (
@@ -36,12 +65,24 @@ export default function ScheduleView({ name, semesterBlocks, completed, planned,
             <div className="ScheduleDestribtion">
                 <h3>{name}</h3>
                 <ul>
-                    <li>
-                        <a className="DescrBtn" href="1"><FileUploadIcon /></a>
-                    </li>
-                    <li>
-                        <a className="DescrBtn" href="1"><FileDownloadIcon /></a>
-                    </li>
+                    {
+                      currentUser ?? <>
+                      <li>
+                          <a className="DescrBtn" onClick={handleClickImport}
+                            style={{cursor: 'pointer'}}><FileUploadIcon /></a>
+                      </li>
+                      <input
+                        type="file"
+                        ref={hiddenFileInput}
+                        onChange={handleChange}
+                        style={{display: 'none'}}
+                      />
+                      <li>
+                          <a className="DescrBtn" onClick={handleClickExport}
+                            style={{cursor: 'pointer'}}><FileDownloadIcon /></a>
+                      </li>
+                      </>
+                    }
                     <li>
                         <a className="DescrBtn" href="1"><AddLinkIcon /></a>
                     </li>
