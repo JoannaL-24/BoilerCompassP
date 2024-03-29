@@ -219,7 +219,7 @@ export const courses = {
   },
 }
 
-const CSCoreReq: Requirement = {
+export const CSCoreReq: Requirement = {
   numNeeded: 6,
   criteria: [
     { type: 'course', course: courses.CS180 },
@@ -231,7 +231,7 @@ const CSCoreReq: Requirement = {
   ],
 }
 
-const CalcReq: Requirement = {
+export const CalcReq: Requirement = {
   numNeeded: 2,
   criteria: [
     {
@@ -257,7 +257,7 @@ const CalcReq: Requirement = {
   ],
 }
 
-const StatReq: Requirement = {
+export const StatReq: Requirement = {
   numNeeded: 1,
   criteria: [
     {
@@ -271,7 +271,7 @@ const StatReq: Requirement = {
   ],
 }
 
-const SWETrack: Requirement = {
+export const SWETrack: Requirement = {
   numNeeded: 6,
   criteria: [
     { type: 'course', course: courses.CS307 },
@@ -315,8 +315,13 @@ const SWETrack: Requirement = {
   ],
 }
 
+export const LinAlgReq: Requirement = {
+    numNeeded: 1,
+    criteria: [{ type: 'course', course: courses.MA265 }]
+}
+
 // only swe track for now
-const TracksReq: Requirement = {
+export const TracksReq: Requirement = {
   numNeeded: 1,
   criteria: [{ type: 'requirement', requirement: SWETrack }],
 }
