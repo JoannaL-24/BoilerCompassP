@@ -13,7 +13,7 @@ import { CS } from '../models/BoilerCompass'
 import { useAuth } from "../components/contexts/AuthContext";
 import RemoteUserdata from "../models/RemoteUserData";
 
-export default function ScheduleView({ semesterBlocks, completed, planned, total }) {
+export default function ScheduleView({ name, semesterBlocks, completed, planned, total }) {
     const [semesterRender, setSemesterRender] = useState([]);
     useEffect(() => {
         let newRender = [];
@@ -34,7 +34,7 @@ export default function ScheduleView({ semesterBlocks, completed, planned, total
     return (
         <div className="ScheduleView">
             <div className="ScheduleDestribtion">
-                <h3>Schedule Name :)</h3>
+                <h3>{name}</h3>
                 <ul>
                     <li>
                         <a className="DescrBtn" href="1"><FileUploadIcon /></a>
