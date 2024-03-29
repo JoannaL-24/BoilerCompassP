@@ -17,6 +17,7 @@ import Searchbar from "components/Searchbar.js";
 import "../components/Searchbar.css";
 import { ThemeProvider, createTheme } from "@mui/material";
 import UserData from "models/UserData.ts";
+import ReqModal from "components/ReqModal";
 
 // temperary data for semester_blocks in Schedule
 const SCHEDULE_DATA = {
@@ -226,6 +227,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const [completed, setCompleted] = useState(0);
     const [total, setTotal] = useState(100);
     const [planned, setPlanned] = useState(0);
+    const [reqModalOpen, setReqModalOpen] = useState(false);
 
     useEffect(() => {
         if (currentUser) {
@@ -464,6 +466,14 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         calculateProgress();
     }
 
+    const handleOpenReqModal = () => {
+      setReqModalOpen(true);
+    }
+
+    const handleCloseReqModal = () => {
+      setReqModalOpen(false);
+    }
+
     return (
         <div className="DegreeOverview">
             <NavBar
@@ -474,12 +484,12 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                     <ScheduleView name={scheduleList.currName} semesterBlocks={semesterBlocks} completed={completed} planned={planned} total={total} />
                     <ThemeProvider theme={mode}>
                         <div className="ScheduleSide" style={darkmode ? { backgroundColor: '#3b3a39' } : { backgroundColor: '#f5f3eb' }}>
-                            <button className="mediumBtn goldBtn"><h3>Requirement</h3></button>
+                            <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
+                            <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal}/>
                             <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} />
                         </div>
                     </ThemeProvider>
                 </DragDropContext>
             </div>
-        </div>
-    )
+        </div>)
 }
