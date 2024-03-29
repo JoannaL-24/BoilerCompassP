@@ -21,7 +21,7 @@ import LocalUserdata from '../models/LocalUserData';
 import { Schedule, Semester } from '../models/BoilerCompass';
 // firebase imports
 
-import { doc, updateDoc, Timestamp } from "firebase/firestore";
+import { Timestamp, addDoc, collection } from "firebase/firestore";
 
 import { firestore } from '../models/firebase.ts';
 // data imports
@@ -48,7 +48,7 @@ const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
   const submit_button_text = setup ? "Submit" : "Edit/Save";
   const navigate = useNavigate();
 
-  const userData: UserData = currentUser?new RemoteUserdata():new LocalUserdata();
+  const userData: UserData = currentUser ? new RemoteUserdata() : new LocalUserdata();
   // console.log(userinfo);
 
   const submit = () => {
@@ -101,18 +101,32 @@ const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
         userinfo.schedule.majors = userinfo.prefer_majors;
         userinfo.schedule.minors = userinfo.prefer_minor;
         userinfo.schedule.semester_blocks = semester_blocks;
+        userinfo.schedule.planned_courses = [];
+        userinfo.schedule.completed_courses = [];
       }
       // if (currentUser) {
-        userData.put("prefer_majors", userinfo.prefer_majors);
-        userData.put("prefer_minor", userinfo.prefer_minor);
-        userData.put("user_type", userinfo.user_type);
-        userData.put("start_term", Timestamp.fromDate(new Date(userinfo.start_term)));
-        userData.put("end_term", Timestamp.fromDate(new Date(userinfo.end_term)));
-        userData.put("completed_courses", userinfo.completed_courses);
-        userData.put("planned_courses", userinfo.planned_courses);
-        userData.put("schedule", [userinfo.schedule]);
-        (!setup && setUpdated(true));
-        if (setup) navigate('/DegreePlanner');
+      userData.put("prefer_majors", userinfo.prefer_majors);
+      userData.put("prefer_minor", userinfo.prefer_minor);
+      userData.put("user_type", userinfo.user_type);
+      userData.put("start_term", Timestamp.fromDate(new Date(userinfo.start_term)));
+      userData.put("end_term", Timestamp.fromDate(new Date(userinfo.end_term)));
+      userData.put("completed_courses", userinfo.completed_courses);
+      userData.put("planned_courses", userinfo.planned_courses);
+      if (currentUser) {
+        addDoc(collection(firestore, "schedules"), userinfo.schedule)
+          .then((document) => {
+            userData.put("schedule", [document.id]);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }
+      else {
+        // TODO: local
+      }
+      
+      (!setup && setUpdated(true));
+      if (setup) navigate('/DegreePlanner');
       // }
       // else {
       //   // local

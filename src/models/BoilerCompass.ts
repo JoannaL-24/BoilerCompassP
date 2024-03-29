@@ -39,7 +39,6 @@ export type Degree = {
 }
 
 export type Schedule = {
-  id: number
   name: string
   start_term: Date
   end_term: Date

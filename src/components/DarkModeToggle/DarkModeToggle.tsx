@@ -18,10 +18,10 @@ type Props = {
 const DarkModeToggle = ({darkmode, setDarkmode}: Props) => {
 
     const { currentUser } = useAuth();
-    console.log(darkmode)
+    // console.log(darkmode)
 
     const toggleTheme = (e) => {
-        console.log("mode: " + darkmode)
+        // console.log("mode: " + darkmode)
         var dark_state = e.target.checked;
         setDarkmode(dark_state);
         if (currentUser) {
@@ -31,25 +31,25 @@ const DarkModeToggle = ({darkmode, setDarkmode}: Props) => {
                 dark_mode: !darkmode
             });
         }
-         console.log("after doc update");
-         console.log(darkmode);
+        //  console.log("after doc update");
+        //  console.log(darkmode);
          if (darkmode) {
             document.querySelector("body").setAttribute("data-theme", "dark");
-            console.log("dark");
+            // console.log("dark");
          }
          else {
             document.querySelector("body").setAttribute("data-theme", "light")
-            console.log("light");
+            // console.log("light");
         }
     }
 
     if (darkmode) {
         document.querySelector("body").setAttribute("data-theme", "dark");
-        console.log("dark-out");
+        // console.log("dark-out");
      }
      else {
         document.querySelector("body").setAttribute("data-theme", "light")
-        console.log("light-out");
+        // console.log("light-out");
     }
 
     return (
