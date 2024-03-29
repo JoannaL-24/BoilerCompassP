@@ -121,6 +121,7 @@ const DraggableCourse: React.FC<DraggableCourseProps> = (
                   ) : (
                     <div>No meeting information available.</div>
                   )}
+
                 </div>
 
               </div>
