@@ -51,10 +51,10 @@ const ProgressBar = ({completed, planned, total}) => {
   // get the total number of requirements the user has completed from the database here
   // total number of requirements that needs to be satisfied
   // set progress to be {have completed / total requirements}
-  console.log("wow")
-  console.log(completed);
-  console.log(planned);
-  console.log(total);
+  // console.log("wow")
+  // console.log(completed);
+  // console.log(planned);
+  // console.log(total);
   return (
     <Box sx={{ marginLeft: "120px",  marginRight: "120px", width: "80%", marginTop: "1.5em"}}>
       <LinearProgressWithLabel value={(completed/total)*100} valueBuffer={((planned+completed)/total)*100}/>

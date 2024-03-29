@@ -4,22 +4,114 @@ import ScheduleView from "../components/ScheduleView/ScheduleView";
 import './DegreePlanner.css';
 // firebase imports
 import { useAuth } from '../components/contexts/AuthContext.tsx'
-import { doc, getDoc, updateDoc, Timestamp, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayRemove } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
 import { DragDropContext } from "react-beautiful-dnd";
 import RemoteUserdata from '../models/RemoteUserData';
 import { getSatisfied } from '../models/BoilerCompass';
 import { CS } from '../models/CS';
-
 // sidebar import
 import "../components/ScheduleSide/ScheduleSide.css";
 import Searchbar from "components/Searchbar.js";
 // search bar input
 import "../components/Searchbar.css";
 import { ThemeProvider, createTheme } from "@mui/material";
+import UserData from "models/UserData.ts";
 
 // temperary data for semester_blocks in Schedule
-const DATA = [
+const SCHEDULE_DATA = {
+    name: "Schedule1",
+    start_term: new Date("2022-08-19T24:00:00.000Z"),
+    end_term: new Date("2026-05-03T24:00:00.000Z"),
+    semester_blocks: [
+        {
+            id: 0,
+            year: 2022,
+            term: "Fall",
+            course_list: [
+                {
+                    id: "1",
+                    number: "CS25200",
+                    description: "something",
+                    credit: 3,
+                },
+            ],
+        },
+        {
+            id: 1,
+            year: 2023,
+            term: "Spring",
+            course_list: [],
+        },
+        {
+            id: 2,
+            year: 2023,
+            term: "Summer",
+            course_list: [],
+        },
+        {
+            id: 3,
+            year: 2023,
+            term: "Fall",
+            course_list: [],
+        },
+        {
+            id: 4,
+            year: 2024,
+            term: "Spring",
+            course_list: [],
+        },
+        {
+            id: 5,
+            year: 2024,
+            term: "Summer",
+            course_list: [],
+        },
+        {
+            id: 6,
+            year: 2024,
+            term: "Fall",
+            course_list: [],
+        },
+        {
+            id: 7,
+            year: 2025,
+            term: "Spring",
+            course_list: [],
+        },
+        {
+            id: 8,
+            year: 2025,
+            term: "Summer",
+            course_list: [],
+        },
+        {
+            id: 9,
+            year: 2025,
+            term: "Fall",
+            course_list: [],
+        },
+        {
+            id: 10,
+            year: 2026,
+            term: "Spring",
+            course_list: [],
+        },
+        {
+            id: 11,
+            year: 2026,
+            term: "Summer",
+            course_list: [],
+        },
+    ],
+    majors: [
+        {
+            name: "Computer Science",
+        },
+    ],
+    minors: [],
+}
+const SEMESTER_DATA = [
     {
         id: 0,
         year: 2022,
@@ -27,7 +119,7 @@ const DATA = [
         course_list: [
             {
                 id: "1",
-                number: "CS25200",
+                course: "CS25200",
                 description: "something",
                 credit: 3,
             },
@@ -109,23 +201,42 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     //get current user and mode preference
     const { currentUser } = useAuth();
     // const [darkmode, setDarkmode] = useState<boolean>(null);
-    const [semesterBlocks, setSemesterBlocks] = useState(DATA);
+    const [scheduleInfo, setScheduleInfo] = useState({
+        id: "1",
+        name: "",
+    });
+    const [semesterBlocks, setSemesterBlocks] = useState(SEMESTER_DATA);
     const [searchResult, setSearchResult] = useState([]);
     // progress bar data
     const [completed, setCompleted] = useState(0);
     const [total, setTotal] = useState(100);
     const [planned, setPlanned] = useState(0);
 
-    let user_doc;
     useEffect(() => {
         if (currentUser) {
-            user_doc = getDoc(doc(firestore, "users", currentUser.uid))
+            const user_doc = getDoc(doc(firestore, "users", currentUser.uid))
                 .then((docSnapshot) => {
                     setDarkmode(docSnapshot.data().dark_mode);
-                    setSemesterBlocks(docSnapshot.data().schedule[0].semester_blocks);
+                    const scheduleList = docSnapshot.data().schedule;
+                    setScheduleInfo({ ...scheduleInfo, id: scheduleList[0]},);
                 });
         }
     }, [currentUser]);
+    useEffect(() => {
+        if (scheduleInfo.id != "1") {
+            // console.log(scheduleInfo.id);
+            getDoc(doc(firestore, "schedules", scheduleInfo.id))
+                .then((scheduleSnap) => {
+                    setScheduleInfo({ ...scheduleInfo, name: scheduleSnap.data().name },);
+                    setSemesterBlocks(scheduleSnap.data().semester_blocks);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setSemesterBlocks(SEMESTER_DATA);
+                })
+
+        }
+    }, [scheduleInfo.id]);
 
     var mode_str;
     if (darkmode) {
@@ -169,7 +280,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             // console.log(deletedCourse);
             // console.log(newSourceCourses);
             // console.log(newSemesterBlocks);
-            // const semesterRef = doc(firestore, "users", currentUser.uid);
+            // const semesterRef = doc(firestore, "schedules", currentUser.uid);
             // updateDoc(semesterRef, {
             //     "schedule": arrayRemove("east_coast")
             // })
@@ -183,72 +294,70 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             //     })
             setSearchResult(newSourceCourses);
             setSemesterBlocks(newSemesterBlocks);
-
-
         }
         // from semester to another semester
-        else if (source.droppableId != destination.droppableI) {
-            console.log("Semester to Semester");
-            const newSourceCourses = semesterBlocks[source.droppableId].course_list;
-            const newDestinationCourses = semesterBlocks[destination.droppableId].course_list;
+        // else if (source.droppableId != destination.droppableI) {
+        //     console.log("Semester to Semester");
+        //     const newSourceCourses = semesterBlocks[source.droppableId].course_list;
+        //     const newDestinationCourses = semesterBlocks[destination.droppableId].course_list;
 
-            const [deletedCourse] = newSourceCourses.splice(source.index, 1);
-            newDestinationCourses.splice(destination.index, 0, deletedCourse);
+        //     const [deletedCourse] = newSourceCourses.splice(source.index, 1);
+        //     newDestinationCourses.splice(destination.index, 0, deletedCourse);
 
-            const newSemesterBlocks = [...semesterBlocks];
-            newSemesterBlocks[source.droppableId] = {
-                ...semesterBlocks[source.droppableId],
-                course_list: newSourceCourses,
-            };
-            newSemesterBlocks[destination.droppableId] = {
-                ...semesterBlocks[destination.droppableId],
-                course_list: newDestinationCourses,
-            };
-            // console.log(deletedCourse);
-            // console.log(newSourceCourses);
-            // console.log(newDestinationCourses);
-            setSemesterBlocks(newSemesterBlocks);
-        }
-        // change within semester
-        else if (source.droppableId == destination.droppableId) {
-            console.log("Within Semester");
-            const newCourses = semesterBlocks[destination.droppableId].course_list;
+        //     const newSemesterBlocks = [...semesterBlocks];
+        //     newSemesterBlocks[source.droppableId] = {
+        //         ...semesterBlocks[source.droppableId],
+        //         course_list: newSourceCourses,
+        //     };
+        //     newSemesterBlocks[destination.droppableId] = {
+        //         ...semesterBlocks[destination.droppableId],
+        //         course_list: newDestinationCourses,
+        //     };
+        //     // console.log(deletedCourse);
+        //     // console.log(newSourceCourses);
+        //     // console.log(newDestinationCourses);
+        //     setSemesterBlocks(newSemesterBlocks);
+        // }
+        // // change within semester
+        // else if (source.droppableId == destination.droppableId) {
+        //     console.log("Within Semester");
+        //     const newCourses = semesterBlocks[destination.droppableId].course_list;
 
-            const [deletedCourse] = newCourses.splice(source.index, 1);
-            newCourses.splice(destination.index, 0, deletedCourse);
+        //     const [deletedCourse] = newCourses.splice(source.index, 1);
+        //     newCourses.splice(destination.index, 0, deletedCourse);
 
-            const newSemesterBlocks = [...semesterBlocks];
-            newSemesterBlocks[destination.droppableId] = {
-                ...semesterBlocks[destination.droppableId],
-                course_list: newCourses,
-            };
-            // console.log(deletedCourse);
-            // console.log(newCourses);
-            setSemesterBlocks(newSemesterBlocks);
-        }
-        calculateProgress();
+        //     const newSemesterBlocks = [...semesterBlocks];
+        //     newSemesterBlocks[destination.droppableId] = {
+        //         ...semesterBlocks[destination.droppableId],
+        //         course_list: newCourses,
+        //     };
+        //     // console.log(deletedCourse);
+        //     // console.log(newCourses);
+        //     setSemesterBlocks(newSemesterBlocks);
+        // }
+        // calculateProgress();
     }
 
-    const calculateProgress = () => {
+    function calculateProgress() {
         // get numbers for calculating degree progress
         const userData: UserData = new RemoteUserdata();
         const { currentUser } = useAuth();
         if (currentUser) {
             // get completed and total
             userData.get("completed_courses")
-            .then((completed) => {
-                let c = getSatisfied(CS, new Set(completed));
-                setCompleted(c[0]);
-                setTotal(c[1]);
-            })
-            
+                .then((completed) => {
+                    let c = getSatisfied(CS, new Set(completed));
+                    setCompleted(c[0]);
+                    setTotal(c[1]);
+                })
+
             // get planned
             userData.get("planned_courses")
-            .then((planned) => {
-                let c = getSatisfied(CS, new Set(planned));
-                setPlanned(c[0]);
-            })
-        } 
+                .then((planned) => {
+                    let c = getSatisfied(CS, new Set(planned));
+                    setPlanned(c[0]);
+                })
+        }
     }
 
     return (
@@ -258,7 +367,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 setDarkmode={setDarkmode} />
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                    <ScheduleView semesterBlocks={semesterBlocks} semesterBlocks={semesterBlocks} completed={completed} planned={planned} total={total} />
+                    <ScheduleView name={scheduleInfo.name} semesterBlocks={semesterBlocks} completed={completed} planned={planned} total={total} />
                     <ThemeProvider theme={mode}>
                         <div className="ScheduleSide" style={darkmode ? { backgroundColor: '#3b3a39' } : { backgroundColor: '#f5f3eb' }}>
                             <button className="mediumBtn goldBtn"><h3>Requirement</h3></button>

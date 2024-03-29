@@ -15,7 +15,7 @@ const Semester = ({ semesterInfo }) => {
                 {(provided) => (
                     <div className="Courses" {...provided.droppableProps} ref={provided.innerRef}>
                         {semesterInfo.course_list.map((course, index) => (
-                            <DraggableCourse key={index} index={index} course={course.number} id={course.id} description={course.description} credit={course.credit}/>
+                            <DraggableCourse key={index} index={index} course={course.course} id={course.id} description={course.description} credit={course.credit} classId={course.classId}/>
                         ))}
                         {provided.placeholder}
                     </div>
