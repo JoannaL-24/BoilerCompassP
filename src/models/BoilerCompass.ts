@@ -28,6 +28,7 @@ export type Semester = {
   year: number
   term: string
   course_list: Course[]
+  credit: number
 }
 
 export type Degree = {

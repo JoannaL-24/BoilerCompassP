@@ -76,6 +76,7 @@ const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
         console.log("typeof date: ", userinfo.start_term);
         let term = "Summer";
         let addYear = 0;
+        let credit = 0;
         for (let i = 0; i < total_semesters; i++) {
           term = "Summer";
           if (i % 3 == 0) {
@@ -90,6 +91,7 @@ const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
             year: userinfo.start_term.$y + addYear,
             term: term,
             course_list: [],
+            credit: credit,
           }
           // console.log(semester);
           semester_blocks[i] = semester;
