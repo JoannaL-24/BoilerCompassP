@@ -277,7 +277,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             //     let c = getSatisfied(CS, new Set(planned));
             //     setPlanned(c[0]);
             // })
-            console.log("jenny start");
             const user_doc = getDoc(doc(firestore, "schedules", scheduleList.currId))
                 .then((docSnapshot) => {
                     let c = getSatisfied(CS, new Set(docSnapshot.data().planned_courses));
