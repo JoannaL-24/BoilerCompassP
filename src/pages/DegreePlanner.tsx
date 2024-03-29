@@ -200,6 +200,7 @@ type Props = {
 export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     //get current user and mode preference
     const { currentUser } = useAuth();
+    const userData: UserData = new RemoteUserdata();
     // const [darkmode, setDarkmode] = useState<boolean>(null);
     const [scheduleList, setscheduleList] = useState({
         currIndex: 0,
@@ -223,6 +224,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 });
         }
     }, [currentUser]);
+    
     useEffect(() => {
         if (scheduleList.list.length > 0) {
             getDoc(doc(firestore, "schedules", scheduleList.list[scheduleList.currIndex]))
@@ -236,6 +238,26 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 })
         }
     }, [scheduleList.list]);
+
+    function calculateProgress() {
+        // get numbers for calculating degree progress
+        if (currentUser) {
+            // get completed and total
+            userData.get("completed_courses")
+            .then((completed) => {
+                let c = getSatisfied(CS, new Set(completed));
+                setCompleted(c[0]);
+                setTotal(c[1]);
+            })
+            
+            // get planned
+            userData.get("planned_courses")
+            .then((planned) => {
+                let c = getSatisfied(CS, new Set(planned));
+                setPlanned(c[0]);
+            })
+        } 
+    }
 
     var mode_str;
     if (darkmode) {
@@ -372,26 +394,26 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         // calculateProgress();
     }
 
-    function calculateProgress() {
+    const calculateProgress = () => {
         // get numbers for calculating degree progress
         const userData: UserData = new RemoteUserdata();
         const { currentUser } = useAuth();
         if (currentUser) {
             // get completed and total
             userData.get("completed_courses")
-                .then((completed) => {
-                    let c = getSatisfied(CS, new Set(completed));
-                    setCompleted(c[0]);
-                    setTotal(c[1]);
-                })
-
+            .then((completed) => {
+                let c = getSatisfied(CS, new Set(completed));
+                setCompleted(c[0]);
+                setTotal(c[1]);
+            })
+            
             // get planned
             userData.get("planned_courses")
-                .then((planned) => {
-                    let c = getSatisfied(CS, new Set(planned));
-                    setPlanned(c[0]);
-                })
-        }
+            .then((planned) => {
+                let c = getSatisfied(CS, new Set(planned));
+                setPlanned(c[0]);
+            })
+        } 
     }
 
     return (
