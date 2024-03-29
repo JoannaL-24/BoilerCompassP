@@ -1,6 +1,26 @@
 import UserData from './UserData'
 import { User, Student, Advisor } from './BoilerCompass'
-
+const tmpS: Student = {
+  prefer_majors: [],
+  prefer_minor: [],
+  start_term: undefined,
+  end_term: undefined,
+  advisors: [],
+  groups: [],
+  name: '',
+  purdue_email: '',
+  dark_mode: false,
+  completed_courses: []
+}
+const tmpA: Advisor = {
+  department: '',
+  office: '',
+  students: [],
+  name: '',
+  purdue_email: '',
+  dark_mode: false,
+  groups: [],
+}
 // Local storage implementation for user data storage and retrieval
 export default class LocalUserData implements UserData {
   /* Returns whether the data was stored successfully.
@@ -34,27 +54,6 @@ export default class LocalUserData implements UserData {
   }
 
   delete(): Promise<void> {
-    const tmpS: Student = {
-        prefer_majors: [],
-        prefer_minor: [],
-        start_term: undefined,
-        end_term: undefined,
-        advisors: [],
-        groups: [],
-        name: '',
-        purdue_email: '',
-        dark_mode: false,
-        completed_courses: []
-    }
-    const tmpA: Advisor = {
-        department: '',
-        office: '',
-        students: [],
-        name: '',
-        purdue_email: '',
-        dark_mode: false,
-        groups: [],
-    }
     Object.keys(tmpS).forEach((key) => {
       window.localStorage.removeItem(key)
     })
@@ -62,5 +61,41 @@ export default class LocalUserData implements UserData {
       window.localStorage.removeItem(key)
     })
     return Promise.resolve()
+  }
+
+  exportAndDownload(): void {
+    let data = {}
+    Object.keys(tmpS).forEach((key) => {
+      let val = window.localStorage.getItem(key)
+      if (val != null)
+      data[key] = val;
+    })
+    Object.keys(tmpA).forEach((key) => {
+      let val = window.localStorage.getItem(key)
+      if (val != null)
+      data[key] = val;
+    })
+
+    const dataBlob = new Blob([JSON.stringify(data)], {type: 'application/json'})
+    const a = document.createElement('a');
+    const url = URL.createObjectURL(dataBlob);
+    a.href = url;
+    a.download = 'BCDataExport.json'
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  import(data: Blob): void {
+    const freader = new FileReader()
+    freader.onload = (event) => {
+      let dataObj = JSON.parse(event.target?.result as string)
+      Object.entries(dataObj).forEach(([key, val]) => {
+        localStorage.setItem(key, val as string);
+      });
+    }
+
+    freader.readAsText(data)
   }
 }
