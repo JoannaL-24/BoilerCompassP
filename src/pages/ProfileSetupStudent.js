@@ -9,7 +9,6 @@ const ProfileSetupStudents = () => {
   const { currentUser } = useAuth();
 
   const schedule: Schedule = {
-    id: -1,
     name: "",
     start_term: null,
     end_term: null,
