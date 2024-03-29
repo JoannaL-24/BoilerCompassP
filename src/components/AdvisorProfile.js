@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../models/firebase.ts";
 import RemoteUserdata from '../models/RemoteUserData';
+import LocalUserdata from '../models/LocalUserData';
 // data imports
 import major_data from "../json/majors.json";
 import college_data from "../json/colleges.json";
@@ -27,7 +28,7 @@ const Advisor_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
   const department_q = setup ? "Choose your department:" : "Your department:";
   const college_q = setup ? "Choose your college:" : "Your college:";
   const submit_button_text = setup ? "Submit" : "Edit/Save";
-  const userData: UserData = new RemoteUserdata();
+  const userData: UserData = currentUser?new RemoteUserdata():new LocalUserdata();
   const navigate = useNavigate();
   // console.log(userinfo);
 
@@ -43,16 +44,7 @@ const Advisor_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
     } else setMissingDepartment("");
     if (go) {
       console.log(userinfo); // for testing purposes
-      if (currentUser) {
-        // const uid = currentUser.uid;
-
-        // const user_doc = doc(firestore, "users", uid);
-
-        // updateDoc(user_doc, {
-        //   college: userinfo.college,
-        //   department: userinfo.department,
-        //   user_type: "advisor",
-        // });
+      // if (currentUser) {
         userData.put("college", userinfo.college);
         userData.put("department", userinfo.department);
         userData.put("user_type", userinfo.user_type);
@@ -60,10 +52,10 @@ const Advisor_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
 
         (!setup && setUpdated(true));
         if (setup) navigate('/AdvisorHomePage');
-      }
-      else {
-        setSignedIn(false);
-      }
+      // }
+      // else {
+      //   setSignedIn(false);
+      // }
     }
   };
 
