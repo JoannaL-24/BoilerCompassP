@@ -5,6 +5,7 @@ import RemoteUserdata from 'models/RemoteUserData'
 import { getSatisfied } from 'models/BoilerCompass'
 import { CalcReq, courses, CS, CSCoreReq, LinAlgReq, StatReq, TracksReq } from 'models/CS'
 import LocalUserData from 'models/LocalUserData'
+import UserData from 'models/UserData'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -20,6 +21,7 @@ const style = {
 export default function ReqModal({ open, handleClose }) {
   const { currentUser } = useAuth()
   const [userData, setUserData] = useState<UserData>(new LocalUserData())
+  const [majorSet, setMajorSet] = useState(new Set())
   const [completed, setCompleted] = useState({
     core: [0, 1],
     calc: [0, 1],
@@ -30,7 +32,7 @@ export default function ReqModal({ open, handleClose }) {
   const remote = new RemoteUserdata();
   useEffect(() => {
     userData.get('completed_courses').then((s) => {
-      let set = new Set(s)
+      let set = new Set<string>(s)
       console.log(s)
       console.log(set)
       setCompleted({
@@ -40,6 +42,11 @@ export default function ReqModal({ open, handleClose }) {
         linalg: getSatisfied( LinAlgReq, set),
         tracks: getSatisfied(TracksReq, set),
       })
+    })
+    userData.get("prefer_majors").then((data) => {
+      console.log(data)
+      if (data[0].name == "Computer Science")
+        setMajorSet(new Set<string>(["Computer Science"]))
     })
   }, [userData])
   useEffect(() => {
@@ -56,23 +63,28 @@ export default function ReqModal({ open, handleClose }) {
         <Typography id='modal-modal-title' variant='h4' component='h2'>
           Requirements Summary
         </Typography>
-        {(new Set(userData.get("prefer_majors")).has("Computer Science")})
+
+          {majorSet.has("Computer Science") ?
+        <>
+          <Typography id='modal-modal-description' sx={{ mt: 2 }}>
+            CS Core Requirements: {completed.core[0] / completed.core[1] * 100}%
+          </Typography>
+          <Typography id='modal-modal-description' sx={{ mt: 2 }}>
+            Calculus Requirement: {completed.calc[0] / completed.calc[1] * 100}%
+          </Typography>
+          <Typography id='modal-modal-description' sx={{ mt: 2 }}>
+            Statistics Requirement: {completed.stat[0] / completed.stat[1] * 100}%
+          </Typography>
+          <Typography id='modal-modal-description' sx={{ mt: 2 }}>
+            Linear Algebra Requirement: {completed.linalg[0] / completed.linalg[1] * 100}%
+          </Typography>
+          <Typography id='modal-modal-description' sx={{ mt: 2 }}>
+            CS Tracks Requirement: {completed.core[0] / completed.core[1] * 100}%
+          </Typography>
+        </>
+        : <></>
         }
-        <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-          CS Core Requirements: {completed.core[0] / completed.core[1] * 100}%
-        </Typography>
-        <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-          Calculus Requirement: {completed.calc[0] / completed.calc[1] * 100}%
-        </Typography>
-        <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-          Statistics Requirement: {completed.stat[0] / completed.stat[1] * 100}%
-        </Typography>
-        <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-          Linear Algebra Requirement: {completed.linalg[0] / completed.linalg[1] * 100}%
-        </Typography>
-        <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-          CS Tracks Requirement: {completed.core[0] / completed.core[1] * 100}%
-        </Typography>
+
       </Box>
     </Modal>
   )
