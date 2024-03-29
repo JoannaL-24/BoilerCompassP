@@ -224,7 +224,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     }, [currentUser]);
     useEffect(() => {
         if (scheduleInfo.id != "1") {
-            console.log(scheduleInfo.id);
+            // console.log(scheduleInfo.id);
             getDoc(doc(firestore, "schedules", scheduleInfo.id))
                 .then((scheduleSnap) => {
                     setScheduleInfo({ ...scheduleInfo, name: scheduleSnap.data().name },);
