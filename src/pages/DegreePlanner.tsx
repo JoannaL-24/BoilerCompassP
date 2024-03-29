@@ -16,6 +16,7 @@ import Searchbar from "components/Searchbar.js";
 // search bar input
 import "../components/Searchbar.css";
 import { ThemeProvider, createTheme } from "@mui/material";
+import Alert from "@mui/material/Alert";
 import UserData from "models/UserData.ts";
 import ReqModal from "components/ReqModal";
 
@@ -311,6 +312,8 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
 
             const [deletedCourse] = newSourceCourses.splice(source.index, 1);
             cr = cr - deletedCourse.credit;
+            if (cr < 12) {alert("Less than 12 credits");}
+            if (cr > 18) {alert("More than 18 credits");}
 
             const newSemesterBlocks = [...semesterBlocks];
             newSemesterBlocks[source.droppableId] = {
@@ -360,6 +363,8 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             // console.log(deletedCourse.credit);
 
             cr = cr + deletedCourse.credit;
+            // if (cr < 12) {alert("Less than 12 credits");}
+            if (cr > 18) {alert("More than 18 credits");}
             newDestinationCourses.splice(destination.index, 0, deletedCourse);
 
             const newSemesterBlocks = [...semesterBlocks];
@@ -404,6 +409,10 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             const [deletedCourse] = newSourceCourses.splice(source.index, 1);
             cr_source = cr_source - deletedCourse.credit;
             cr_dest = cr_dest + deletedCourse.credit;
+            if (cr_source < 12) {alert("Less than 12 credits");}
+            if (cr_source > 18) {alert("More than 18 credits");}
+            if (cr_dest < 12) {alert("Less than 12 credits");}
+            if (cr_dest > 18) {alert("More than 18 credits");}
             newDestinationCourses.splice(destination.index, 0, deletedCourse);
 
             const newSemesterBlocks = [...semesterBlocks];
