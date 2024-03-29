@@ -4,12 +4,13 @@ import ScheduleView from "../components/ScheduleView/ScheduleView";
 import './DegreePlanner.css';
 // firebase imports
 import { useAuth } from '../components/contexts/AuthContext.tsx'
-import { doc, getDoc, updateDoc, Timestamp } from "firebase/firestore";
+import { doc, getDoc, updateDoc, Timestamp, arrayRemove } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
 import { DragDropContext } from "react-beautiful-dnd";
 import RemoteUserdata from '../models/RemoteUserData';
 import { getSatisfied } from '../models/BoilerCompass';
 import { CS } from '../models/CS';
+
 // sidebar import
 import "../components/ScheduleSide/ScheduleSide.css";
 import Searchbar from "components/Searchbar.js";
@@ -20,84 +21,91 @@ import { ThemeProvider, createTheme } from "@mui/material";
 // temperary data for semester_blocks in Schedule
 const DATA = [
     {
-        id: 1,
+        id: 0,
         year: 2022,
         term: "Fall",
+        course_list: [
+            {
+                id: "1",
+                number: "CS25200",
+                description: "something",
+                credit: 3,
+            },
+        ],
+    },
+    {
+        id: 1,
+        year: 2023,
+        term: "Spring",
         course_list: [],
     },
     {
         id: 2,
         year: 2023,
-        term: "Spring",
+        term: "Summer",
         course_list: [],
     },
     {
         id: 3,
         year: 2023,
-        term: "Summer",
+        term: "Fall",
         course_list: [],
     },
     {
         id: 4,
-        year: 2023,
-        term: "Fall",
+        year: 2024,
+        term: "Spring",
         course_list: [],
     },
     {
         id: 5,
         year: 2024,
-        term: "Spring",
+        term: "Summer",
         course_list: [],
     },
     {
         id: 6,
         year: 2024,
-        term: "Summer",
+        term: "Fall",
         course_list: [],
     },
     {
         id: 7,
-        year: 2024,
-        term: "Fall",
+        year: 2025,
+        term: "Spring",
         course_list: [],
     },
     {
         id: 8,
         year: 2025,
-        term: "Spring",
+        term: "Summer",
         course_list: [],
     },
     {
         id: 9,
         year: 2025,
-        term: "Summer",
-        course_list: [],
-    },
-    {
-        id: 10,
-        year: 2025,
         term: "Fall",
         course_list: [],
     },
     {
-        id: 11,
+        id: 10,
         year: 2026,
         term: "Spring",
         course_list: [],
     },
     {
-        id: 12,
+        id: 11,
         year: 2026,
         term: "Summer",
         course_list: [],
     },
 ]
 type Props = {
-    darkmode:boolean;
+    darkmode: boolean;
     setDarkmode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function DegreePlanner({darkmode, setDarkmode}: Props) {
+export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     //get current user and mode preference
     const { currentUser } = useAuth();
     // const [darkmode, setDarkmode] = useState<boolean>(null);
@@ -108,9 +116,10 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
     const [total, setTotal] = useState(100);
     const [planned, setPlanned] = useState(0);
 
+    let user_doc;
     useEffect(() => {
         if (currentUser) {
-            const user_doc = getDoc(doc(firestore, "users", currentUser.uid))
+            user_doc = getDoc(doc(firestore, "users", currentUser.uid))
                 .then((docSnapshot) => {
                     setDarkmode(docSnapshot.data().dark_mode);
                     setSemesterBlocks(docSnapshot.data().schedule[0].semester_blocks);
@@ -127,10 +136,10 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
     }
     const mode = createTheme({
         palette: {
-          mode: mode_str,
-          // primary: {
-          //   // main: orange[500]
-          // }
+            mode: mode_str,
+            // primary: {
+            //   // main: orange[500]
+            // }
         },
     });
 
@@ -149,7 +158,7 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
             const newSourceCourses = searchResult;
             const newDestinationCourses = semesterBlocks[destination.droppableId].course_list;
 
-            const [deletedCourse]  = newSourceCourses.splice(source.index, 1);
+            const [deletedCourse] = newSourceCourses.splice(source.index, 1);
             newDestinationCourses.splice(destination.index, 0, deletedCourse);
 
             const newSemesterBlocks = [...semesterBlocks];
@@ -160,8 +169,22 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
             // console.log(deletedCourse);
             // console.log(newSourceCourses);
             // console.log(newSemesterBlocks);
+            // const semesterRef = doc(firestore, "users", currentUser.uid);
+            // updateDoc(semesterRef, {
+            //     "schedule": arrayRemove("east_coast")
+            // })
+            //     .then(() => {
+            //         setSearchResult(newSourceCourses);
+            //         setSemesterBlocks(newSemesterBlocks);
+            //     })
+            //     .catch((e) => {
+            //         console.log("drag firebase update error");
+            //         console.log(e);
+            //     })
             setSearchResult(newSourceCourses);
             setSemesterBlocks(newSemesterBlocks);
+
+
         }
         // from semester to another semester
         else if (source.droppableId != destination.droppableI) {
@@ -169,7 +192,7 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
             const newSourceCourses = semesterBlocks[source.droppableId].course_list;
             const newDestinationCourses = semesterBlocks[destination.droppableId].course_list;
 
-            const [deletedCourse]  = newSourceCourses.splice(source.index, 1);
+            const [deletedCourse] = newSourceCourses.splice(source.index, 1);
             newDestinationCourses.splice(destination.index, 0, deletedCourse);
 
             const newSemesterBlocks = [...semesterBlocks];
@@ -191,7 +214,7 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
             console.log("Within Semester");
             const newCourses = semesterBlocks[destination.droppableId].course_list;
 
-            const [deletedCourse]  = newCourses.splice(source.index, 1);
+            const [deletedCourse] = newCourses.splice(source.index, 1);
             newCourses.splice(destination.index, 0, deletedCourse);
 
             const newSemesterBlocks = [...semesterBlocks];
@@ -235,13 +258,13 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
                 setDarkmode={setDarkmode} />
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                <ScheduleView semesterBlocks={semesterBlocks} semesterBlocks={semesterBlocks} completed={completed} planned={planned} total={total}/>
-                <ThemeProvider theme = {mode}>
-                    <div className="ScheduleSide" style={darkmode ? {backgroundColor: '#3b3a39'} : {backgroundColor: '#f5f3eb'}}>
-                        <button className="mediumBtn goldBtn"><h3>Requirement</h3></button>
-                        <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} />
-                    </div>
-                </ThemeProvider>
+                    <ScheduleView semesterBlocks={semesterBlocks} semesterBlocks={semesterBlocks} completed={completed} planned={planned} total={total} />
+                    <ThemeProvider theme={mode}>
+                        <div className="ScheduleSide" style={darkmode ? { backgroundColor: '#3b3a39' } : { backgroundColor: '#f5f3eb' }}>
+                            <button className="mediumBtn goldBtn"><h3>Requirement</h3></button>
+                            <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} />
+                        </div>
+                    </ThemeProvider>
                 </DragDropContext>
             </div>
         </div>
