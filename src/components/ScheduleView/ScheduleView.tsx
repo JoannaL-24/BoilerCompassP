@@ -20,6 +20,7 @@ export default function ScheduleView({ name, semesterBlocks, completed, planned,
     const hiddenFileInput = useRef(null);
     const navigate = useNavigate();
     const [userData, setUserData] = useState<UserData>(new LocalUserData)
+    const remote = new RemoteUserdata();
 
     useEffect(() => {
         let newRender = [];
@@ -38,7 +39,7 @@ export default function ScheduleView({ name, semesterBlocks, completed, planned,
 
     useEffect(() => {
       if (currentUser)
-        setUserData(new RemoteUserdata)
+        setUserData(remote)
     }, [currentUser])
 
   const handleClickImport = (e) => {
