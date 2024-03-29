@@ -101,6 +101,8 @@ const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
         userinfo.schedule.majors = userinfo.prefer_majors;
         userinfo.schedule.minors = userinfo.prefer_minor;
         userinfo.schedule.semester_blocks = semester_blocks;
+        userinfo.schedule.planned_courses = [];
+        userinfo.schedule.completed_courses = [];
       }
       // if (currentUser) {
       userData.put("prefer_majors", userinfo.prefer_majors);
