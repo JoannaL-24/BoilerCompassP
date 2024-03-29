@@ -385,19 +385,25 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         else if (source.droppableId != destination.droppableI) {
             console.log("Semester to Semester");
             const newSourceCourses = semesterBlocks[source.droppableId].course_list;
+            let cr_source = semesterBlocks[source.droppableId].credit;
             const newDestinationCourses = semesterBlocks[destination.droppableId].course_list;
+            let cr_dest = semesterBlocks[destination.droppableId].credit;
 
             const [deletedCourse] = newSourceCourses.splice(source.index, 1);
+            cr_source = cr_source - deletedCourse.credit;
+            cr_dest = cr_dest + deletedCourse.credit;
             newDestinationCourses.splice(destination.index, 0, deletedCourse);
 
             const newSemesterBlocks = [...semesterBlocks];
             newSemesterBlocks[source.droppableId] = {
                 ...semesterBlocks[source.droppableId],
                 course_list: newSourceCourses,
+                credit: cr_source,
             };
             newSemesterBlocks[destination.droppableId] = {
                 ...semesterBlocks[destination.droppableId],
                 course_list: newDestinationCourses,
+                credit: cr_dest,
             };
             // console.log(deletedCourse);
             // console.log(newSourceCourses);
