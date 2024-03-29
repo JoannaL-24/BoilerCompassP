@@ -124,72 +124,84 @@ const SEMESTER_DATA = [
             //     credit: 3,
             // },
         ],
+        credit: 0,
     },
     {
         id: 1,
         year: 2023,
         term: "Spring",
         course_list: [],
+        credit: 0,
     },
     {
         id: 2,
         year: 2023,
         term: "Summer",
         course_list: [],
+        credit: 0,
     },
     {
         id: 3,
         year: 2023,
         term: "Fall",
         course_list: [],
+        credit: 0,
     },
     {
         id: 4,
         year: 2024,
         term: "Spring",
         course_list: [],
+        credit: 0,
     },
     {
         id: 5,
         year: 2024,
         term: "Summer",
         course_list: [],
+        credit: 0,
     },
     {
         id: 6,
         year: 2024,
         term: "Fall",
         course_list: [],
+        credit: 0,
     },
     {
         id: 7,
         year: 2025,
         term: "Spring",
         course_list: [],
+        credit: 0,
     },
     {
         id: 8,
         year: 2025,
         term: "Summer",
         course_list: [],
+        credit: 0,
     },
     {
         id: 9,
         year: 2025,
         term: "Fall",
         course_list: [],
+        credit: 0,
     },
     {
         id: 10,
         year: 2026,
         term: "Spring",
         course_list: [],
+        credit: 0,
     },
     {
         id: 11,
         year: 2026,
         term: "Summer",
         course_list: [],
+        credit: 0,
     },
 ]
 type Props = {
@@ -282,7 +294,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const mode = createTheme({
         palette: {
           mode: mode_str,
-            mode: mode_str,
         },
     });
 
@@ -294,13 +305,16 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         if (!destination && source.droppableId !== "ROOT") {
             console.log("Semester to Null");
             const newSourceCourses = semesterBlocks[source.droppableId].course_list;
+            let cr = semesterBlocks[source.droppableId].credit;
 
             const [deletedCourse] = newSourceCourses.splice(source.index, 1);
+            cr = cr - deletedCourse.credit;
 
             const newSemesterBlocks = [...semesterBlocks];
             newSemesterBlocks[source.droppableId] = {
                 ...semesterBlocks[source.droppableId],
                 course_list: newSourceCourses,
+                credit: cr,
             };
             if (scheduleList.currId != "1") {
                 const semesterRef = doc(firestore, "schedules", scheduleList.currId);
@@ -336,16 +350,23 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             console.log("Root to Semester");
             const newSourceCourses = searchResult;
             const newDestinationCourses = semesterBlocks[destination.droppableId].course_list;
+            let cr = semesterBlocks[destination.droppableId].credit;
 
             const [deletedCourse] = newSourceCourses.splice(source.index, 1);
+
+            // console.log("deletedCourse:")
+            // console.log(deletedCourse.credit);
+
+            cr = cr + deletedCourse.credit;
             newDestinationCourses.splice(destination.index, 0, deletedCourse);
 
             const newSemesterBlocks = [...semesterBlocks];
             newSemesterBlocks[destination.droppableId] = {
                 ...semesterBlocks[destination.droppableId],
                 course_list: newDestinationCourses,
+                credit: cr,
             };
-            // console.log(deletedCourse);
+
             // console.log(newSourceCourses);
             // console.log(newSemesterBlocks);
             if (scheduleList.currId != "1") {
@@ -374,19 +395,25 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         else if (source.droppableId != destination.droppableI) {
             console.log("Semester to Semester");
             const newSourceCourses = semesterBlocks[source.droppableId].course_list;
+            let cr_source = semesterBlocks[source.droppableId].credit;
             const newDestinationCourses = semesterBlocks[destination.droppableId].course_list;
+            let cr_dest = semesterBlocks[destination.droppableId].credit;
 
             const [deletedCourse] = newSourceCourses.splice(source.index, 1);
+            cr_source = cr_source - deletedCourse.credit;
+            cr_dest = cr_dest + deletedCourse.credit;
             newDestinationCourses.splice(destination.index, 0, deletedCourse);
 
             const newSemesterBlocks = [...semesterBlocks];
             newSemesterBlocks[source.droppableId] = {
                 ...semesterBlocks[source.droppableId],
                 course_list: newSourceCourses,
+                credit: cr_source,
             };
             newSemesterBlocks[destination.droppableId] = {
                 ...semesterBlocks[destination.droppableId],
                 course_list: newDestinationCourses,
+                credit: cr_dest,
             };
             // console.log(deletedCourse);
             // console.log(newSourceCourses);

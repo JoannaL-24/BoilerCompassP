@@ -9,7 +9,7 @@ const Semester = ({ semesterInfo }) => {
     return (
         <div className="Semester">
             <div className="SemesterDescription">
-                <h3>{semesterInfo.term} ({credits} Hrs) </h3>
+                <h3>{semesterInfo.term} ({semesterInfo.credit} Hrs) </h3>
             </div>
             <Droppable droppableId={semesterInfo.id+""}>
                 {(provided) => (
