@@ -71,9 +71,9 @@ async function queryODataAndStoreInFirebase() {
 //   console.log("Scheduled function executed successfully.");
 // });
 
-exports.queryFunction = onRequest(async (req, res) => {
-  await queryODataAndStoreInFirebase();
-  console.log("Scheduled function executed successfully.");
-});
+// exports.queryFunction = onRequest(async (req, res) => {
+//   await queryODataAndStoreInFirebase();
+//   console.log("Scheduled function executed successfully.");
+// });
 
 // Function URL (queryFunction(us-central1)): https://queryfunction-jmcmkrvdxa-uc.a.run.app
