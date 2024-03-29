@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Popup from 'reactjs-popup';
 import { Draggable } from "react-beautiful-dnd";
 import "./DraggableCourse.css"
 import "../CoursePopup/CoursePopup.css";
+import { purdueApiUrl } from "models/purdueapi";
+import { o } from 'odata';
 
 type Meeting = {
   instructors: Array<string>,
@@ -24,9 +26,48 @@ type DraggableCourseProps = {
   description: string;
   credit: number;
   classId: string;  // use this to query meetings info when opening popup
+  meetings?: Array<Meeting>;
 };
 
-const DraggableCourse: React.FC<DraggableCourseProps> = ({ index, id, course, description, credit }) => {
+async function queryMeetings(classId: string): Promise<Meeting[]> {
+  const oHandler = o(purdueApiUrl);
+  try {
+    const entities = await oHandler.get("Classes").query({
+      $top: 1,
+      $expand: `Sections($filter=Type eq 'Lecture';$expand=Meetings($expand=Instructors,Room($expand=Building)))`,
+      $filter: `id eq ${classId}`,
+    });
+    // console.log("Entities: ", entities);
+
+    const meetings: Array<Meeting> = entities[0].Sections[0].Meetings.map(meeting => ({
+      instructors: meeting.Instructors.map(instructor => instructor.Name),
+      building: meeting.Room.Building.ShortCode,
+      room: meeting.Room.Number,
+      daysOfWeek: meeting.DaysOfWeek,
+      startTime: meeting.StartTime,
+      duration: meeting.Duration,
+    }));
+
+    return meetings;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+}
+
+const DraggableCourse: React.FC<DraggableCourseProps> = (
+  { index, id, course, description, credit, classId, meetings: initialMeetings }
+) => {
+  const [meetings, setMeetings] = useState<Array<Meeting> | undefined>(initialMeetings);
+
+  const handleButtonClick = async () => {
+    if (meetings === undefined) {
+      const fetchedMeetings = await queryMeetings(classId);
+      setMeetings(fetchedMeetings);
+      console.log("Meetings: ", fetchedMeetings);
+    }
+  };
+
   return (
     <Draggable
       key={id}
@@ -40,9 +81,11 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({ index, id, course, de
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
-          <Popup trigger={<button>{course}</button>}
+          <Popup
+            trigger={<button>{course}</button>}
             modal
             nested
+            onOpen={handleButtonClick}
           >
             {close => (
               <div className='popupModal'>
@@ -64,7 +107,7 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({ index, id, course, de
                 </div>
                 <div className='sessionsList'>
                   <div style={{ overflowY: "scroll", height: "100px" }}>
-                    1 <br />
+                    1 <br /> 
                     2 <br />
                     3 <br />
                     4 <br />
