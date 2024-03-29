@@ -66,7 +66,7 @@ export default function ScheduleView({ name, semesterBlocks, completed, planned,
                 <h3>{name}</h3>
                 <ul>
                     {
-                      currentUser ?? <>
+                      !currentUser ? <>
                       <li>
                           <a className="DescrBtn" onClick={handleClickImport}
                             style={{cursor: 'pointer'}}><FileUploadIcon /></a>
@@ -81,7 +81,7 @@ export default function ScheduleView({ name, semesterBlocks, completed, planned,
                           <a className="DescrBtn" onClick={handleClickExport}
                             style={{cursor: 'pointer'}}><FileDownloadIcon /></a>
                       </li>
-                      </>
+                      </> : <></>
                     }
                     <li>
                         <a className="DescrBtn" href="1"><AddLinkIcon /></a>
