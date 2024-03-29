@@ -9,7 +9,6 @@ import { o } from 'odata';
 
 const Searchbar = ({ parentSearch, updateParentSearch }) => {
   const [results, setResults] = useState([]);
-  const [matchedEntities, setMatchedEntities] = useState([]);
   const activeSearchId = useRef(0);
 
   const handleSearch = debounce(async (searchInput) => {
@@ -43,33 +42,15 @@ const Searchbar = ({ parentSearch, updateParentSearch }) => {
     try {
       const oHandler = o(purdueApiUrl);
       let entities = await oHandler.get("Courses").query({
-        $top: `10`,
+        $top: 10,
         $orderby: `Number`,
         $expand: `Classes($filter=Campus/Code eq 'PWL';$orderby=Term/Code desc;$top=1),Subject`,
         $filter: `startswith(Subject/Abbreviation, '${subject}') and startswith(Number, '${number}')`,
       });
-      // $expand: `Classes($filter=Campus/Code eq 'PWL';$orderby=Term/Code desc;$top=1;$expand=Sections($filter=Type eq 'Lecture';$expand=Meetings($expand=Instructors,Room($expand=Building)))),Subject`,
-
-      // let entities = await oHandler.get("Classes").query({
-      //   $top: `1`,
-      //   $expand: `Sections($filter=Type eq 'Lecture';$expand=Meetings($expand=Instructors,Room($expand=Building)))`,
-      //   $filter: `id eq 41f7d2f2-cef6-42ef-8c89-5c0a460883cf`,
-      // });
-      // const queryString = "Classes?$top=1&$expand=Sections($filter=Type eq 'Lecture';$expand=Meetings($expand=Instructors,Room($expand=Building)))&$filter=id eq 41f7d2f2-cef6-42ef-8c89-5c0a460883cf";
-
-      // const meetings = Class.Sections[0].Meetings.map(meeting => ({
-      //   instructors: meeting.Instructors.map(instructor => instructor.Name),
-      //   building: meeting.Room.Building.ShortCode,
-      //   room: meeting.Room.Number,
-      //   daysOfWeek: meeting.DaysOfWeek,
-      //   startTime: meeting.StartTime,
-      //   duration: meeting.Duration,
-      // }));
 
       // Before updating the state, check if this is still the active request
       if (currentSearchId === activeSearchId.current) {
         console.log("Entites:", entities);
-        setMatchedEntities(entities);
 
         // remove entities with no classes
         entities = entities.filter(entity => entity.Classes.length > 0);
@@ -80,6 +61,7 @@ const Searchbar = ({ parentSearch, updateParentSearch }) => {
           description: entity.Description,
           credit: entity.CreditHours,
           classId: entity.Classes[0].Id,
+          meetings: undefined,
         }));
 
         console.log("Results:", results);
@@ -118,6 +100,7 @@ const Searchbar = ({ parentSearch, updateParentSearch }) => {
                 course={result.course}
                 description={result.description}
                 credit={result.credit}
+                classId={result.classId}
                 meetings={result.meetings}
               />
             ))}
