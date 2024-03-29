@@ -4,7 +4,7 @@ import ScheduleView from "../components/ScheduleView/ScheduleView";
 import './DegreePlanner.css';
 // firebase imports
 import { useAuth } from '../components/contexts/AuthContext.tsx'
-import { doc, getDoc, updateDoc, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
 import { DragDropContext } from "react-beautiful-dnd";
 import RemoteUserdata from '../models/RemoteUserData';
@@ -235,6 +235,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                     setSemesterBlocks(SEMESTER_DATA);
                 })
         }
+        console.log(scheduleList);
     }, [scheduleList.list]);
 
     var mode_str;
@@ -257,7 +258,43 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         const { source, destination } = result;
         console.log("drag occured");
         // console.log(result);
-        if (!destination) return;
+        // delete the course from semester
+        if (!destination && source.droppableId !== "ROOT") {
+            console.log("Semester to Null");
+            const newSourceCourses = semesterBlocks[source.droppableId].course_list;
+
+            const [deletedCourse] = newSourceCourses.splice(source.index, 1);
+
+            const newSemesterBlocks = [...semesterBlocks];
+            newSemesterBlocks[source.droppableId] = {
+                ...semesterBlocks[source.droppableId],
+                course_list: newSourceCourses,
+            };
+            if (scheduleList.currId != "1") {
+                const semesterRef = doc(firestore, "schedules", scheduleList.currId);
+                updateDoc(semesterRef, {
+                    "semester_blocks": newSemesterBlocks
+                })
+                    .then(() => {
+                        setSemesterBlocks(newSemesterBlocks);
+                        return;
+                    })
+                    .catch((e) => {
+                        console.log("drag firebase update error");
+                        console.log(e);
+                        return;
+                    })
+                updateDoc(semesterRef, {
+                    planned_courses: arrayRemove(deletedCourse.id)
+                })
+                    .catch((e) => {
+                        console.log("drag firebase update error");
+                        console.log(e);
+                    })
+            }
+        }
+        if (!destination)
+            return;
         if (destination.droppableId === "ROOT") return;
         if (source.droppableId === destination.droppableId && source.index === destination.index)
             return;
@@ -292,17 +329,13 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                         console.log("drag firebase update error");
                         console.log(e);
                     })
-                // updateDoc(semesterRef, {
-                //     "semester_blocks": newSemesterBlocks
-                // })
-                //     .then(() => {
-                //         setSearchResult(newSourceCourses);
-                //         setSemesterBlocks(newSemesterBlocks);
-                //     })
-                //     .catch((e) => {
-                //         console.log("drag firebase update error");
-                //         console.log(e);
-                //     })
+                updateDoc(semesterRef, {
+                    planned_courses: arrayUnion(deletedCourse.id)
+                })
+                    .catch((e) => {
+                        console.log("drag firebase update error");
+                        console.log(e);
+                    })
             }
         }
         // from semester to another semester
