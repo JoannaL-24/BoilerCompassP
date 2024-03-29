@@ -117,12 +117,12 @@ const SEMESTER_DATA = [
         year: 2022,
         term: "Fall",
         course_list: [
-            {
-                id: "1",
-                course: "CS25200",
-                description: "something",
-                credit: 3,
-            },
+            // {
+            //     id: "1",
+            //     course: "CS25200",
+            //     description: "something",
+            //     credit: 3,
+            // },
         ],
     },
     {
@@ -201,9 +201,11 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     //get current user and mode preference
     const { currentUser } = useAuth();
     // const [darkmode, setDarkmode] = useState<boolean>(null);
-    const [scheduleInfo, setScheduleInfo] = useState({
-        id: "1",
-        name: "",
+    const [scheduleList, setscheduleList] = useState({
+        currIndex: 0,
+        currId: "1",
+        currName: "",
+        list: []
     });
     const [semesterBlocks, setSemesterBlocks] = useState(SEMESTER_DATA);
     const [searchResult, setSearchResult] = useState([]);
@@ -217,26 +219,23 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             const user_doc = getDoc(doc(firestore, "users", currentUser.uid))
                 .then((docSnapshot) => {
                     setDarkmode(docSnapshot.data().dark_mode);
-                    const scheduleList = docSnapshot.data().schedule;
-                    setScheduleInfo({ ...scheduleInfo, id: scheduleList[0]},);
+                    setscheduleList({ ...scheduleList, list: docSnapshot.data().schedule });
                 });
         }
     }, [currentUser]);
     useEffect(() => {
-        if (scheduleInfo.id != "1") {
-            // console.log(scheduleInfo.id);
-            getDoc(doc(firestore, "schedules", scheduleInfo.id))
+        if (scheduleList.list.length > 0) {
+            getDoc(doc(firestore, "schedules", scheduleList.list[scheduleList.currIndex]))
                 .then((scheduleSnap) => {
-                    setScheduleInfo({ ...scheduleInfo, name: scheduleSnap.data().name },);
+                    setscheduleList({ ...scheduleList, currId: scheduleList.list[scheduleList.currIndex], currName: scheduleSnap.data().name });
                     setSemesterBlocks(scheduleSnap.data().semester_blocks);
                 })
                 .catch((error) => {
                     console.log(error);
                     setSemesterBlocks(SEMESTER_DATA);
                 })
-
         }
-    }, [scheduleInfo.id]);
+    }, [scheduleList.list]);
 
     var mode_str;
     if (darkmode) {
@@ -257,7 +256,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const handleDragDrop = (result) => {
         const { source, destination } = result;
         console.log("drag occured");
-        console.log(result);
+        // console.log(result);
         if (!destination) return;
         if (destination.droppableId === "ROOT") return;
         if (source.droppableId === destination.droppableId && source.index === destination.index)
@@ -280,61 +279,96 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             // console.log(deletedCourse);
             // console.log(newSourceCourses);
             // console.log(newSemesterBlocks);
-            // const semesterRef = doc(firestore, "schedules", currentUser.uid);
-            // updateDoc(semesterRef, {
-            //     "schedule": arrayRemove("east_coast")
-            // })
-            //     .then(() => {
-            //         setSearchResult(newSourceCourses);
-            //         setSemesterBlocks(newSemesterBlocks);
-            //     })
-            //     .catch((e) => {
-            //         console.log("drag firebase update error");
-            //         console.log(e);
-            //     })
-            setSearchResult(newSourceCourses);
-            setSemesterBlocks(newSemesterBlocks);
+            if (scheduleList.currId != "1") {
+                const semesterRef = doc(firestore, "schedules", scheduleList.currId);
+                updateDoc(semesterRef, {
+                    "semester_blocks": newSemesterBlocks
+                })
+                    .then(() => {
+                        setSearchResult(newSourceCourses);
+                        setSemesterBlocks(newSemesterBlocks);
+                    })
+                    .catch((e) => {
+                        console.log("drag firebase update error");
+                        console.log(e);
+                    })
+                // updateDoc(semesterRef, {
+                //     "semester_blocks": newSemesterBlocks
+                // })
+                //     .then(() => {
+                //         setSearchResult(newSourceCourses);
+                //         setSemesterBlocks(newSemesterBlocks);
+                //     })
+                //     .catch((e) => {
+                //         console.log("drag firebase update error");
+                //         console.log(e);
+                //     })
+            }
         }
         // from semester to another semester
-        // else if (source.droppableId != destination.droppableI) {
-        //     console.log("Semester to Semester");
-        //     const newSourceCourses = semesterBlocks[source.droppableId].course_list;
-        //     const newDestinationCourses = semesterBlocks[destination.droppableId].course_list;
+        else if (source.droppableId != destination.droppableI) {
+            console.log("Semester to Semester");
+            const newSourceCourses = semesterBlocks[source.droppableId].course_list;
+            const newDestinationCourses = semesterBlocks[destination.droppableId].course_list;
 
-        //     const [deletedCourse] = newSourceCourses.splice(source.index, 1);
-        //     newDestinationCourses.splice(destination.index, 0, deletedCourse);
+            const [deletedCourse] = newSourceCourses.splice(source.index, 1);
+            newDestinationCourses.splice(destination.index, 0, deletedCourse);
 
-        //     const newSemesterBlocks = [...semesterBlocks];
-        //     newSemesterBlocks[source.droppableId] = {
-        //         ...semesterBlocks[source.droppableId],
-        //         course_list: newSourceCourses,
-        //     };
-        //     newSemesterBlocks[destination.droppableId] = {
-        //         ...semesterBlocks[destination.droppableId],
-        //         course_list: newDestinationCourses,
-        //     };
-        //     // console.log(deletedCourse);
-        //     // console.log(newSourceCourses);
-        //     // console.log(newDestinationCourses);
-        //     setSemesterBlocks(newSemesterBlocks);
-        // }
-        // // change within semester
-        // else if (source.droppableId == destination.droppableId) {
-        //     console.log("Within Semester");
-        //     const newCourses = semesterBlocks[destination.droppableId].course_list;
+            const newSemesterBlocks = [...semesterBlocks];
+            newSemesterBlocks[source.droppableId] = {
+                ...semesterBlocks[source.droppableId],
+                course_list: newSourceCourses,
+            };
+            newSemesterBlocks[destination.droppableId] = {
+                ...semesterBlocks[destination.droppableId],
+                course_list: newDestinationCourses,
+            };
+            // console.log(deletedCourse);
+            // console.log(newSourceCourses);
+            // console.log(newDestinationCourses);
+            if (scheduleList.currId != "1") {
+                const semesterRef = doc(firestore, "schedules", scheduleList.currId);
+                updateDoc(semesterRef, {
+                    "semester_blocks": newSemesterBlocks
+                })
+                    .then(() => {
+                        setSemesterBlocks(newSemesterBlocks);
+                    })
+                    .catch((e) => {
+                        console.log("drag firebase update error");
+                        console.log(e);
+                    })
+            }
+        }
+        // change within semester
+        else if (source.droppableId == destination.droppableId) {
+            console.log("Within Semester");
+            const newCourses = semesterBlocks[destination.droppableId].course_list;
 
-        //     const [deletedCourse] = newCourses.splice(source.index, 1);
-        //     newCourses.splice(destination.index, 0, deletedCourse);
+            const [deletedCourse] = newCourses.splice(source.index, 1);
+            newCourses.splice(destination.index, 0, deletedCourse);
 
-        //     const newSemesterBlocks = [...semesterBlocks];
-        //     newSemesterBlocks[destination.droppableId] = {
-        //         ...semesterBlocks[destination.droppableId],
-        //         course_list: newCourses,
-        //     };
-        //     // console.log(deletedCourse);
-        //     // console.log(newCourses);
-        //     setSemesterBlocks(newSemesterBlocks);
-        // }
+            const newSemesterBlocks = [...semesterBlocks];
+            newSemesterBlocks[destination.droppableId] = {
+                ...semesterBlocks[destination.droppableId],
+                course_list: newCourses,
+            };
+            // console.log(deletedCourse);
+            // console.log(newCourses);
+            if (scheduleList.currId != "1") {
+                const semesterRef = doc(firestore, "schedules", scheduleList.currId);
+                updateDoc(semesterRef, {
+                    "semester_blocks": newSemesterBlocks
+                })
+                    .then(() => {
+                        setSemesterBlocks(newSemesterBlocks);
+                    })
+                    .catch((e) => {
+                        console.log("drag firebase update error");
+                        console.log(e);
+                    })
+            }
+        }
         // calculateProgress();
     }
 
@@ -367,7 +401,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 setDarkmode={setDarkmode} />
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                    <ScheduleView name={scheduleInfo.name} semesterBlocks={semesterBlocks} completed={completed} planned={planned} total={total} />
+                    <ScheduleView name={scheduleList.currName} semesterBlocks={semesterBlocks} completed={completed} planned={planned} total={total} />
                     <ThemeProvider theme={mode}>
                         <div className="ScheduleSide" style={darkmode ? { backgroundColor: '#3b3a39' } : { backgroundColor: '#f5f3eb' }}>
                             <button className="mediumBtn goldBtn"><h3>Requirement</h3></button>
