@@ -44,9 +44,6 @@ function AdvisorHomepage({darkmode, setDarkmode}: Props) {
     const mode = createTheme({
         palette: {
           mode: mode_str,
-          // primary: {
-          //   // main: orange[500]
-          // }
         },
     });
   return (
