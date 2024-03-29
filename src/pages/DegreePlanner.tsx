@@ -271,10 +271,8 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     }
     const mode = createTheme({
         palette: {
+          mode: mode_str,
             mode: mode_str,
-            // primary: {
-            //   // main: orange[500]
-            // }
         },
     });
 

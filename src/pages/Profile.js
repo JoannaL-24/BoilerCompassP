@@ -64,9 +64,6 @@ const Profile = ({darkmode}) => {
   const mode = createTheme({
     palette: {
       mode: mode_str,
-      // primary: {
-      //   // main: orange[500]
-      // }
     },
   });
 
