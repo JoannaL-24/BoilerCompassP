@@ -106,16 +106,22 @@ const DraggableCourse: React.FC<DraggableCourseProps> = (
                   <h3>Course Sessions:</h3>
                 </div>
                 <div className='sessionsList'>
-                  <div style={{ overflowY: "scroll", height: "100px" }}>
-                    Building: meetings[0].building<br /> 
-                    Room: meetings[0].room<br />
-                    Instructors: meetings[0].instructor<br />
-                    Days of week: meetings[0].daysOfWeek<br />
-                    Start time: meetings[0].startTime<br />
-                    Duration: meetings[0].duration<br />
-                    <br />
-                    <br />
-                  </div>
+                  {meetings ? (
+                    <div style={{ overflowY: "scroll", height: "100px" }}>
+                      {meetings.map((meeting, index) => (
+                        <div key={index}>
+                          Instructor(s): {meeting.instructors.join(", ")}<br />
+                          Location: {meeting.building} Room {meeting.room}<br />
+                          Time: {meeting.daysOfWeek} at {meeting.startTime}<br />
+                          Duration: {meeting.duration}<br />
+                          <br />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div>No meeting information available.</div>
+                  )}
+
                 </div>
 
               </div>

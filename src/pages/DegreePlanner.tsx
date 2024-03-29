@@ -4,11 +4,11 @@ import ScheduleView from "../components/ScheduleView/ScheduleView";
 import './DegreePlanner.css';
 // firebase imports
 import { useAuth } from '../components/contexts/AuthContext.tsx'
-import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayRemove, arrayUnion, Timestamp, addDoc, collection } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
 import { DragDropContext } from "react-beautiful-dnd";
 import RemoteUserdata from '../models/RemoteUserData';
-import { getSatisfied } from '../models/BoilerCompass';
+import { getSatisfied, Schedule } from '../models/BoilerCompass';
 import { CS } from '../models/CS';
 // sidebar import
 import "../components/ScheduleSide/ScheduleSide.css";
@@ -473,6 +473,78 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         }
         calculateProgress();
     }
+    
+    const adjustSemesterBlocks = (startY, endY) => {
+        if (startY.$y == semesterBlocks[0].year && endY.$y == semesterBlocks[semesterBlocks.length - 1].year)
+            return;
+        let needYear = endY.$y - semesterBlocks[semesterBlocks.length - 1].year;
+        console.log("need year", needYear);
+        if (needYear > 0) {
+            let total_semesters = needYear * 3;
+            const semester_blocks = [...semesterBlocks];
+            let term = "Summer";
+            let addYear = 0;
+            let ind = semesterBlocks.length;
+            for (let i = 0; i < total_semesters; i++) {
+                term = "Summer";
+                if (i % 3 == 0) {
+                    term = "Fall";
+                }
+                else if (i % 3 == 1) {
+                    term = "Spring";
+                    addYear++;
+                }
+                let semester = {
+                    id: ind+i,
+                    year: semesterBlocks[semesterBlocks.length - 1].year + addYear,
+                    term: term,
+                    course_list: [],
+                }
+                semester_blocks[ind+i] = semester;
+            }
+            console.log(semester_blocks);
+            if (scheduleList.currId != "1") {
+                const semesterRef = doc(firestore, "schedules", scheduleList.currId);
+                updateDoc(semesterRef, {
+                    "start_term": Timestamp.fromDate(new Date(startY)),
+                    "end_term": Timestamp.fromDate(new Date(endY)),
+                    "semester_blocks": semester_blocks
+                })
+                    .then(() => {
+                        setSemesterBlocks(semester_blocks);
+                    })
+                    .catch((e) => {
+                        console.log("drag firebase update error");
+                        console.log(e);
+                    })
+            }
+        }
+    }
+
+    const createNewSchedule = () => {
+        console.log("new schedule");
+        if (currentUser) {
+            // userData.get
+            // let newSchedule: Schedule = {
+            //     name: "New Schedule",
+            //     start_term: ,
+            //     end_term: undefined,
+            //     semester_blocks: [],
+            //     majors: [],
+            //     minors: []
+            // };
+            // addDoc(collection(firestore, "schedules"), userinfo.schedule)
+            //   .then((document) => {
+            //     userData.put("schedule", [document.id]);
+            //   })
+            //   .catch((error) => {
+            //     console.log(error);
+            //   })
+          }
+          else {
+            // TODO: local
+          }
+    }
 
     const handleOpenReqModal = () => {
       setReqModalOpen(true);
@@ -486,10 +558,12 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         <div className="DegreeOverview">
             <NavBar
                 darkmode={darkmode}
-                setDarkmode={setDarkmode} />
+                setDarkmode={setDarkmode} 
+                schedules={scheduleList}
+                createNewSchedule={createNewSchedule}/>
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                    <ScheduleView name={scheduleList.currName} semesterBlocks={semesterBlocks} completed={completed} planned={planned} total={total} />
+                    <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} completed={completed} planned={planned} total={total} />
                     <ThemeProvider theme={mode}>
                         <div className="ScheduleSide" style={darkmode ? { backgroundColor: '#3b3a39' } : { backgroundColor: '#f5f3eb' }}>
                             <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
