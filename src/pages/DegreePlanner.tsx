@@ -206,7 +206,7 @@ export default function DegreePlanner({darkmode, setDarkmode}: Props) {
         calculateProgress();
     }
 
-    const calculateProgress = () => {
+    function calculateProgress() {
         // get numbers for calculating degree progress
         const userData: UserData = new RemoteUserdata();
         const { currentUser } = useAuth();
