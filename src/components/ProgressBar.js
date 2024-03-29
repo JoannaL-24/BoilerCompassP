@@ -36,7 +36,7 @@ const LinearProgressWithLabel = (props) => {
         </Box>
         <Box sx={{ marginLeft: "0.3em", display: 'flex', minWidth: 250 }}>
           <Typography className="label" variant="body2" color="#CEB888">{`Completed: ${Math.round(props.value,)}%`}</Typography>
-          <Typography className="label" variant="body2" color="#CEB888" marginLeft="1em">{`Planned: ${Math.round(props.valueBuffer,)}%`}</Typography>
+          <Typography className="label" variant="body2" color="#CEB888" marginLeft="1em">{`Planned+Completed: ${Math.round(props.valueBuffer,)}%`}</Typography>
         </Box>
       </Box>
     </ThemeProvider>

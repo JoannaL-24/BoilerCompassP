@@ -217,6 +217,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
 
     useEffect(() => {
         if (currentUser) {
+            calculateProgress();
             const user_doc = getDoc(doc(firestore, "users", currentUser.uid))
                 .then((docSnapshot) => {
                     setDarkmode(docSnapshot.data().dark_mode);
@@ -224,7 +225,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 });
         }
     }, [currentUser]);
-    
+
     useEffect(() => {
         if (scheduleList.list.length > 0) {
             getDoc(doc(firestore, "schedules", scheduleList.list[scheduleList.currIndex]))
@@ -241,6 +242,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
 
     function calculateProgress() {
         // get numbers for calculating degree progress
+        console.log("called");
         if (currentUser) {
             // get completed and total
             userData.get("completed_courses")
@@ -391,29 +393,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                     })
             }
         }
-        // calculateProgress();
-    }
-
-    const calculateProgress = () => {
-        // get numbers for calculating degree progress
-        const userData: UserData = new RemoteUserdata();
-        const { currentUser } = useAuth();
-        if (currentUser) {
-            // get completed and total
-            userData.get("completed_courses")
-            .then((completed) => {
-                let c = getSatisfied(CS, new Set(completed));
-                setCompleted(c[0]);
-                setTotal(c[1]);
-            })
-            
-            // get planned
-            userData.get("planned_courses")
-            .then((planned) => {
-                let c = getSatisfied(CS, new Set(planned));
-                setPlanned(c[0]);
-            })
-        } 
+        calculateProgress();
     }
 
     return (
