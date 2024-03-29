@@ -27,6 +27,7 @@ export default function ReqModal({ open, handleClose }) {
     linalg: [0, 1],
     tracks: [0, 1],
   })
+  const remote = new RemoteUserdata();
   useEffect(() => {
     userData.get('completed_courses').then((s) => {
       let set = new Set(s)
@@ -42,7 +43,7 @@ export default function ReqModal({ open, handleClose }) {
     })
   }, [userData])
   useEffect(() => {
-    if (currentUser) setUserData(new RemoteUserdata())
+    if (currentUser) setUserData(remote)
   }, [currentUser])
   return (
     <Modal
@@ -55,6 +56,8 @@ export default function ReqModal({ open, handleClose }) {
         <Typography id='modal-modal-title' variant='h4' component='h2'>
           Requirements Summary
         </Typography>
+        {(new Set(userData.get("prefer_majors")).has("Computer Science")})
+        }
         <Typography id='modal-modal-description' sx={{ mt: 2 }}>
           CS Core Requirements: {completed.core[0] / completed.core[1] * 100}%
         </Typography>
