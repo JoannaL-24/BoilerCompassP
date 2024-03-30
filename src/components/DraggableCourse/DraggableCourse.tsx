@@ -46,6 +46,7 @@ async function queryMeetings(classId: string): Promise<Meeting[]> {
       daysOfWeek: meeting.DaysOfWeek,
       startTime: meeting.StartTime,
       duration: meeting.Duration,
+      classId: classId,
     }));
 
     return meetings;
@@ -56,14 +57,19 @@ async function queryMeetings(classId: string): Promise<Meeting[]> {
 }
 
 const DraggableCourse: React.FC<DraggableCourseProps> = (
-  { index, id, course, description, credit, classId, meetings: initialMeetings }
+  { index, id, course, description, credit, classId : initialClassId, meetings: initialMeetings }
 ) => {
   const [meetings, setMeetings] = useState<Array<Meeting> | undefined>(initialMeetings);
+  const [classId, setClassId] = useState<string>(initialClassId);
 
   const handleButtonClick = async () => {
-    if (meetings === undefined) {
-      const fetchedMeetings = await queryMeetings(classId);
+    if (meetings === undefined || initialClassId !== classId) {
+      if (initialClassId !== classId) {
+        setMeetings(undefined);
+      }
+      const fetchedMeetings = await queryMeetings(initialClassId);
       setMeetings(fetchedMeetings);
+      setClassId(classId);
       console.log("Meetings: ", fetchedMeetings);
     }
   };
