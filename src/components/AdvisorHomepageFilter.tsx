@@ -38,6 +38,7 @@ function AdvisorHomepageFilter() {
   const [searchQuery, setSearchQuery] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
   const [clickedLabel, setClickedLabel] = useState(null);
+  const [list, setList] = useState(null);
 
   // Add a state variable to hold the sorting option
   const [sortingOption, setSortingOption] = useState(null);
