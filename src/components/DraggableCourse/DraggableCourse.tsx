@@ -56,7 +56,7 @@ async function queryMeetings(classId: string): Promise<Meeting[]> {
 }
 
 const DraggableCourse: React.FC<DraggableCourseProps> = (
-  { index, id, course, description, credit, classId, meetings: initialMeetings }
+  { index, id, course, description, credit, classId, meetings: initialMeetings, viewOnly }
 ) => {
   const [meetings, setMeetings] = useState<Array<Meeting> | undefined>(initialMeetings);
 
@@ -73,6 +73,7 @@ const DraggableCourse: React.FC<DraggableCourseProps> = (
       key={id}
       draggableId={id}
       index={index}
+      isDragDisabled={viewOnly}
     >
       {(provided) => (
         <div

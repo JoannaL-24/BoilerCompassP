@@ -4,7 +4,7 @@ import DraggableCourse from "components/DraggableCourse/DraggableCourse";
 import "./Semester.css"
 
 
-const Semester = ({ semesterInfo }) => {
+const Semester = ({ semesterInfo, viewOnly }) => {
     let credits = 0;
     return (
         <div className="Semester">
@@ -15,7 +15,7 @@ const Semester = ({ semesterInfo }) => {
                 {(provided) => (
                     <div className="Courses" {...provided.droppableProps} ref={provided.innerRef}>
                         {semesterInfo.course_list.map((course, index) => (
-                            <DraggableCourse key={index} index={index} course={course.course} id={course.id} description={course.description} credit={course.credit} classId={course.classId}/>
+                            <DraggableCourse key={index} index={index} course={course.course} id={course.id} description={course.description} credit={course.credit} classId={course.classId} viewOnly={viewOnly}/>
                         ))}
                         {provided.placeholder}
                     </div>

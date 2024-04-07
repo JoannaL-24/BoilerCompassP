@@ -27,7 +27,7 @@ type Props = {
   setDarkmode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function NavBar({ darkmode, setDarkmode, schedules, createNewSchedule }) {
+export default function NavBar({ darkmode, setDarkmode, schedules, createNewSchedule, viewOnly }) {
   const [scheduleInfo, setScheduleInfo] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [homeAnchorEl, setHomeAnchorEl] = useState<null | HTMLElement>(null);
