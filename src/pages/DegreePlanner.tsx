@@ -394,7 +394,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             }
         }
         // from semester to another semester
-        else if (source.droppableId != destination.droppableI) {
+        else if (source.droppableId != destination.droppableId) {
             console.log("Semester to Semester");
             const newSourceCourses = semesterBlocks[source.droppableId].course_list;
             let cr_source = semesterBlocks[source.droppableId].credit;
