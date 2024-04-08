@@ -472,16 +472,23 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Box from "@mui/material/Box";
+import Dialog from '@mui/material/Dialog';
 import TextField from "@mui/material/TextField";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import firebase from "firebase/app";
+import firebase from "firebase/app"s;
 import { initializeApp } from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../models/firebase.ts";
 import "firebase/firestore";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import "./AdvisorHomepageFilter.css";
 import app from "../models/firebase.ts";
 import { useAuth } from "../components/contexts/AuthContext";
@@ -503,6 +510,8 @@ function AdvisorHomepageFilter() {
   const [popupVisible, setPopupVisible] = useState(false);
   const [clickedLabel, setClickedLabel] = useState(null);
   const [list, setList] = useState(null);
+  const [emailInput, setEmailInput] = useState("");
+  const [showEmailDialog, setShowEmailDialog] = useState(false);
 
   // Add a state variable to hold the sorting option
   const [sortingOption, setSortingOption] = useState(null);
@@ -588,6 +597,49 @@ function AdvisorHomepageFilter() {
     setTimeout(() => {
       setSelectedUser(null);
     }, 500); // timeout to match animation
+  };
+
+  const handleEmailInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setEmailInput(event.target.value);
+  };
+
+  const handleEmailDialogSubmit = () => {
+    setShowEmailDialog(false); // Close the dialog
+    // Split entered emails by comma and trim spaces
+    const emails = emailInput.split(",").map((email) => email.trim());
+    // Fetch users from Firebase based on entered emails
+    const firestore = getFirestore(app);
+    const fetchUsersByEmails = async () => {
+      const usersSnapshot = await getDocs(
+        query(
+          collection(firestore, "users"),
+          where("purdue_email", "in", emails)
+        )
+      );
+      const usersData: {
+        name: string;
+        purdue_email: string;
+        prefer_majors: { name: string }[];
+        user_type: string;
+        start_term: any;
+      }[] = [];
+      usersSnapshot.forEach((doc) => {
+        const userData = doc.data();
+        if (userData.user_type === "student") {
+          usersData.push({
+            name: userData.name,
+            purdue_email: userData.purdue_email,
+            prefer_majors: userData.prefer_majors || [],
+            user_type: userData.user_type,
+            start_term: userData.start_term,
+          });
+        }
+      });
+      setUserNames(usersData);
+    };
+    fetchUsersByEmails();
   };
 
   const filteredUserNames = userNames.filter((user) => {
@@ -921,6 +973,7 @@ function AdvisorHomepageFilter() {
           </ul>
         </div>
       )}
+      <Button onClick={() => setShowEmailDialog(true)}>Add Students</Button>
     </div>
   );
 }
