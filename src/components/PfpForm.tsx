@@ -43,23 +43,28 @@ export const PfpForm = () => {
       imageCropped.toBlob((blob) => {
         uploadUserPfp(blob, currentUser)
           .then(() => {
-            alert(
-              'Profile picture successfully uploaded for uid ' +
-              currentUser.uid,
-            )
-            setCurrentPfpURL((window.URL || window.webkitURL).createObjectURL(blob))
             // check if image is good or not
             axios({
               method: 'post',
-              // url: 'http://127.0.0.1:5001/boilercompass-3135d/us-central1/filter_image',
-              url: 'https://us-central1-boilercompass-3135d.cloudfunctions.net/checkImageProfanity',
+              url: 'http://127.0.0.1:5001/boilercompass-3135d/us-central1/filter_image',
+              // url: 'https://us-central1-boilercompass-3135d.cloudfunctions.net/filter_image',
               data: currentUser.uid,
             })
               .then((response) => {
-                console.log('Success:', response.data);
+                if (response.data == "YES") {
+                  setCurrentPfpURL((window.URL || window.webkitURL).createObjectURL(blob))
+                  alert(
+                    'Profile picture successfully uploaded for uid ' +
+                    currentUser.uid,
+                  )
+                } else {
+                  alert(
+                    'Profile picture contains inappropriate content. Please upload a different image.',
+                  )
+                }
               })
               .catch((error) => {
-                console.error('Error:', error);
+                console.error('Filter Error:', error);
               });
           })
           .catch((err) => {
