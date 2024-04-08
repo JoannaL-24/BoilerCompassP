@@ -63,7 +63,7 @@ export default function NavBar({ darkmode, setDarkmode, schedules, createNewSche
     for (let i = 0; i < schedules.list.length; i++) {
       getDoc(doc(firestore, "schedules", schedules.list[0]))
         .then((scheduleSnap) => {
-          console.log(scheduleSnap.data());
+          // console.log(scheduleSnap.data());
           newScheduleName[i] = scheduleSnap.data().name;
         })
         .catch((error) => {
