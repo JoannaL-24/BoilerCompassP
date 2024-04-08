@@ -135,3 +135,27 @@ export function getSatisfied(
 
   return [completedCt, totalCt]
 }
+
+export function isTermInPast(term: string, year: number): boolean {
+  let month, day;
+  switch(term) {
+    case "Fall":
+      month = 12
+      day = 9
+      break
+    case "Spring":
+      month = 5
+      day = 1
+      break
+    case "Summer":
+      month = 8
+      day = 1
+      break
+  }
+
+  let endDate = new Date();
+  endDate.setFullYear(year, month, day)
+  endDate.setHours(0)
+  endDate.setMinutes(0)
+  return (endDate.valueOf() <= Date.now())
+}
