@@ -228,6 +228,8 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const [total, setTotal] = useState(100);
     const [planned, setPlanned] = useState(0);
     const [reqModalOpen, setReqModalOpen] = useState(false);
+    //schedule viewOnly mode
+    const [viewOnly, setViewOnly] = useState(true);
 
     useEffect(() => {
         if (currentUser) {
@@ -276,7 +278,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             //     let c = getSatisfied(CS, new Set(planned));
             //     setPlanned(c[0]);
             // })
-            console.log("jenny start");
             const user_doc = getDoc(doc(firestore, "schedules", scheduleList.currId))
                 .then((docSnapshot) => {
                     let c = getSatisfied(CS, new Set(docSnapshot.data().planned_courses));
@@ -302,7 +303,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const handleDragDrop = (result) => {
         const { source, destination } = result;
         console.log("drag occured");
-        // console.log(result);
         // delete the course from semester
         if (!destination && source.droppableId !== "ROOT") {
             console.log("Semester to Null");
@@ -358,9 +358,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
 
             const [deletedCourse] = newSourceCourses.splice(source.index, 1);
 
-            // console.log("deletedCourse:")
-            // console.log(deletedCourse.credit);
-
             cr = cr + deletedCourse.credit;
             // if (cr < 12) {alert("Less than 12 credits");}
             if (cr > 18) {alert("More than 18 credits");}
@@ -373,8 +370,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 credit: cr,
             };
 
-            // console.log(newSourceCourses);
-            // console.log(newSemesterBlocks);
             if (scheduleList.currId != "1") {
                 const semesterRef = doc(firestore, "schedules", scheduleList.currId);
                 updateDoc(semesterRef, {
@@ -560,15 +555,16 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 darkmode={darkmode}
                 setDarkmode={setDarkmode} 
                 schedules={scheduleList}
-                createNewSchedule={createNewSchedule}/>
+                createNewSchedule={createNewSchedule}
+                viewOnly={viewOnly}/>
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                    <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} completed={completed} planned={planned} total={total} />
+                    <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} />
                     <ThemeProvider theme={mode}>
                         <div className="ScheduleSide" style={darkmode ? { backgroundColor: '#3b3a39' } : { backgroundColor: '#f5f3eb' }}>
                             <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
                             <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal}/>
-                            <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} />
+                            <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={viewOnly} />
                         </div>
                     </ThemeProvider>
                 </DragDropContext>

@@ -7,7 +7,7 @@ import { debounce } from "lodash";
 import { purdueApiUrl } from "models/purdueapi";
 import { o } from 'odata';
 
-const Searchbar = ({ parentSearch, updateParentSearch }) => {
+const Searchbar = ({ parentSearch, updateParentSearch, viewOnly }) => {
   const [results, setResults] = useState([]);
   const activeSearchId = useRef(0);
 
@@ -102,6 +102,7 @@ const Searchbar = ({ parentSearch, updateParentSearch }) => {
                 credit={result.credit}
                 classId={result.classId}
                 meetings={result.meetings}
+                viewOnly={viewOnly}
               />
             ))}
             {provided.placeholder}
