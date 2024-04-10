@@ -229,7 +229,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const [planned, setPlanned] = useState(0);
     const [reqModalOpen, setReqModalOpen] = useState(false);
     //schedule viewOnly mode
-    const [viewOnly, setViewOnly] = useState(true);
+    const [viewOnly, setViewOnly] = useState(false);
 
     useEffect(() => {
         if (currentUser) {
