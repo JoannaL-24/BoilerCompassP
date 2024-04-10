@@ -108,23 +108,29 @@ export default function NavBar({
         alt="Boiler Compass"
       ></img>
       <ul className="navBtnList">
-        <li className="navBtnList">
-          <a
-            aria-label="more"
-            id="long-button"
-            aria-controls={open ? "long-menu" : undefined}
-            aria-expanded={open ? "true" : undefined}
-            aria-haspopup="true"
-            onClick={handleClick}
-          >
-            <h3>Schedule</h3>
-          </a>
-        </li>
-        <li className="navBtnList">
-          <a>
-            <h3>Groups</h3>
-          </a>
-        </li>
+        {userType === "Student" && (
+          <li className="navBtnList">
+            <a
+              aria-label="more"
+              id="long-button"
+              aria-controls={open ? "long-menu" : undefined}
+              aria-expanded={open ? "true" : undefined}
+              aria-haspopup="true"
+              onClick={handleClick}
+            >
+              <h3>Schedule</h3>
+            </a>
+          </li>
+        )}
+
+        {userType === "Student" && (
+          <li className="navBtnList">
+            <a>
+              <h3>Groups</h3>
+            </a>
+          </li>
+        )}
+
         <li className="navBtnList">
           <DarkModeToggle darkmode={darkmode} setDarkmode={setDarkmode} />
         </li>
