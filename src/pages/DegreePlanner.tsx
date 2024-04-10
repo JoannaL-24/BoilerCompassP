@@ -215,7 +215,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     //get current user and mode preference
     const { currentUser } = useAuth();
     const userData: UserData = new RemoteUserdata();
-    // const [darkmode, setDarkmode] = useState<boolean>(null);
     const [scheduleList, setscheduleList] = useState({
         currIndex: 0,
         currId: "1",
