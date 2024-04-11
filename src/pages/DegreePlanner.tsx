@@ -231,6 +231,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     //schedule mode
     const [viewOnly, setViewOnly] = useState(false);
     const [userOwnSchedule, setUserOwnSchedule] = useState(true); // true == user's own schedule, false == friend's schedule
+    const [friendSchedule, setFriendSchedule] = useState(null);
 
     useEffect(() => {
         if (currentUser) {
@@ -560,8 +561,10 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 viewOnly={viewOnly}/>
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                    { userOwnSchedule && <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} /> }
-                    { !userOwnSchedule && <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} />}
+                    { userOwnSchedule &&
+                    <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} /> }
+                    { !userOwnSchedule && friendSchedule &&
+                    <ScheduleView name={friendSchedule.name} id={friendSchedule.ID} semesterBlocks={friendSchedule.semester_blocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={friendSchedule.completed} planned={friendSchedule.planned} total={friendSchedule.total} />}
                     <ThemeProvider theme={mode}>
                         <div className="ScheduleSide" style={darkmode ? { backgroundColor: '#3b3a39' } : { backgroundColor: '#f5f3eb' }}>
                             <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
