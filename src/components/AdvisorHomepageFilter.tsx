@@ -477,7 +477,7 @@
 
 // export default AdvisorHomepageFilter;
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, CSSProperties } from "react";
 import { Wave, Random } from "react-animated-text";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -559,6 +559,17 @@ function AdvisorHomepageFilter() {
     fontSize: "2rem",
   };
 
+  const noonetextstyle: CSSProperties = {
+    position: "fixed",
+    marginTop: "2em",
+    //top: "40%",
+    left: "35%",
+    //transform: "translate(-50%, -50%)",
+    zIndex: "999",
+    overflow: "scroll",
+    fontSize: "3rem",
+  };
+
   const codeDivStyle = {
     marginTop: "2em",
     padding: "1px 1em",
@@ -570,6 +581,19 @@ function AdvisorHomepageFilter() {
     <div style={textStyle}>
       <Wave
         text="NO RESULTS FOUND"
+        effect="fadeOut"
+        effectChange={0.1}
+        effectDuration={0.01}
+      />
+
+      <div style={codeDivStyle}></div>
+    </div>
+  );
+
+  const Wave2 = () => (
+    <div style={noonetextstyle}>
+      <Wave
+        text="You have no students"
         effect="fadeOut"
         effectChange={0.1}
         effectDuration={0.01}
@@ -729,105 +753,107 @@ function AdvisorHomepageFilter() {
 
   return (
     <div className="AddsivorHomePageFilter">
-      <div className="studentSearching">
-        <div>
-          <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-          <TextField
-            id="input-with-sx"
-            label="Search student"
-            variant="standard"
-            style={{ width: "201px" }}
-            onChange={(e) => setSearchQuery(e.target.value)} // update search state
-          />
-        </div>
-        <br />
-        <FormControl
-          sx={{
-            border: "2px solid var(--textPrimary)",
-            borderRadius: "5px",
-            padding: "10px",
-          }}
-        >
-          <RadioGroup
-            aria-labelledby="demo-controlled-radio-buttons-group"
-            name="controlled-radio-buttons-group"
-            value={sortingOption}
-            onChange={handleChange}
-            //onChange={(e) => setSortingOption(e.target.value)}
+      {currentUserGroups.length > 0 && (
+        <div className="studentSearching">
+          <div>
+            <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <TextField
+              id="input-with-sx"
+              label="Search student"
+              variant="standard"
+              style={{ width: "201px" }}
+              onChange={(e) => setSearchQuery(e.target.value)} // update search state
+            />
+          </div>
+          <br />
+          <FormControl
+            sx={{
+              border: "2px solid var(--textPrimary)",
+              borderRadius: "5px",
+              padding: "10px",
+            }}
           >
-            <FormControlLabel
-              className="radio-group-shadow"
-              value="default"
-              control={
-                <Radio
-                  sx={{
-                    "& .MuiSvgIcon-root": {
-                      fontSize: 35,
-                    },
-                  }}
-                />
-              }
-              label="Reset"
-            />
-            <FormControlLabel
-              className="radio-group-shadow"
-              value="alphabetincrease"
-              control={
-                <Radio
-                  sx={{
-                    "& .MuiSvgIcon-root": {
-                      fontSize: 35,
-                    },
-                  }}
-                />
-              }
-              label="Sort alphabetically (ascending)"
-            />
-            <FormControlLabel
-              className="radio-group-shadow"
-              value="alphabetdecrease"
-              control={
-                <Radio
-                  sx={{
-                    "& .MuiSvgIcon-root": {
-                      fontSize: 35,
-                    },
-                  }}
-                />
-              }
-              label="Sort alphabetically (descending)"
-            />
-            <FormControlLabel
-              className="radio-group-shadow"
-              value="yearincrease"
-              control={
-                <Radio
-                  sx={{
-                    "& .MuiSvgIcon-root": {
-                      fontSize: 35,
-                    },
-                  }}
-                />
-              }
-              label="Sort by year (ascending)"
-            />
-            <FormControlLabel
-              className="radio-group-shadow"
-              value="yeardecrease"
-              control={
-                <Radio
-                  sx={{
-                    "& .MuiSvgIcon-root": {
-                      fontSize: 35,
-                    },
-                  }}
-                />
-              }
-              label="Sort by year (descending)"
-            />
-          </RadioGroup>
-        </FormControl>
-      </div>
+            <RadioGroup
+              aria-labelledby="demo-controlled-radio-buttons-group"
+              name="controlled-radio-buttons-group"
+              value={sortingOption}
+              onChange={handleChange}
+              //onChange={(e) => setSortingOption(e.target.value)}
+            >
+              <FormControlLabel
+                className="radio-group-shadow"
+                value="default"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 35,
+                      },
+                    }}
+                  />
+                }
+                label="Reset"
+              />
+              <FormControlLabel
+                className="radio-group-shadow"
+                value="alphabetincrease"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 35,
+                      },
+                    }}
+                  />
+                }
+                label="Sort alphabetically (ascending)"
+              />
+              <FormControlLabel
+                className="radio-group-shadow"
+                value="alphabetdecrease"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 35,
+                      },
+                    }}
+                  />
+                }
+                label="Sort alphabetically (descending)"
+              />
+              <FormControlLabel
+                className="radio-group-shadow"
+                value="yearincrease"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 35,
+                      },
+                    }}
+                  />
+                }
+                label="Sort by year (ascending)"
+              />
+              <FormControlLabel
+                className="radio-group-shadow"
+                value="yeardecrease"
+                control={
+                  <Radio
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        fontSize: 35,
+                      },
+                    }}
+                  />
+                }
+                label="Sort by year (descending)"
+              />
+            </RadioGroup>
+          </FormControl>
+        </div>
+      )}
 
       {currentUserGroups.length !== 0 && (
         <div className="searchResult">
@@ -1008,10 +1034,26 @@ function AdvisorHomepageFilter() {
       }
 
       {/*Button when group is empty */}
-      {currentUserGroups.length === 0 && // bruh
-        (console.log("empty array"),
-        (<Button onClick={handleDialogOpen}>Add Students</Button>))}
+      {currentUserGroups.length === 0 && ( // bruh
+        <div>
+          {console.log("empty array")}
+          <Wave2 />
+          <Button
+            style={{
+              position: "fixed",
+              marginTop: "18em",
+              left: "46%",
+            }}
+            onClick={handleDialogOpen}
+          >
+            Add Students
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
 export default AdvisorHomepageFilter;
+
+//https://www.npmjs.com/package/react-type-animation
+//https://yidaoj.github.io/react-moving-text/
