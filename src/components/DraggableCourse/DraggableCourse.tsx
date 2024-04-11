@@ -52,20 +52,20 @@ async function queryMeetings(classId: string): Promise<Meeting[]> {
     return meetings;
   } catch (error) {
     console.error(error);
-    return undefined;
+    return null;
   }
 }
 
 const DraggableCourse: React.FC<DraggableCourseProps> = (
   { index, id, course, description, credit, classId : initialClassId, meetings: initialMeetings }
 ) => {
-  const [meetings, setMeetings] = useState<Array<Meeting> | undefined>(initialMeetings);
+  const [meetings, setMeetings] = useState<Array<Meeting> | null>(initialMeetings);
   const [classId, setClassId] = useState<string>(initialClassId);
 
   const handleButtonClick = async () => {
-    if (meetings === undefined || initialClassId !== classId) {
+    if (meetings === null || initialClassId !== classId) {
       if (initialClassId !== classId) {
-        setMeetings(undefined);
+        setMeetings(null);
       }
       const fetchedMeetings = await queryMeetings(initialClassId);
       setMeetings(fetchedMeetings);
