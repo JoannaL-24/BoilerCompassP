@@ -45,7 +45,7 @@ export default function ReqModal({ open, handleClose }) {
     })
     userData.get("prefer_majors").then((data) => {
       console.log(data)
-      if (data[0].name == "Computer Science")
+      if (data && data[0].name == "Computer Science")
         setMajorSet(new Set<string>(["Computer Science"]))
     })
   }, [userData])

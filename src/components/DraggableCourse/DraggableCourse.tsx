@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Popup from 'reactjs-popup';
 import { Draggable } from "react-beautiful-dnd";
 import "./DraggableCourse.css"
@@ -27,6 +27,7 @@ type DraggableCourseProps = {
   credit: number;
   classId: string;  // use this to query meetings info when opening popup
   meetings?: Array<Meeting>;
+  viewOnly: boolean;
 };
 
 async function queryMeetings(classId: string): Promise<Meeting[]> {
@@ -46,25 +47,31 @@ async function queryMeetings(classId: string): Promise<Meeting[]> {
       daysOfWeek: meeting.DaysOfWeek,
       startTime: meeting.StartTime,
       duration: meeting.Duration,
+      classId: classId,
     }));
 
     return meetings;
   } catch (error) {
     console.error(error);
-    return undefined;
+    return null;
   }
 }
 
 const DraggableCourse: React.FC<DraggableCourseProps> = (
-  { index, id, course, description, credit, classId, meetings: initialMeetings, viewOnly }
+  { index, id, course, description, credit, classId, meetings, viewOnly}
 ) => {
-  const [meetings, setMeetings] = useState<Array<Meeting> | undefined>(initialMeetings);
+  const [meetingState, setMeetings] = useState<Array<Meeting> | undefined>(meetings);
+
+  useEffect(() => {
+    setMeetings(meetings);
+  }, [meetings, classId]);
 
   const handleButtonClick = async () => {
-    if (meetings === undefined) {
+    console.log("meetingState: ", meetingState);
+    if (!meetingState) {
       const fetchedMeetings = await queryMeetings(classId);
       setMeetings(fetchedMeetings);
-      console.log("Meetings: ", fetchedMeetings);
+      console.log("Meetings fetched and set: ", fetchedMeetings);
     }
   };
 
@@ -107,9 +114,9 @@ const DraggableCourse: React.FC<DraggableCourseProps> = (
                   <h3>Course Sessions:</h3>
                 </div>
                 <div className='sessionsList'>
-                  {meetings ? (
+                  {meetingState ? (
                     <div style={{ overflowY: "scroll", height: "100px" }}>
-                      {meetings.map((meeting, index) => (
+                      {meetingState.map((meeting, index) => (
                         <div key={index}>
                           Instructor(s): {meeting.instructors.join(", ")}<br />
                           Location: {meeting.building} Room {meeting.room}<br />
