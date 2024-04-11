@@ -61,7 +61,7 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly }) => {
           description: entity.Description,
           credit: entity.CreditHours,
           classId: entity.Classes[0].Id,
-          meetings: undefined,
+          meetings: null,
         }));
 
         console.log("Results:", results);
