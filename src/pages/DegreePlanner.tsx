@@ -228,8 +228,9 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const [total, setTotal] = useState(100);
     const [planned, setPlanned] = useState(0);
     const [reqModalOpen, setReqModalOpen] = useState(false);
-    //schedule viewOnly mode
+    //schedule mode
     const [viewOnly, setViewOnly] = useState(false);
+    const [userOwnSchedule, setUserOwnSchedule] = useState(true); // true == user's own schedule, false == friend's schedule
 
     useEffect(() => {
         if (currentUser) {
@@ -559,7 +560,8 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 viewOnly={viewOnly}/>
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                    <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} />
+                    { userOwnSchedule && <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} /> }
+                    { !userOwnSchedule && <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} />}
                     <ThemeProvider theme={mode}>
                         <div className="ScheduleSide" style={darkmode ? { backgroundColor: '#3b3a39' } : { backgroundColor: '#f5f3eb' }}>
                             <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
