@@ -493,7 +493,7 @@ import firebase from "firebase/app";
 import { initializeApp } from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { getDoc, doc, updateDoc } from "firebase/firestore";
+import { getDoc, query, where, doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../models/firebase.ts";
 import "firebase/firestore";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
@@ -528,6 +528,7 @@ function AdvisorHomepageFilter() {
   const [dialogOpen, setDialogOpen] = useState(false); // State for dialog open/close
   const [studentEmail, setStudentEmail] = useState(""); // State to store student email
   const [currentUserGroups, setCurrentUserGroups] = useState<string[]>([]); //get the group of current user
+  const [studentEmails, setStudentEmails] = useState([""]); // State to store student emails
 
   // Add a state variable to hold the sorting option
   const [sortingOption, setSortingOption] = useState(null);
@@ -741,14 +742,73 @@ function AdvisorHomepageFilter() {
   // Function to handle dialog close
   const handleDialogClose = () => {
     setDialogOpen(false);
+    setStudentEmails([""]); // Reset student emails to one empty field
   };
 
   // Function to handle adding a student
-  const handleAddStudent = () => {
-    // implement logic to add the student using the entered email
-    // can access the student email from the state variable student Email
-    // close the dialog after adding the student
+  const handleAddStudent = async () => {
+    // can access the student email from the variable emails
+
+    const emails = studentEmails.filter((email) => email.trim() !== "");
+    const db = getFirestore(app);
+    const groupsToUpdate = [];
+
+    for (const email of emails) {
+      try {
+        // find the user with the current email
+        const querySnapshot = await getDocs(
+          query(collection(db, "users"), where("purdue_email", "==", email))
+        );
+
+        // check email exists
+        if (!querySnapshot.empty) {
+          // get the UID of the user and add it to the groupsToUpdate array
+          querySnapshot.forEach((doc) => {
+            groupsToUpdate.push(doc.id);
+          });
+        }
+      } catch (error) {
+        console.error("Error searching for user:", error);
+      }
+    }
+
+    // Update the groups array with the UIDs of the found users
+    try {
+      const userDocRef = doc(db, "users", currentUser.uid);
+      await updateDoc(userDocRef, {
+        groups: currentUserGroups.concat(groupsToUpdate),
+      });
+      console.log("Groups updated successfully");
+    } catch (error) {
+      console.error("Error updating groups:", error);
+    }
+
+    emails.forEach((email) => {
+      console.log(email); /*test */
+    });
+
     handleDialogClose();
+    window.location.reload();
+  };
+
+  const handleChangeEmail = (index, value) => {
+    const newEmails = [...studentEmails];
+    newEmails[index] = value;
+    setStudentEmails(newEmails);
+  };
+
+  // Function to handle adding a student email field
+  const handleAddEmailField = () => {
+    setStudentEmails([...studentEmails, ""]);
+  };
+
+  // Function to handle removing the last student email field
+  const handleRemoveEmailField = () => {
+    if (studentEmails.length > 1) {
+      const newEmails = [...studentEmails];
+      newEmails.pop();
+      setStudentEmails(newEmails);
+    }
   };
 
   return (
@@ -860,86 +920,88 @@ function AdvisorHomepageFilter() {
           {(sortingOption && sortedUserNames.length === 0) ||
           filteredUserNames.length === 0 ? (
             <Wave1 />
-          ) : sortingOption ? (
-            sortedUserNames.map((user, index) => (
-              <a
-                key={index}
-                href="#"
-                onClick={() => handleUserClick(user)}
-                onMouseEnter={() => setHoveredUser(user)}
-                onMouseLeave={() => setHoveredUser(null)}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textDecoration: "none",
-                  borderRadius: "20px",
-                  width: "160px",
-                  padding: "10px",
-                  marginRight: "50px",
-                  marginBottom: "10px",
-                  transform: `${
-                    clickedUser === user ? "scale(0.3)" : "scale(1)"
-                  } ${hoveredUser === user ? "scale(1.2)" : "scale(1)"}`,
-                  transition: "transform 0.5s ease",
-                  backgroundColor: hoveredUser === user ? "#87ceeb" : "",
-                  color: hoveredUser === user ? "white" : "",
-                  boxShadow:
-                    hoveredUser === user
-                      ? "10px 10px 20px rgba(128, 229, 216, 1)"
-                      : "",
-                  border:
-                    hoveredUser === user
-                      ? "1px solid white"
-                      : "1px solid var(--textPrimary)",
-                }}
-              >
-                <AccountCircle
-                  sx={{ color: "action.active", fontSize: "40px" }}
-                />
-                <span style={{ marginTop: "5px" }}>{user.name}</span>{" "}
-              </a>
-            ))
           ) : (
-            filteredUserNames.map((user, index) => (
-              <a
-                key={index}
-                href="#"
-                onClick={() => handleUserClick(user)}
-                onMouseEnter={() => setHoveredUser(user)}
-                onMouseLeave={() => setHoveredUser(null)}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textDecoration: "none",
-                  borderRadius: "20px",
-                  width: "160px",
-                  padding: "10px",
-                  marginRight: "50px",
-                  marginBottom: "10px",
-                  transform: `${
-                    clickedUser === user ? "scale(0.3)" : "scale(1)"
-                  } ${hoveredUser === user ? "scale(1.2)" : "scale(1)"}`,
-                  transition: "transform 0.5s ease",
-                  backgroundColor: hoveredUser === user ? "#87ceeb" : "",
-                  color: hoveredUser === user ? "white" : "",
-                  boxShadow:
-                    hoveredUser === user
-                      ? "10px 10px 20px rgba(128, 229, 216, 1)"
-                      : "",
-                  border:
-                    hoveredUser === user
-                      ? "1px solid white"
-                      : "1px solid var(--textPrimary)",
-                }}
-              >
-                <AccountCircle
-                  sx={{ color: "action.active", fontSize: "40px" }}
-                />
-                <span style={{ marginTop: "5px" }}>{user.name}</span>{" "}
-              </a>
-            ))
+            <React.Fragment>
+              {sortingOption
+                ? sortedUserNames.map((user, index) => (
+                    <a
+                      key={index}
+                      href="#"
+                      onClick={() => handleUserClick(user)}
+                      onMouseEnter={() => setHoveredUser(user)}
+                      onMouseLeave={() => setHoveredUser(null)}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        textDecoration: "none",
+                        borderRadius: "20px",
+                        width: "160px",
+                        padding: "10px",
+                        marginRight: "50px",
+                        marginBottom: "10px",
+                        transform: `${
+                          clickedUser === user ? "scale(0.3)" : "scale(1)"
+                        } ${hoveredUser === user ? "scale(1.2)" : "scale(1)"}`,
+                        transition: "transform 0.5s ease",
+                        backgroundColor: hoveredUser === user ? "#87ceeb" : "",
+                        color: hoveredUser === user ? "white" : "",
+                        boxShadow:
+                          hoveredUser === user
+                            ? "10px 10px 20px rgba(128, 229, 216, 1)"
+                            : "",
+                        border:
+                          hoveredUser === user
+                            ? "1px solid white"
+                            : "1px solid var(--textPrimary)",
+                      }}
+                    >
+                      <AccountCircle
+                        sx={{ color: "action.active", fontSize: "40px" }}
+                      />
+                      <span style={{ marginTop: "5px" }}>{user.name}</span>{" "}
+                    </a>
+                  ))
+                : filteredUserNames.map((user, index) => (
+                    <a
+                      key={index}
+                      href="#"
+                      onClick={() => handleUserClick(user)}
+                      onMouseEnter={() => setHoveredUser(user)}
+                      onMouseLeave={() => setHoveredUser(null)}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        textDecoration: "none",
+                        borderRadius: "20px",
+                        width: "160px",
+                        padding: "10px",
+                        marginRight: "50px",
+                        marginBottom: "10px",
+                        transform: `${
+                          clickedUser === user ? "scale(0.3)" : "scale(1)"
+                        } ${hoveredUser === user ? "scale(1.2)" : "scale(1)"}`,
+                        transition: "transform 0.5s ease",
+                        backgroundColor: hoveredUser === user ? "#87ceeb" : "",
+                        color: hoveredUser === user ? "white" : "",
+                        boxShadow:
+                          hoveredUser === user
+                            ? "10px 10px 20px rgba(128, 229, 216, 1)"
+                            : "",
+                        border:
+                          hoveredUser === user
+                            ? "1px solid white"
+                            : "1px solid var(--textPrimary)",
+                      }}
+                    >
+                      <AccountCircle
+                        sx={{ color: "action.active", fontSize: "40px" }}
+                      />
+                      <span style={{ marginTop: "5px" }}>{user.name}</span>{" "}
+                    </a>
+                  ))}
+            </React.Fragment>
           )}
         </div>
       )}
@@ -1013,18 +1075,28 @@ function AdvisorHomepageFilter() {
           <DialogTitle>Add Student</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Enter the email of the student you want to add:
+              Enter the email of the student(s) you want to add:
             </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="student-email"
-              label="Student Email"
-              type="email"
-              fullWidth
-              value={studentEmail}
-              onChange={(e) => setStudentEmail(e.target.value)}
-            />
+            {studentEmails.map((email, index) => (
+              <div key={index}>
+                <TextField
+                  margin="dense"
+                  label={`Student Email ${index + 1}`}
+                  type="email"
+                  fullWidth
+                  value={email}
+                  onChange={(e) => handleChangeEmail(index, e.target.value)}
+                />
+                {index === studentEmails.length - 1 && (
+                  <Button
+                    style={{ marginLeft: "200px" }}
+                    onClick={handleAddEmailField}
+                  >
+                    <PersonAddIcon />
+                  </Button>
+                )}
+              </div>
+            ))}
           </DialogContent>
           <DialogActions>
             <Button onClick={handleDialogClose}>Cancel</Button>
@@ -1039,10 +1111,14 @@ function AdvisorHomepageFilter() {
           {console.log("empty array")}
           <Wave2 />
           <Button
+            variant="contained"
+            //color="primary"
             style={{
               position: "fixed",
               marginTop: "18em",
               left: "46%",
+
+              backgroundColor: "#1976d2",
             }}
             onClick={handleDialogOpen}
           >
