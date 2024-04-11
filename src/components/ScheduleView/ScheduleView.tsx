@@ -23,7 +23,7 @@ import Button from "@material-ui/core/Button";
 import { adjustSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
 
 
-export default function ScheduleView({ name, id, semesterBlocks, setParentSemesterBlocks, completed, planned, total }) {
+export default function ScheduleView({ name, id, semesterBlocks, setParentSemesterBlocks, completed, planned, total, viewOnly }) {
     const [semesterRender, setSemesterRender] = useState([]);
     const { currentUser } = useAuth();
     const hiddenFileInput = useRef(null);
@@ -47,9 +47,9 @@ export default function ScheduleView({ name, id, semesterBlocks, setParentSemest
             newRender.push(
                 <div key={i} className="Year">
                     <h3 style={{ padding: "150px 0px" }}>{semesterBlocks[i].year}<br />-<br />{semesterBlocks[i].year + 1}</h3>
-                    <Semester key={i} semesterInfo={semesterBlocks[i]} />
-                    <Semester key={i + 1} semesterInfo={semesterBlocks[i + 1]} />
-                    <Semester key={i + 2} semesterInfo={semesterBlocks[i + 2]} />
+                    <Semester key={i} semesterInfo={semesterBlocks[i]} viewOnly={viewOnly}/>
+                    <Semester key={i + 1} semesterInfo={semesterBlocks[i + 1]} viewOnly={viewOnly}/>
+                    <Semester key={i + 2} semesterInfo={semesterBlocks[i + 2]} viewOnly={viewOnly}/>
                 </div>
             );
         }

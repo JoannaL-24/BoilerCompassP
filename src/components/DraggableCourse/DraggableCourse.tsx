@@ -79,6 +79,7 @@ const DraggableCourse: React.FC<DraggableCourseProps> = (
       key={id}
       draggableId={id}
       index={index}
+      isDragDisabled={viewOnly}
     >
       {(provided) => (
         <div

@@ -129,10 +129,6 @@ const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
       
       (!setup && setUpdated(true));
       if (setup) navigate('/DegreePlanner');
-      // }
-      // else {
-      //   // local
-      // }
     }
   }
 

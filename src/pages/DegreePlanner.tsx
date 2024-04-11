@@ -215,7 +215,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     //get current user and mode preference
     const { currentUser } = useAuth();
     const userData: UserData = new RemoteUserdata();
-    // const [darkmode, setDarkmode] = useState<boolean>(null);
     const [scheduleList, setscheduleList] = useState({
         currIndex: 0,
         currId: "1",
@@ -229,6 +228,10 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const [total, setTotal] = useState(100);
     const [planned, setPlanned] = useState(0);
     const [reqModalOpen, setReqModalOpen] = useState(false);
+    //schedule mode
+    const [viewOnly, setViewOnly] = useState(false);
+    const [userOwnSchedule, setUserOwnSchedule] = useState(true); // true == user's own schedule, false == friend's schedule
+    const [friendSchedule, setFriendSchedule] = useState(null);
 
     useEffect(() => {
         if (currentUser) {
@@ -277,7 +280,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             //     let c = getSatisfied(CS, new Set(planned));
             //     setPlanned(c[0]);
             // })
-            console.log("jenny start");
             const user_doc = getDoc(doc(firestore, "schedules", scheduleList.currId))
                 .then((docSnapshot) => {
                     let c = getSatisfied(CS, new Set(docSnapshot.data().planned_courses));
@@ -303,7 +305,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const handleDragDrop = (result) => {
         const { source, destination } = result;
         console.log("drag occured");
-        // console.log(result);
         // delete the course from semester
         if (!destination && source.droppableId !== "ROOT") {
             console.log("Semester to Null");
@@ -359,9 +360,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
 
             const [deletedCourse] = newSourceCourses.splice(source.index, 1);
 
-            // console.log("deletedCourse:")
-            // console.log(deletedCourse.credit);
-
             cr = cr + deletedCourse.credit;
             // if (cr < 12) {alert("Less than 12 credits");}
             if (cr > 18) {alert("More than 18 credits");}
@@ -374,8 +372,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 credit: cr,
             };
 
-            // console.log(newSourceCourses);
-            // console.log(newSemesterBlocks);
             if (scheduleList.currId != "1") {
                 const semesterRef = doc(firestore, "schedules", scheduleList.currId);
                 updateDoc(semesterRef, {
@@ -399,7 +395,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             }
         }
         // from semester to another semester
-        else if (source.droppableId != destination.droppableI) {
+        else if (source.droppableId != destination.droppableId) {
             console.log("Semester to Semester");
             const newSourceCourses = semesterBlocks[source.droppableId].course_list;
             let cr_source = semesterBlocks[source.droppableId].credit;
@@ -561,15 +557,19 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 darkmode={darkmode}
                 setDarkmode={setDarkmode} 
                 schedules={scheduleList}
-                createNewSchedule={createNewSchedule}/>
+                createNewSchedule={createNewSchedule}
+                viewOnly={viewOnly}/>
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                    <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} completed={completed} planned={planned} total={total} />
+                    { userOwnSchedule &&
+                    <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} /> }
+                    { !userOwnSchedule && friendSchedule &&
+                    <ScheduleView name={friendSchedule.name} id={friendSchedule.ID} semesterBlocks={friendSchedule.semester_blocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={friendSchedule.completed} planned={friendSchedule.planned} total={friendSchedule.total} />}
                     <ThemeProvider theme={mode}>
                         <div className="ScheduleSide" style={darkmode ? { backgroundColor: '#3b3a39' } : { backgroundColor: '#f5f3eb' }}>
                             <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
                             <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal}/>
-                            <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} />
+                            <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={viewOnly} />
                         </div>
                     </ThemeProvider>
                 </DragDropContext>
