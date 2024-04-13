@@ -27,7 +27,7 @@ const ProfileSetupStudents = () => {
     advisor: "Purdue Pete",
     completed_courses: ["047ba221-5496-43d8-8196-a3347c09597f"],
     planned_courses: [],
-    firends: [],
+    friends: [],
     requests: [],
   });
 
