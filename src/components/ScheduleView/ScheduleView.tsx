@@ -24,7 +24,7 @@ import { adjustSectionValue } from "@mui/x-date-pickers/internals/hooks/useField
 import { GPA } from "components/GPA";
 
 
-export default function ScheduleView({ name, id, semesterBlocks, setParentSemesterBlocks, completed, planned, total, viewOnly }) {
+export default function ScheduleView({ name, id, semesterBlocks, setParentSemesterBlocks, completed, planned, total, viewOnly, completedCourses, courseGrades }) {
     const [semesterRender, setSemesterRender] = useState([]);
     const { currentUser } = useAuth();
     const hiddenFileInput = useRef(null);
@@ -38,8 +38,8 @@ export default function ScheduleView({ name, id, semesterBlocks, setParentSemest
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
     const [open, setOpen] = useState(false);
-    const [completedCourses, setCompletedCourses] = useState([]);
-    const [courseGrades, setCourseGrades] = useState({});
+    // const [completedCourses, setCompletedCourses] = useState([]);
+    // const [courseGrades, setCourseGrades] = useState({});
     const closeModal = () => setOpen(false);
     const year = dayjs().get('year');
     const validStartYear = (date) => !((year - date.get('year') >= 0) && (year - date.get('year') <= 10));
@@ -64,23 +64,23 @@ export default function ScheduleView({ name, id, semesterBlocks, setParentSemest
         setUserData(remote)
     }, [currentUser])
 
-    useEffect(() => {
-      (async (ud) => {
-        let completed = await ud.get("completed_courses")
-        let grades = await ud.get("course_grades")
-        if (!completed) {
-          completed = []
-          ud.put("completed_courses", completed)
-        }
-        if (!grades) {
-          grades = {}
-          ud.put("course_grades", grades)
-        }
-
-        setCompletedCourses(completed)
-        setCourseGrades(grades)
-      })(userData)
-    }, [userData])
+    // useEffect(() => {
+    //   (async (ud) => {
+    //     let completed = await ud.get("completed_courses")
+    //     let grades = await ud.get("course_grades")
+    //     if (!completed) {
+    //       completed = []
+    //       ud.put("completed_courses", completed)
+    //     }
+    //     if (!grades) {
+    //       grades = {}
+    //       ud.put("course_grades", grades)
+    //     }
+    //
+    //     setCompletedCourses(completed)
+    //     setCourseGrades(grades)
+    //   })(userData)
+    // }, [userData])
 
   const handleClickImport = (e) => {
     hiddenFileInput.current.click();
@@ -204,7 +204,7 @@ export default function ScheduleView({ name, id, semesterBlocks, setParentSemest
             </div>
             <Box sx={{ display: 'flex', alignItems: 'end' }} >
               <ProgressBar completed={completed} planned={planned} total={total} />
-              <GPA completed_courses={completedCourses} course_grades={courseGrades}/>
+              {!viewOnly && <GPA completed_courses={completedCourses} course_grades={courseGrades}/>}
             </Box>
             <div className="SemesterYears">
                 {semesterRender}

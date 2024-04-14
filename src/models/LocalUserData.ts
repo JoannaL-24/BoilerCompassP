@@ -11,7 +11,7 @@ const tmpS: Student = {
   purdue_email: '',
   dark_mode: false,
   completed_courses: [],
-  course_grades: new Map(),
+  course_grades: {}
 }
 const tmpA: Advisor = {
   department: '',

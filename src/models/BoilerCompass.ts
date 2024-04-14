@@ -70,7 +70,7 @@ export interface Student extends User {
   advisors: Advisor[]
   groups: Group[]
   completed_courses: string[]
-  course_grades: Map<string, number>
+  course_grades: {}
 }
 
 export interface Advisor extends User {
