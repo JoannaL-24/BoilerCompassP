@@ -20,7 +20,10 @@ import Alert from "@mui/material/Alert";
 import UserData from "models/UserData.ts";
 import ReqModal from "components/ReqModal";
 
+//test, added in sidebar area
 import FriendsList from "components/FriendsList.tsx";
+import CopyScheduleButton from "components/CopyScheduleButton.tsx";
+
 
 // temperary data for semester_blocks in Schedule
 const SCHEDULE_DATA = {
@@ -261,7 +264,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     }, [scheduleList.list]);
 
     useEffect(() => {
-        if (scheduleList.currId != 1) calculateProgress();
+        if (scheduleList.currId != "1") calculateProgress();
     }, [scheduleList.currId])
 
     function calculateProgress() {
@@ -573,6 +576,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                             <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal}/>
                             <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={viewOnly} />
                             {/* <FriendsList/> */}
+                            {/* <CopyScheduleButton scheduleID="g5ZWE0nw9llkRznXVopn"/> */}
                         </div>
                     </ThemeProvider>
                 </DragDropContext>
