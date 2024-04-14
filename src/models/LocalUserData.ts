@@ -10,7 +10,8 @@ const tmpS: Student = {
   name: '',
   purdue_email: '',
   dark_mode: false,
-  completed_courses: []
+  completed_courses: [],
+  course_grades: {}
 }
 const tmpA: Advisor = {
   department: '',
@@ -67,24 +68,24 @@ export default class LocalUserData implements UserData {
     let data = {}
     Object.keys(tmpS).forEach((key) => {
       let val = window.localStorage.getItem(key)
-      if (val != null)
-      data[key] = val;
+      if (val != null) data[key] = val
     })
     Object.keys(tmpA).forEach((key) => {
       let val = window.localStorage.getItem(key)
-      if (val != null)
-      data[key] = val;
+      if (val != null) data[key] = val
     })
 
-    const dataBlob = new Blob([JSON.stringify(data)], {type: 'application/json'})
-    const a = document.createElement('a');
-    const url = URL.createObjectURL(dataBlob);
-    a.href = url;
+    const dataBlob = new Blob([JSON.stringify(data)], {
+      type: 'application/json',
+    })
+    const a = document.createElement('a')
+    const url = URL.createObjectURL(dataBlob)
+    a.href = url
     a.download = 'BCDataExport.json'
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
   }
 
   import(data: Blob): void {
@@ -92,8 +93,8 @@ export default class LocalUserData implements UserData {
     freader.onload = (event) => {
       let dataObj = JSON.parse(event.target?.result as string)
       Object.entries(dataObj).forEach(([key, val]) => {
-        localStorage.setItem(key, val as string);
-      });
+        localStorage.setItem(key, val as string)
+      })
     }
 
     freader.readAsText(data)
