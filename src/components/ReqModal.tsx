@@ -67,19 +67,19 @@ export default function ReqModal({ open, handleClose }) {
           {majorSet.has("Computer Science") ?
         <>
           <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-            CS Core Requirements: {completed.core[0] / completed.core[1] * 100}%
+            CS Core Requirements: {(completed.core[0] / completed.core[1] * 100).toFixed(2)}%
           </Typography>
           <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-            Calculus Requirement: {completed.calc[0] / completed.calc[1] * 100}%
+            Calculus Requirement: {(completed.calc[0] / completed.calc[1] * 100).toFixed(2)}%
           </Typography>
           <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-            Statistics Requirement: {completed.stat[0] / completed.stat[1] * 100}%
+            Statistics Requirement: {(completed.stat[0] / completed.stat[1] * 100).toFixed(2)}%
           </Typography>
           <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-            Linear Algebra Requirement: {completed.linalg[0] / completed.linalg[1] * 100}%
+            Linear Algebra Requirement: {(completed.linalg[0] / completed.linalg[1] * 100).toFixed(2)}%
           </Typography>
           <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-            CS Tracks Requirement: {completed.core[0] / completed.core[1] * 100}%
+            CS Tracks Requirement: {(completed.core[0] / completed.core[1] * 100).toFixed(2)}%
           </Typography>
         </>
         : <></>
