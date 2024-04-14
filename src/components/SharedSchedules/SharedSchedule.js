@@ -52,7 +52,7 @@ const SharedSchedule = ({setViewOnly, setFriendSchedule, userID, openScheduleLis
 
   return (
     <div>
-      <Button type="submit" onClick={()=>{setOpenScheduleList(true)}} variant="outlined">TEST</Button>
+      {/* <Button type="submit" onClick={()=>{setOpenScheduleList(true)}} variant="outlined">TEST</Button> */}
       {done &&
         <Popup
           open={openScheduleList}
