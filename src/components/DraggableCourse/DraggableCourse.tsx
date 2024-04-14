@@ -27,6 +27,7 @@ type DraggableCourseProps = {
   credit: number;
   classId: string;  // use this to query meetings info when opening popup
   meetings?: Array<Meeting>;
+  viewOnly: boolean;
 };
 
 async function queryMeetings(classId: string): Promise<Meeting[]> {

@@ -50,7 +50,7 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly }) => {
 
       // Before updating the state, check if this is still the active request
       if (currentSearchId === activeSearchId.current) {
-        console.log("Entites:", entities);
+        // console.log("Entites:", entities);
 
         // remove entities with no classes
         entities = entities.filter(entity => entity.Classes.length > 0);
@@ -61,10 +61,10 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly }) => {
           description: entity.Description,
           credit: entity.CreditHours,
           classId: entity.Classes[0].Id,
-          meetings: undefined,
+          meetings: null,
         }));
 
-        console.log("Results:", results);
+        // console.log("Results:", results);
         setResults(results);
         updateParentSearch(results);
       }
@@ -95,14 +95,12 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly }) => {
               <DraggableCourse
                 key={index}
                 index={index}
-
                 id={result.id}
                 course={result.course}
                 description={result.description}
                 credit={result.credit}
                 classId={result.classId}
                 meetings={result.meetings}
-                viewOnly={viewOnly}
               />
             ))}
             {provided.placeholder}
