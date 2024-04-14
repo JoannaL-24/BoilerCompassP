@@ -83,23 +83,24 @@ export default function NavBar({
         });
     }
   }, [currentUser]);
-  if (userType === "Student") {
-    useEffect(() => {
-      let newScheduleName = [];
-      for (let i = 0; i < schedules.list.length; i++) {
-        getDoc(doc(firestore, "schedules", schedules.list[i]))
-          .then((scheduleSnap) => {
-            console.log(scheduleSnap.data());
-            newScheduleName[i] = scheduleSnap.data().name;
-            setScheduleInfo([...newScheduleName]); // Update state with new schedule names
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      console.log(newScheduleName);
-    }, [userType, schedules.list && schedules.list.length]);
-  }
+
+  // TODO: fix this & get back schdule list
+  useEffect(() => {
+    if (userType !== "student") return;
+    let newScheduleName = [];
+    for (let i = 0; i < schedules.list.length; i++) {
+      getDoc(doc(firestore, "schedules", schedules.list[i]))
+        .then((scheduleSnap) => {
+          console.log(scheduleSnap.data());
+          newScheduleName[i] = scheduleSnap.data().name;
+          setScheduleInfo([...newScheduleName]); // Update state with new schedule names
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    console.log(newScheduleName);
+  }, [userType, schedules.list && schedules.list.length]);
 
   return (
     <div className="navBarContainer">
@@ -108,7 +109,7 @@ export default function NavBar({
         alt="Boiler Compass"
       ></img>
       <ul className="navBtnList">
-        {userType === "Student" && (
+        {userType === "student" && (
           <li className="navBtnList">
             <a
               aria-label="more"
@@ -123,7 +124,7 @@ export default function NavBar({
           </li>
         )}
 
-        {userType === "Student" && (
+        {userType === "student" && (
           <li className="navBtnList">
             <a>
               <h3>Groups</h3>
