@@ -5,7 +5,6 @@ import "./Semester.css"
 
 
 const Semester = ({ semesterInfo, viewOnly }) => {
-    let credits = 0;
     return (
         <div className="Semester">
             <div className="SemesterDescription">
@@ -15,7 +14,16 @@ const Semester = ({ semesterInfo, viewOnly }) => {
                 {(provided) => (
                     <div className="Courses" {...provided.droppableProps} ref={provided.innerRef}>
                         {semesterInfo.course_list.map((course, index) => (
-                            <DraggableCourse key={index} index={index} course={course.course} id={course.id} description={course.description} credit={course.credit} classId={course.classId} viewOnly={viewOnly}/>
+                            <DraggableCourse 
+                                key={index} 
+                                index={index}
+                                course={course.course}
+                                id={course.id}
+                                description={course.description}
+                                credit={course.credit} 
+                                classId={course.classId} 
+                                viewOnly={viewOnly}
+                            />
                         ))}
                         {provided.placeholder}
                     </div>
