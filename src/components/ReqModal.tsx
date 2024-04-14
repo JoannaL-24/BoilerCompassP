@@ -33,8 +33,8 @@ export default function ReqModal({ open, handleClose }) {
   useEffect(() => {
     userData.get('completed_courses').then((s) => {
       let set = new Set<string>(s)
-      console.log(s)
-      console.log(set)
+      // console.log(s)
+      // console.log(set)
       setCompleted({
         core: getSatisfied(CSCoreReq, set),
         calc: getSatisfied(CalcReq, set),
@@ -44,7 +44,7 @@ export default function ReqModal({ open, handleClose }) {
       })
     })
     userData.get("prefer_majors").then((data) => {
-      console.log(data)
+      // console.log(data)
       if (data && data[0].name == "Computer Science")
         setMajorSet(new Set<string>(["Computer Science"]))
     })
