@@ -8,7 +8,7 @@ import { doc, getDoc, updateDoc, arrayRemove, Timestamp, arrayUnion, DocumentRef
 import { firestore } from '../models/firebase.ts';
 import { DragDropContext } from "react-beautiful-dnd";
 import RemoteUserdata from '../models/RemoteUserData';
-import { getSatisfied, Schedule } from '../models/BoilerCompass';
+import { isTermInPast, getSatisfied, Schedule } from '../models/BoilerCompass';
 import { CS } from '../models/CS';
 // sidebar import
 import "../components/ScheduleSide/ScheduleSide.css";
@@ -19,7 +19,10 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import UserData from "models/UserData.ts";
 import ReqModal from "components/ReqModal";
 
+//test, added in sidebar area
 import FriendsList from "components/FriendsList.tsx";
+import CopyScheduleButton from "components/CopyScheduleButton.tsx";
+
 
 // temperary data for semester_blocks in Schedule
 const SCHEDULE_DATA = {
@@ -234,6 +237,9 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const [userOwnSchedule, setUserOwnSchedule] = useState(true); // true == user's own schedule, false == friend's schedule
     const [friendSchedule, setFriendSchedule] = useState(null);
 
+    const [completedCourses, setCompletedCourses] = useState([])
+    const [courseGrades, setCourseGrades] = useState({})
+
     // get firebase data (dark mode & schedule) if the user is a firebase user
     useEffect(() => {
         if (currentUser) {
@@ -241,6 +247,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 .then((docSnapshot) => {
                     setDarkmode(docSnapshot.data().dark_mode);
                     setscheduleList({ ...scheduleList, list: docSnapshot.data().schedule });
+                    setCompletedCourses(docSnapshot.data().completed_courses)
                 });
         }
     }, [currentUser]);
@@ -350,6 +357,29 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         }
     }
 
+    const addCompletedCourse = (id) => {
+      const s = new Set(completedCourses)
+      if (!s.has(id)) {
+        const c = completedCourses
+        c.push(id)
+        setCompletedCourses(c)
+        userData.put("completed_courses", c)
+      } else {
+        userData.put("completed_courses", completedCourses)
+      }
+    }
+
+    const removeCompletedCourse = (id) => {
+      const s = new Set(completedCourses)
+      if (s.has(id)) {
+        s.delete(id)
+        setCompletedCourses([...s])
+        userData.put("completed_courses", [...s])
+      } else {
+        userData.put("completed_courses", completedCourses)
+      }
+    }
+
     const handleDragDrop = (result) => {
         const { source, destination } = result;
         console.log("drag occured");
@@ -436,6 +466,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                             updateDoc(semesterRef, {
                                 "completed_courses": arrayUnion(deletedCourse.id)
                             });
+                            addCompletedCourse(deletedCourse.id)
                         } else {
                             console.log("update planned");
                             updateDoc(semesterRef, {
@@ -495,12 +526,14 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                                 "completed_courses": arrayUnion(deletedCourse.id),
                                 "planned_courses": arrayRemove(deletedCourse.id)
                             });
+                            addCompletedCourse(deletedCourse.id)
                         } else {
                             console.log("delete completed, add planned");
                             updateDoc(semesterRef, {
                                 "completed_courses": arrayRemove(deletedCourse.id),
                                 "planned_courses": arrayUnion(deletedCourse.id)
                             });
+                            removeCompletedCourse(deletedCourse.id)
                         }
                         calculateProgress();
                         return;
@@ -662,6 +695,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                             <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal} />
                             <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={viewOnly} />
                             {/* <FriendsList/> */}
+                            {/* <CopyScheduleButton scheduleID="g5ZWE0nw9llkRznXVopn"/> */}
                         </div>
                     </ThemeProvider>
                 </DragDropContext>
