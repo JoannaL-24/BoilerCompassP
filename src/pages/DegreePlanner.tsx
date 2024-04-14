@@ -572,7 +572,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                             <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
                             <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal}/>
                             <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={viewOnly} />
-                            <FriendsList/>
+                            {/* <FriendsList/> */}
                         </div>
                     </ThemeProvider>
                 </DragDropContext>
