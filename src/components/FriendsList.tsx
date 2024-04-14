@@ -11,10 +11,14 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 
 const FriendsList = () => {
+// const FriendsList = ({setViewOnly, setFriendSchedule}) => {
     const { currentUser } = useAuth();
     const [friendsList, setfriendsList] = useState([]);
     const [listAnchorEl, setListAnchorEl] = useState<null | HTMLElement>(null);
     const userData: UserData = new RemoteUserdata();
+
+    const [userID, setuserID] = useState(null); // this will be passed in
+    const [openScheduleList, setOpenScheduleList] = useState(false);
 
     const friendsOpen = Boolean(listAnchorEl);
     const handleFriendsClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -57,21 +61,18 @@ const FriendsList = () => {
     }, [currentUser]);
 
     console.log(friendsList);
-    const names = [];
-    friendsList.forEach((element) => {
-      names.push(element.name);
-    });
-    console.log(names)
+    // const names = [];
+    // friendsList.forEach((element) => {
+    //   names.push(element.name);
+    // });
+    // console.log(names)
 
-    const handleFriendsList = async () => {
-        // console.log("meetingState: ", meetingState);
-        // if (!meetingState) {
-        //   const fetchedMeetings = await queryMeetings(classId);
-        //   setMeetings(fetchedMeetings);
-        //   console.log("Meetings fetched and set: ", fetchedMeetings);
-        // }
-    };
-
+    const handleClick = (id) => {
+      console.log("click")
+      console.log(id)
+      setOpenScheduleList(true);
+      setuserID(id);
+    }
 
   return (
     <div>
@@ -81,6 +82,7 @@ const FriendsList = () => {
         aria-haspopup="true"
         aria-expanded={friendsOpen ? 'true' : undefined}
         onClick={handleFriendsClick}
+        variant="contained"
       >
         Friends
       </Button>
@@ -100,12 +102,13 @@ const FriendsList = () => {
           }}
         >
 
-            {names.map((name) => (
+            {friendsList.map((friend) => (
               <MenuItem
-                key={name}
-                value={name}
+                key={friend.name}
+                value={friend.name}
+                onClick={() => handleClick(friend.id)}
               >
-                {name}
+                {friend.name}
               </MenuItem>
             ))}
         </Menu>

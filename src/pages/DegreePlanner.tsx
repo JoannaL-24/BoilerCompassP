@@ -20,6 +20,8 @@ import Alert from "@mui/material/Alert";
 import UserData from "models/UserData.ts";
 import ReqModal from "components/ReqModal";
 
+import FriendsList from "components/FriendsList.tsx";
+
 // temperary data for semester_blocks in Schedule
 const SCHEDULE_DATA = {
     name: "Schedule1",
@@ -570,6 +572,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                             <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
                             <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal}/>
                             <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={viewOnly} />
+                            <FriendsList/>
                         </div>
                     </ThemeProvider>
                 </DragDropContext>
