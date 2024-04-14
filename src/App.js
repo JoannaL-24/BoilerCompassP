@@ -17,6 +17,7 @@ import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
 import DraggableCourse from "./components/DraggableCourse/DraggableCourse";
+import SharedSchedule from "./components/SharedSchedules/SharedSchedule"
 import { AuthProvider } from "./components/contexts/AuthContext";
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
             darkmode={darkmode}
             setDarkmode={setDarkmode}/>} />
           <Route path="/Settings" element={<SettingsPage />} />
+          <Route path="/TestSharedSchedule" element={<SharedSchedule />} />
         </Routes>
       </div>
     </AuthProvider>

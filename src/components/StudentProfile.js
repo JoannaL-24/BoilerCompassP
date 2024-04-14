@@ -104,6 +104,7 @@ const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
         userinfo.schedule.semester_blocks = semester_blocks;
         userinfo.schedule.planned_courses = [];
         userinfo.schedule.completed_courses = [];
+
       }
       // if (currentUser) {
       userData.put("prefer_majors", userinfo.prefer_majors);
@@ -113,6 +114,8 @@ const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
       userData.put("end_term", Timestamp.fromDate(new Date(userinfo.end_term)));
       userData.put("completed_courses", userinfo.completed_courses);
       userData.put("planned_courses", userinfo.planned_courses);
+      userData.put("friends", userinfo.friends);
+      userData.put("requests", userinfo.requests);
       if (currentUser) {
         addDoc(collection(firestore, "schedules"), userinfo.schedule)
           .then((document) => {
@@ -128,10 +131,6 @@ const Student_profile = ({ userinfo, setUserinfo, setup, setUpdated }) => {
       
       (!setup && setUpdated(true));
       if (setup) navigate('/DegreePlanner');
-      // }
-      // else {
-      //   // local
-      // }
     }
   }
 

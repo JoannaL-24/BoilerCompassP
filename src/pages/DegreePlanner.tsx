@@ -19,6 +19,8 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import UserData from "models/UserData.ts";
 import ReqModal from "components/ReqModal";
 
+import FriendsList from "components/FriendsList.tsx";
+
 // temperary data for semester_blocks in Schedule
 const SCHEDULE_DATA = {
     name: "Schedule1",
@@ -227,8 +229,10 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const [total, setTotal] = useState(100);
     const [planned, setPlanned] = useState(0);
     const [reqModalOpen, setReqModalOpen] = useState(false);
-    //schedule viewOnly mode
-    const [viewOnly, setViewOnly] = useState(true);
+    //schedule mode
+    const [viewOnly, setViewOnly] = useState(false);
+    const [userOwnSchedule, setUserOwnSchedule] = useState(true); // true == user's own schedule, false == friend's schedule
+    const [friendSchedule, setFriendSchedule] = useState(null);
 
     // get firebase data (dark mode & schedule) if the user is a firebase user
     useEffect(() => {
@@ -632,22 +636,16 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             />
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                    <ScheduleView
-                        name={scheduleList.currName}
-                        id={scheduleList.currId}
-                        semesterBlocks={semesterBlocks}
-                        setParentSemesterBlocks={adjustSemesterBlocks}
-                        viewOnly={false}
-                        completed={completed}
-                        planned={planned}
-                        total={total}
-                    />
-
+                    { userOwnSchedule &&
+                    <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} /> }
+                    { !userOwnSchedule && friendSchedule &&
+                    <ScheduleView name={friendSchedule.name} id={friendSchedule.ID} semesterBlocks={friendSchedule.semester_blocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={friendSchedule.completed} planned={friendSchedule.planned} total={friendSchedule.total} />}
                     <ThemeProvider theme={mode}>
                         <div className="ScheduleSide" style={darkmode ? { backgroundColor: '#3b3a39' } : { backgroundColor: '#f5f3eb' }}>
                             <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
                             <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal} />
                             <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={viewOnly} />
+                            <FriendsList/>
                         </div>
                     </ThemeProvider>
                 </DragDropContext>
