@@ -150,7 +150,7 @@ export default function ScheduleView({ name, id, semesterBlocks, setParentSemest
                                 <a className="close" onClick={closeModal}>
                                     &times;
                                 </a>
-                                <FormControl display="flex" style={{ width: 400 }}>
+                                <FormControl  style={{ width: 400, display: "flex"}}>
                                     <h3 className="Question">Your start date:</h3>
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DatePicker
@@ -204,7 +204,7 @@ export default function ScheduleView({ name, id, semesterBlocks, setParentSemest
             </div>
             <Box sx={{ display: 'flex', alignItems: 'end' }} >
               <ProgressBar completed={completed} planned={planned} total={total} />
-              {!viewOnly && <GPA completed_courses={completedCourses} course_grades={courseGrades}/>}
+              {/* {!viewOnly && <GPA completed_courses={completedCourses} course_grades={courseGrades}/>} */}
             </Box>
             <div className="SemesterYears">
                 {semesterRender}

@@ -269,9 +269,9 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         }
     }, [scheduleList.list]);
 
-    useEffect(() => {
-        console.log(scheduleList);
-    }, [scheduleList]);
+    // useEffect(() => {
+    //     console.log(scheduleList);
+    // }, [scheduleList]);
 
     useEffect(() => {
         if (scheduleList.currId != "1") calculateProgress();
@@ -279,7 +279,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
 
     function calculateProgress() {
         if (scheduleList.currId == "1") return;
-        console.log("calculated progress");
         // get numbers for calculating degree progress
         if (currentUser) {
             // get completed and total
@@ -385,7 +384,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         const { source, destination } = result;
         console.log("drag occured");
         console.log(result);
-        
+
         // delete the course from semester
         if (!destination && source.droppableId !== "ROOT") {
             console.log("Semester to Null");
