@@ -29,8 +29,6 @@ export function GPA({ completed_courses, course_grades }: GPAProps) {
   let cumu_weighted = 0.0
   let total_credits = 0
   let completed_credits = 0
-  let a =new Map<string, number>()
-  a.set("salkjdlkasjd", 1337.69420)
   Object.keys(course_grades).forEach(id => {
     let points = course_grades[id]
     getCreditHours(id).then((credits) => {
