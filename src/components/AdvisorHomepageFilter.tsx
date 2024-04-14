@@ -319,7 +319,7 @@ function AdvisorHomepageFilter() {
       // setCurrentUserGroupsLength(
       //   currentUserGroups.length + groupsToUpdate.length
       // );
-      forceUpdate(); // Force re-render to counter async
+      //forceUpdate(); // Force re-render to counter async  //maybe not needed?
     } catch (error) {
       console.error("Error updating groups:", error);
     }
@@ -329,7 +329,7 @@ function AdvisorHomepageFilter() {
     });*/
 
     handleDialogClose();
-    //window.location.reload();
+
     currentUserGroups.forEach((u) => {
       console.log("now array has " + u); /*test */
       console.log("wtf");
@@ -636,6 +636,21 @@ function AdvisorHomepageFilter() {
               )
             )}
           </ul>
+          <Button
+            variant="contained"
+            onClick={() => {
+              // Add functionality for View schedule button here
+
+              console.log("View schedule clicked for:", selectedUser.name);
+            }}
+            style={{
+              marginTop: "10px", // Adjust margin
+              color: "#003fce",
+              backgroundColor: "#879DEB",
+            }}
+          >
+            View Schedule
+          </Button>
         </div>
       )}
       {/* Dialog for adding a student */}
