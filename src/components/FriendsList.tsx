@@ -9,9 +9,10 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
+import SharedSchedule from './SharedSchedules/SharedSchedule.js';
 
-const FriendsList = () => {
-// const FriendsList = ({setViewOnly, setFriendSchedule}) => {
+// const FriendsList = () => {
+const FriendsList = ({setViewOnly, setFriendSchedule}) => {
     const { currentUser } = useAuth();
     const [friendsList, setfriendsList] = useState([]);
     const [listAnchorEl, setListAnchorEl] = useState<null | HTMLElement>(null);
@@ -113,6 +114,8 @@ const FriendsList = () => {
             ))}
         </Menu>
       </FormControl>
+
+      <SharedSchedule setViewOnly={setViewOnly} setFriendSchedule={setFriendSchedule} userID={userID} openScheduleList={openScheduleList} setOpenScheduleList={setOpenScheduleList}/>
       
     </div>
   )

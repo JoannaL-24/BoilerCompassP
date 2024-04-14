@@ -19,7 +19,10 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import UserData from "models/UserData.ts";
 import ReqModal from "components/ReqModal";
 
+//test, added in sidebar area
 import FriendsList from "components/FriendsList.tsx";
+import CopyScheduleButton from "components/CopyScheduleButton.tsx";
+
 
 // temperary data for semester_blocks in Schedule
 const SCHEDULE_DATA = {
@@ -675,7 +678,8 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                             <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
                             <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal} />
                             <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={viewOnly} />
-                            <FriendsList/>
+                            {/* <FriendsList/> */}
+                            {/* <CopyScheduleButton scheduleID="g5ZWE0nw9llkRznXVopn"/> */}
                         </div>
                     </ThemeProvider>
                 </DragDropContext>
