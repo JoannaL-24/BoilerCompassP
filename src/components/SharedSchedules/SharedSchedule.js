@@ -12,8 +12,8 @@ import { getSatisfied } from '../../models/BoilerCompass';
 import { CS } from '../../models/CS';
 import "../CoursePopup/CoursePopup.css";
 
-const SharedSchedule = ({setViewOnly, setFriendSchedule}) => {
-  const [userID, setuserID] = useState("Dfo2QJCOGIbYNtgxH4A2vib3fXB2"); // this will be passed in
+const SharedSchedule = ({setViewOnly, setFriendSchedule, userID}) => {
+  //const [userID, setuserID] = useState("Dfo2QJCOGIbYNtgxH4A2vib3fXB2"); // this will be passed in
   const [openScheduleList, setOpenScheduleList] = useState(false);
   const [scheduleList, setscheduleList] = useState([]);
   const [done, setDone] = useState(false);
@@ -46,9 +46,9 @@ const SharedSchedule = ({setViewOnly, setFriendSchedule}) => {
     schedule = {...schedule, completed: c[0], total: c[1]};
     c = getSatisfied(CS, new Set(schedule.planned_courses));
     schedule = {...schedule, planned: c[0]};
-    // setViewOnly(true);
-    // setFriendSchedule(schedule);
-    console.log(schedule);
+    setViewOnly(true);
+    setFriendSchedule(schedule);
+    //console.log(schedule);
   }
 
   return (
