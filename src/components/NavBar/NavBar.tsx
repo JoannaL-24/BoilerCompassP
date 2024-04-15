@@ -29,7 +29,9 @@ export default function NavBar({
   schedules,
   createNewSchedule,
   viewOnly,
-}) {
+}) 
+{
+  const [userType, setUserType] = useState("");
   const [scheduleInfo, setScheduleInfo] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [homeAnchorEl, setHomeAnchorEl] = useState<null | HTMLElement>(null);
@@ -61,19 +63,13 @@ export default function NavBar({
       .catch((error) => console.log(error));
   };
 
-  let userType = "";
   useEffect(() => {
     if (currentUser) {
-      const { uid } = currentUser;
 
-      const u = doc(firestore, "users", uid);
-      getDoc(u)
+      getDoc(doc(firestore, "users", currentUser.uid))
         .then((userSnap) => {
           if (userSnap.exists()) {
-            const user = userSnap.data();
-            userType = user.user_type;
-
-            console.log("User type:", userType);
+            setUserType(userSnap.data().user_type);
           } else {
             console.log("User data not found");
           }
@@ -83,23 +79,24 @@ export default function NavBar({
         });
     }
   }, [currentUser]);
-  if (userType === "Student") {
-    useEffect(() => {
-      let newScheduleName = [];
-      for (let i = 0; i < schedules.list.length; i++) {
-        getDoc(doc(firestore, "schedules", schedules.list[i]))
-          .then((scheduleSnap) => {
-            console.log(scheduleSnap.data());
-            newScheduleName[i] = scheduleSnap.data().name;
-            setScheduleInfo([...newScheduleName]); // Update state with new schedule names
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      console.log(newScheduleName);
-    }, [userType, schedules.list && schedules.list.length]);
-  }
+
+  // TODO: fix this & get back schdule list
+  useEffect(() => {
+    if (userType !== "student") return;
+    if (schedules.list.length <= 0) return;
+    let newScheduleName = [];
+    for (let i = 0; i < schedules.list.length; i++) {
+      getDoc(doc(firestore, "schedules", schedules.list[i]))
+        .then((scheduleSnap) => {
+          console.log(scheduleSnap.data());
+          newScheduleName[i] = scheduleSnap.data().name;
+          setScheduleInfo([...newScheduleName]); // Update state with new schedule names
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [userType, schedules.list]);
 
   return (
     <div className="navBarContainer">
@@ -108,7 +105,7 @@ export default function NavBar({
         alt="Boiler Compass"
       ></img>
       <ul className="navBtnList">
-        {userType === "Student" && (
+        {userType === "student" && (
           <li className="navBtnList">
             <a
               aria-label="more"
@@ -123,7 +120,7 @@ export default function NavBar({
           </li>
         )}
 
-        {userType === "Student" && (
+        {userType === "student" && (
           <li className="navBtnList">
             <a>
               <h3>Groups</h3>
