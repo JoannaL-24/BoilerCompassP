@@ -21,9 +21,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Popup from "reactjs-popup";
 import Button from "@material-ui/core/Button";
 import { adjustSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
+import { GPA } from "components/GPA";
 
 
-export default function ScheduleView({ name, id, semesterBlocks, setParentSemesterBlocks, completed, planned, total, viewOnly }) {
+export default function ScheduleView({ name, id, semesterBlocks, setParentSemesterBlocks, completed, planned, total, viewOnly, completedCourses, courseGrades }) {
     const [semesterRender, setSemesterRender] = useState([]);
     const { currentUser } = useAuth();
     const hiddenFileInput = useRef(null);
@@ -37,6 +38,8 @@ export default function ScheduleView({ name, id, semesterBlocks, setParentSemest
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
     const [open, setOpen] = useState(false);
+    // const [completedCourses, setCompletedCourses] = useState([]);
+    // const [courseGrades, setCourseGrades] = useState({});
     const closeModal = () => setOpen(false);
     const year = dayjs().get('year');
     const validStartYear = (date) => !((year - date.get('year') >= 0) && (year - date.get('year') <= 10));
@@ -60,6 +63,24 @@ export default function ScheduleView({ name, id, semesterBlocks, setParentSemest
       if (currentUser)
         setUserData(remote)
     }, [currentUser])
+
+    // useEffect(() => {
+    //   (async (ud) => {
+    //     let completed = await ud.get("completed_courses")
+    //     let grades = await ud.get("course_grades")
+    //     if (!completed) {
+    //       completed = []
+    //       ud.put("completed_courses", completed)
+    //     }
+    //     if (!grades) {
+    //       grades = {}
+    //       ud.put("course_grades", grades)
+    //     }
+    //
+    //     setCompletedCourses(completed)
+    //     setCourseGrades(grades)
+    //   })(userData)
+    // }, [userData])
 
   const handleClickImport = (e) => {
     hiddenFileInput.current.click();
@@ -129,7 +150,7 @@ export default function ScheduleView({ name, id, semesterBlocks, setParentSemest
                                 <a className="close" onClick={closeModal}>
                                     &times;
                                 </a>
-                                <FormControl display="flex" style={{ width: 400 }}>
+                                <FormControl  style={{ width: 400, display: "flex"}}>
                                     <h3 className="Question">Your start date:</h3>
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DatePicker
@@ -181,7 +202,10 @@ export default function ScheduleView({ name, id, semesterBlocks, setParentSemest
                     </li>
                 </ul>
             </div>
-            <ProgressBar completed={completed} planned={planned} total={total} />
+            <Box sx={{ display: 'flex', alignItems: 'end' }} >
+              <ProgressBar completed={completed} planned={planned} total={total} />
+              {/* {!viewOnly && <GPA completed_courses={completedCourses} course_grades={courseGrades}/>} */}
+            </Box>
             <div className="SemesterYears">
                 {semesterRender}
             </div>

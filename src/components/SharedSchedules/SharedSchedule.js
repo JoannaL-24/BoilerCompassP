@@ -12,16 +12,15 @@ import { getSatisfied } from '../../models/BoilerCompass';
 import { CS } from '../../models/CS';
 import "../CoursePopup/CoursePopup.css";
 
-const SharedSchedule = ({setViewOnly, setFriendSchedule}) => {
-  const [userID, setuserID] = useState("Dfo2QJCOGIbYNtgxH4A2vib3fXB2"); // this will be passed in
-  const [openScheduleList, setOpenScheduleList] = useState(false);
+const SharedSchedule = ({setViewOnly, setFriendSchedule, userID, openScheduleList, setOpenScheduleList}) => {
+  //const [userID, setuserID] = useState("Dfo2QJCOGIbYNtgxH4A2vib3fXB2"); // this will be passed in
+  //const [openScheduleList, setOpenScheduleList] = useState(false);
   const [scheduleList, setscheduleList] = useState([]);
   const [done, setDone] = useState(false);
 
   useEffect(() => {
     const user_doc = getDoc(doc(firestore, "users", userID))
           .then((docSnapshot) => {
-            console.log
             let scheduleNames = docSnapshot.data().schedule;
             for (let s of scheduleNames) {
               console.log(s);
@@ -46,14 +45,14 @@ const SharedSchedule = ({setViewOnly, setFriendSchedule}) => {
     schedule = {...schedule, completed: c[0], total: c[1]};
     c = getSatisfied(CS, new Set(schedule.planned_courses));
     schedule = {...schedule, planned: c[0]};
-    // setViewOnly(true);
-    // setFriendSchedule(schedule);
-    console.log(schedule);
+    setViewOnly(true);
+    setFriendSchedule(schedule);
+    //console.log(schedule);
   }
 
   return (
     <div>
-      <Button type="submit" onClick={()=>{setOpenScheduleList(true)}} variant="outlined">TEST</Button>
+      {/* <Button type="submit" onClick={()=>{setOpenScheduleList(true)}} variant="outlined">TEST</Button> */}
       {done &&
         <Popup
           open={openScheduleList}
