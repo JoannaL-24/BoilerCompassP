@@ -19,7 +19,11 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import UserData from "models/UserData.ts";
 import ReqModal from "components/ReqModal";
 
+//test, added in sidebar area
 import FriendsList from "components/FriendsList.tsx";
+import CopyScheduleButton from "components/CopyScheduleButton.tsx";
+import ChangeScheduleName from "components/ChangeScheduleName.tsx";
+
 
 // temperary data for semester_blocks in Schedule
 const SCHEDULE_DATA = {
@@ -266,9 +270,9 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         }
     }, [scheduleList.list]);
 
-    useEffect(() => {
-        console.log(scheduleList);
-    }, [scheduleList]);
+    // useEffect(() => {
+    //     console.log(scheduleList);
+    // }, [scheduleList]);
 
     useEffect(() => {
         if (scheduleList.currId != "1") calculateProgress();
@@ -276,7 +280,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
 
     function calculateProgress() {
         if (scheduleList.currId == "1") return;
-        console.log("calculated progress");
         // get numbers for calculating degree progress
         if (currentUser) {
             // get completed and total
@@ -297,12 +300,9 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 .then((docSnapshot) => {
                     let planned = getSatisfied(CS, new Set(docSnapshot.data().planned_courses));
                     setPlanned(planned[0]);
-                    console.log("Plan: ", planned[0]);
                     let completed = getSatisfied(CS, new Set(docSnapshot.data().completed_courses));
                     setCompleted(completed[0]);
                     setTotal(completed[1]);
-                    console.log("Complete: ", completed[0]);
-                    console.log("Total: ", completed[1]);
                 })
         }
     }
@@ -320,9 +320,9 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         },
     });
 
-    // return 1, need to update both planned courses & completed courses
+    // return 1, need to update completed courses
     // return 0, only update planned courses
-    function getUpdateCourseMode(year: number, term: string) {
+    function ifYearPassed(year: number, term: string) {
         let currDate = new Date();
         if (currDate.getFullYear() > year) {
             return 1;
@@ -385,7 +385,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         const { source, destination } = result;
         console.log("drag occured");
         console.log(result);
-        // TODO: check if progress works
+
         // delete the course from semester
         if (!destination && source.droppableId !== "ROOT") {
             console.log("Semester to Null");
@@ -460,13 +460,11 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                     "semester_blocks": newSemesterBlocks,
                 })
                     .then(() => {
-                        console.log("firebase update success");
                         setSearchResult(newSourceCourses);
                         setSemesterBlocks(newSemesterBlocks);
-                        if (getUpdateCourseMode(semesterBlocks[destination.droppableId].year, semesterBlocks[destination.droppableId].term)) {
-                            console.log("update both");
+                        if (ifYearPassed(semesterBlocks[destination.droppableId].year, semesterBlocks[destination.droppableId].term)) {
+                            console.log("update completed");
                             updateDoc(semesterRef, {
-                                "planned_courses": arrayUnion(deletedCourse.id),
                                 "completed_courses": arrayUnion(deletedCourse.id)
                             });
                             addCompletedCourse(deletedCourse.id)
@@ -523,14 +521,18 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 })
                     .then(() => {
                         setSemesterBlocks(newSemesterBlocks);
-                        if (getUpdateCourseMode(semesterBlocks[destination.droppableId].year, semesterBlocks[destination.droppableId].term)) {
+                        if (ifYearPassed(semesterBlocks[destination.droppableId].year, semesterBlocks[destination.droppableId].term)) {
+                            console.log("add completed, delete planned");
                             updateDoc(semesterRef, {
-                                "completed_courses": arrayUnion(deletedCourse.id)
+                                "completed_courses": arrayUnion(deletedCourse.id),
+                                "planned_courses": arrayRemove(deletedCourse.id)
                             });
                             addCompletedCourse(deletedCourse.id)
                         } else {
+                            console.log("delete completed, add planned");
                             updateDoc(semesterRef, {
-                                "completed_courses": arrayRemove(deletedCourse.id)
+                                "completed_courses": arrayRemove(deletedCourse.id),
+                                "planned_courses": arrayUnion(deletedCourse.id)
                             });
                             removeCompletedCourse(deletedCourse.id)
                         }
@@ -667,15 +669,17 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
                     { userOwnSchedule &&
-                    <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} completedCourses={completedCourses} courseGrades={courseGrades}/> }
+                    <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} completedCourses={completedCourses} courseGrades={courseGrades} scheduleList={scheduleList} setscheduleList={setscheduleList}/> }
                     { !userOwnSchedule && friendSchedule &&
-                    <ScheduleView name={friendSchedule.name} id={friendSchedule.ID} semesterBlocks={friendSchedule.semester_blocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={friendSchedule.completed} planned={friendSchedule.planned} total={friendSchedule.total} />}
+                    <ScheduleView name={friendSchedule.name} id={friendSchedule.ID} semesterBlocks={friendSchedule.semester_blocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={friendSchedule.completed} planned={friendSchedule.planned} total={friendSchedule.total} scheduleList={scheduleList} setscheduleList={setscheduleList}/>}
                     <ThemeProvider theme={mode}>
                         <div className="ScheduleSide" style={darkmode ? { backgroundColor: '#3b3a39' } : { backgroundColor: '#f5f3eb' }}>
                             <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
                             <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal} />
                             <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={viewOnly} />
-                            <FriendsList/>
+                            {/* <FriendsList/> */}
+                            {/* <CopyScheduleButton scheduleID="g5ZWE0nw9llkRznXVopn"/> */}
+                            {/* <ChangeScheduleName scheduleID={scheduleList.currId}/> */}
                         </div>
                     </ThemeProvider>
                 </DragDropContext>
