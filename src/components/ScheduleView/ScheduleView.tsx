@@ -21,9 +21,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Popup from "reactjs-popup";
 import Button from "@material-ui/core/Button";
 import { adjustSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
+import ChangeScheduleName from "components/ChangeScheduleName";
 
 
-export default function ScheduleView({ name, id, semesterBlocks, setParentSemesterBlocks, completed, planned, total, viewOnly }) {
+export default function ScheduleView({ name, id, semesterBlocks, setParentSemesterBlocks, completed, planned, total, viewOnly, scheduleList, setscheduleList}) {
     const [semesterRender, setSemesterRender] = useState([]);
     const { currentUser } = useAuth();
     const hiddenFileInput = useRef(null);
@@ -119,6 +120,10 @@ export default function ScheduleView({ name, id, semesterBlocks, setParentSemest
                       </li>
                       </> : <></>
                     }
+                    <li>
+                        <ChangeScheduleName scheduleID={id} scheduleList={scheduleList} setscheduleList={setscheduleList}/>
+                    </li>
+                
                     <li>
                         <a className="DescrBtn" href=""><AddLinkIcon /></a>
                     </li>
