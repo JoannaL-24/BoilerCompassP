@@ -1,0 +1,12 @@
+.btn {
+    /* width: calc(100% - 6px); */
+    /* min-height: 10px; */
+    color: var(--textPrimary);
+    background-color: var(--accent);
+    padding: 10px 3px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border-width: 0px;
+    font-size: 15px;
+    font-weight: bold;
+}

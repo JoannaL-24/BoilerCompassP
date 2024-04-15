@@ -22,6 +22,7 @@ import ReqModal from "components/ReqModal";
 //test, added in sidebar area
 import FriendsList from "components/FriendsList.tsx";
 import CopyScheduleButton from "components/CopyScheduleButton.tsx";
+import ChangeScheduleName from "components/ChangeScheduleName.tsx";
 
 
 // temperary data for semester_blocks in Schedule
@@ -668,27 +669,9 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
                     { userOwnSchedule &&
-                        <ScheduleView
-                            name={scheduleList.currName}
-                            id={scheduleList.currId}
-                            semesterBlocks={semesterBlocks}
-                            setParentSemesterBlocks={adjustSemesterBlocks}
-                            viewOnly={viewOnly}
-                            completed={completed}
-                            planned={planned}
-                            total={total}
-                        /> }
+                    <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} completedCourses={completedCourses} courseGrades={courseGrades} scheduleList={scheduleList} setscheduleList={setscheduleList}/> }
                     { !userOwnSchedule && friendSchedule &&
-                        <ScheduleView
-                            name={friendSchedule.name}
-                            id={friendSchedule.ID}
-                            semesterBlocks={friendSchedule.semester_blocks}
-                            setParentSemesterBlocks={adjustSemesterBlocks}
-                            viewOnly={viewOnly}
-                            completed={friendSchedule.completed}
-                            planned={friendSchedule.planned}
-                            total={friendSchedule.total}
-                        />}
+                    <ScheduleView name={friendSchedule.name} id={friendSchedule.ID} semesterBlocks={friendSchedule.semester_blocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={friendSchedule.completed} planned={friendSchedule.planned} total={friendSchedule.total} scheduleList={scheduleList} setscheduleList={setscheduleList}/>}
                     <ThemeProvider theme={mode}>
                         <div className="ScheduleSide" style={darkmode ? { backgroundColor: '#3b3a39' } : { backgroundColor: '#f5f3eb' }}>
                             <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
@@ -696,6 +679,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                             <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={viewOnly} />
                             {/* <FriendsList/> */}
                             {/* <CopyScheduleButton scheduleID="g5ZWE0nw9llkRznXVopn"/> */}
+                            {/* <ChangeScheduleName scheduleID={scheduleList.currId}/> */}
                         </div>
                     </ThemeProvider>
                 </DragDropContext>
