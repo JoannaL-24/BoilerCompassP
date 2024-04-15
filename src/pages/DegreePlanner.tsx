@@ -669,7 +669,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
                     { userOwnSchedule &&
-                    <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} scheduleList={scheduleList} setscheduleList={setscheduleList}/> }
+                    <ScheduleView name={scheduleList.currName} id={scheduleList.currId} semesterBlocks={semesterBlocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={completed} planned={planned} total={total} completedCourses={completedCourses} courseGrades={courseGrades} scheduleList={scheduleList} setscheduleList={setscheduleList}/> }
                     { !userOwnSchedule && friendSchedule &&
                     <ScheduleView name={friendSchedule.name} id={friendSchedule.ID} semesterBlocks={friendSchedule.semester_blocks} setParentSemesterBlocks={adjustSemesterBlocks} viewOnly={viewOnly} completed={friendSchedule.completed} planned={friendSchedule.planned} total={friendSchedule.total} scheduleList={scheduleList} setscheduleList={setscheduleList}/>}
                     <ThemeProvider theme={mode}>
