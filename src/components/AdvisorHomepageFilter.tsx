@@ -59,6 +59,7 @@ function AdvisorHomepageFilter() {
   const [currentUserGroups, setCurrentUserGroups] = useState<string[]>([]); //get the group of current user
   const [studentEmails, setStudentEmails] = useState([""]); // store student emails
   const [currentUserGroupsLength, setCurrentUserGroupsLength] = useState(0); //length of currentUserGroups array
+  const [studentSchedule, setStudentSchedule] = useState(null);
 
   // useEffect(() => {
   //   setCurrentUserGroupsLength(currentUserGroups.length);
