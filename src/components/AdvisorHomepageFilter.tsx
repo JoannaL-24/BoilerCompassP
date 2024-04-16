@@ -356,6 +356,48 @@ function AdvisorHomepageFilter() {
     }
   };
 
+  const [scheduleList, setscheduleList] = useState({
+    currIndex: 0,
+    currId: "1",
+    currName: "",
+    list: [],
+  });
+
+  const handleViewSchedule = async () => {
+    try {
+      if (!selectedUser) {
+        console.error("No user selected");
+        return;
+      }
+
+      const userDocRef = doc(firestore, "users", selectedUser.uid);
+      const userDocSnapshot = await getDoc(userDocRef);
+      if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data();
+        const scheduleIds = userData.schedule || []; // Array of schedule IDs
+
+        // Fetch schedule data for each schedule ID
+        const semesterBlocks = [];
+        for (const scheduleId of scheduleIds) {
+          const scheduleDocRef = doc(firestore, "schedules", scheduleId);
+          const scheduleDocSnapshot = await getDoc(scheduleDocRef);
+          if (scheduleDocSnapshot.exists()) {
+            const scheduleData = scheduleDocSnapshot.data();
+            semesterBlocks.push(scheduleData.semester_blocks);
+          }
+        }
+
+        // Display the semester blocks
+        console.log("Semester Blocks:", semesterBlocks);
+        // Set state or perform any other action to display the blocks
+      } else {
+        console.log("User not found");
+      }
+    } catch (error) {
+      console.error("Error fetching schedule:", error);
+    }
+  };
+
   return (
     <div className="AddsivorHomePageFilter">
       {
@@ -639,11 +681,7 @@ function AdvisorHomepageFilter() {
           </ul>
           <Button
             variant="contained"
-            onClick={() => {
-              // Add functionality for View schedule button here
-
-              console.log("View schedule clicked for:", selectedUser.name);
-            }}
+            onClick={handleViewSchedule}
             style={{
               marginTop: "10px", // Adjust margin
               color: "#003fce",
