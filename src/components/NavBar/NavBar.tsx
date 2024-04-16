@@ -29,8 +29,7 @@ export default function NavBar({
   schedules,
   createNewSchedule,
   viewOnly,
-}) 
-{
+}) {
   const [userType, setUserType] = useState("");
   const [scheduleInfo, setScheduleInfo] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -65,7 +64,6 @@ export default function NavBar({
 
   useEffect(() => {
     if (currentUser) {
-
       getDoc(doc(firestore, "users", currentUser.uid))
         .then((userSnap) => {
           if (userSnap.exists()) {
@@ -82,6 +80,7 @@ export default function NavBar({
 
   // TODO: fix this & get back schdule list
   useEffect(() => {
+    console.log("this guy is a " + userType);
     if (userType !== "student") return;
     if (schedules.list.length <= 0) return;
     let newScheduleName = [];
