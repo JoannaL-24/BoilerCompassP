@@ -35,9 +35,10 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { handleViewSchedule } from "./DisplayStudentSchedule";
+import DisplayStudentSchedule from "./DisplayStudentSchedule";
 
 function AdvisorHomepageFilter() {
+  const [viewButtonClicked, setViewButtonClicked] = useState(false);
   const [value, setValue] = useState("female");
   const [userNames, setUserNames] = useState<
     {
@@ -640,7 +641,7 @@ function AdvisorHomepageFilter() {
           </ul>
           <Button
             variant="contained"
-            onClick={() => handleViewSchedule(selectedUser)} //VIEW SCHEDULE
+            onClick={() => setViewButtonClicked(true)} //VIEW SCHEDULE
             style={{
               marginTop: "10px",
               color: "#003fce",
@@ -649,6 +650,9 @@ function AdvisorHomepageFilter() {
           >
             View Schedule
           </Button>
+          {viewButtonClicked && (
+            <DisplayStudentSchedule selectedUser={selectedUser} />
+          )}
         </div>
       )}
       {/* Dialog for adding a student */}

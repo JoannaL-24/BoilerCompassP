@@ -130,7 +130,7 @@ const SEMESTER_DATA = [
   },
 ];
 
-export const handleViewSchedule = async (selectedUser) => {
+const DisplayStudentSchedule = ({ selectedUser }) => {
   const [completedCourses, setCompletedCourses] = useState([]);
   const [semesterRender, setSemesterRender] = useState([]);
   const [semesterBlocks, setSemesterBlocks] = useState(SEMESTER_DATA);
@@ -140,45 +140,61 @@ export const handleViewSchedule = async (selectedUser) => {
     currName: "",
     list: [],
   });
-  try {
-    if (!selectedUser) {
-      console.error("No user selected");
-      return;
-    }
 
-    const userDocRef = doc(firestore, "users", selectedUser.uid);
-    const userDocSnapshot = await getDoc(userDocRef);
-    if (userDocSnapshot.exists()) {
-      const userData = userDocSnapshot.data();
-      const scheduleIds = userData.schedule || []; // Array of schedule IDs
-
-      // Fetch schedule data for each schedule id
-
-      let i = -1;
-      for (const id of scheduleIds) {
-        i++;
-        const scheduleDocRef = doc(firestore, "schedules", id);
-        const scheduleDocSnapshot = await getDoc(scheduleDocRef);
-        if (scheduleDocSnapshot.exists()) {
-          const scheduleData = scheduleDocSnapshot.data();
-          const name = scheduleData.name;
-          const index = i;
-          const semesterblock = scheduleData.semester_blocks;
-          setscheduleList({
-            ...scheduleList,
-            currId: index.toString(),
-            currName: name,
-          });
-          setSemesterBlocks(scheduleData.semester_blocks);
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      try {
+        if (!selectedUser) {
+          console.error("No user selected");
+          return;
         }
-      }
 
-      // display the semester blocks
-      console.log("Semester Blocks:", semesterBlocks);
-    } else {
-      console.log("User not found");
-    }
-  } catch (error) {
-    console.error("Error fetching schedule:", error);
-  }
+        const userDocRef = doc(firestore, "users", selectedUser.uid);
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          const scheduleIds = userData.schedule || []; // Array of schedule IDs
+
+          // Fetch schedule data for each schedule id
+
+          let i = -1;
+          for (const id of scheduleIds) {
+            i++;
+            const scheduleDocRef = doc(firestore, "schedules", id);
+            const scheduleDocSnapshot = await getDoc(scheduleDocRef);
+            if (scheduleDocSnapshot.exists()) {
+              const scheduleData = scheduleDocSnapshot.data();
+              const name = scheduleData.name;
+              const index = i;
+              const semesterblock = scheduleData.semester_blocks;
+              setscheduleList({
+                ...scheduleList,
+                currId: index.toString(),
+                currName: name,
+              });
+              setSemesterBlocks(scheduleData.semester_blocks);
+            }
+          }
+
+          // display the semester blocks
+          console.log("Semester Blocks:", semesterBlocks);
+        } else {
+          console.log("User not found");
+        }
+      } catch (error) {
+        console.error("Error fetching schedule:", error);
+      }
+    };
+
+    fetchSchedule();
+  }, [selectedUser]);
+
+  return (
+    // JSX to display the student schedule
+    <div>
+      <h1>hello</h1>
+    </div>
+  );
 };
+
+export default DisplayStudentSchedule;
