@@ -130,17 +130,16 @@ const SEMESTER_DATA = [
   },
 ];
 
-const [scheduleList, setscheduleList] = useState({
-  currIndex: 0,
-  currId: "1",
-  currName: "",
-  list: [],
-});
-const [completedCourses, setCompletedCourses] = useState([]);
-const [semesterRender, setSemesterRender] = useState([]);
-const [semesterBlocks, setSemesterBlocks] = useState(SEMESTER_DATA);
-
 export const handleViewSchedule = async (selectedUser) => {
+  const [completedCourses, setCompletedCourses] = useState([]);
+  const [semesterRender, setSemesterRender] = useState([]);
+  const [semesterBlocks, setSemesterBlocks] = useState(SEMESTER_DATA);
+  const [scheduleList, setscheduleList] = useState({
+    currIndex: 0,
+    currId: "1",
+    currName: "",
+    list: [],
+  });
   try {
     if (!selectedUser) {
       console.error("No user selected");
