@@ -11,7 +11,6 @@ import RemoteUserdata from '../models/RemoteUserData';
 import { isTermInPast, getSatisfied, Schedule } from '../models/BoilerCompass';
 import { CS } from '../models/CS';
 // sidebar import
-import "../components/ScheduleSide/ScheduleSide.css";
 import Searchbar from "components/Searchbar.js";
 // search bar input
 import "../components/Searchbar.css";
@@ -22,6 +21,7 @@ import ReqModal from "components/ReqModal";
 //test, added in sidebar area
 import FriendsList from "components/FriendsList.tsx";
 import CopyScheduleButton from "components/CopyScheduleButton.tsx";
+import Friends from "./FriendsSidebar/Friends.tsx";
 
 
 // temperary data for semester_blocks in Schedule
@@ -269,10 +269,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         }
     }, [scheduleList.list]);
 
-    // useEffect(() => {
-    //     console.log(scheduleList);
-    // }, [scheduleList]);
-
     useEffect(() => {
         if (scheduleList.currId != "1") calculateProgress();
     }, [scheduleList.currId])
@@ -358,29 +354,30 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     }
 
     const addCompletedCourse = (id) => {
-      const s = new Set(completedCourses)
-      if (!s.has(id)) {
-        const c = completedCourses
-        c.push(id)
-        setCompletedCourses(c)
-        userData.put("completed_courses", c)
-      } else {
-        userData.put("completed_courses", completedCourses)
-      }
+        const s = new Set(completedCourses)
+        if (!s.has(id)) {
+            const c = completedCourses
+            c.push(id)
+            setCompletedCourses(c)
+            userData.put("completed_courses", c)
+        } else {
+            userData.put("completed_courses", completedCourses)
+        }
     }
 
     const removeCompletedCourse = (id) => {
-      const s = new Set(completedCourses)
-      if (s.has(id)) {
-        s.delete(id)
-        setCompletedCourses([...s])
-        userData.put("completed_courses", [...s])
-      } else {
-        userData.put("completed_courses", completedCourses)
-      }
+        const s = new Set(completedCourses)
+        if (s.has(id)) {
+            s.delete(id)
+            setCompletedCourses([...s])
+            userData.put("completed_courses", [...s])
+        } else {
+            userData.put("completed_courses", completedCourses)
+        }
     }
 
     const handleDragDrop = (result) => {
+        if (!userOwnSchedule) return;
         const { source, destination } = result;
         console.log("drag occured");
         console.log(result);
@@ -663,42 +660,37 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 setDarkmode={setDarkmode}
                 schedules={scheduleList}
                 createNewSchedule={createNewSchedule}
-                viewOnly={viewOnly}
+                setUserOwnSchedule={setUserOwnSchedule}
             />
             <div className="DegreeContent">
                 <DragDropContext onDragEnd={handleDragDrop}>
-                    { userOwnSchedule &&
+                    {userOwnSchedule ? <>
                         <ScheduleView
                             name={scheduleList.currName}
-                            id={scheduleList.currId}
                             semesterBlocks={semesterBlocks}
                             setParentSemesterBlocks={adjustSemesterBlocks}
-                            viewOnly={viewOnly}
+                            viewOnly={!userOwnSchedule}
                             completed={completed}
                             planned={planned}
                             total={total}
-                        /> }
-                    { !userOwnSchedule && friendSchedule &&
-                        <ScheduleView
-                            name={friendSchedule.name}
-                            id={friendSchedule.ID}
-                            semesterBlocks={friendSchedule.semester_blocks}
-                            setParentSemesterBlocks={adjustSemesterBlocks}
-                            viewOnly={viewOnly}
-                            completed={friendSchedule.completed}
-                            planned={friendSchedule.planned}
-                            total={friendSchedule.total}
-                        />}
-                    <ThemeProvider theme={mode}>
-                        <div className="ScheduleSide" style={darkmode ? { backgroundColor: '#3b3a39' } : { backgroundColor: '#f5f3eb' }}>
-                            <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
-                            <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal} />
-                            <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={viewOnly} />
-                            {/* <FriendsList/> */}
-                            {/* <CopyScheduleButton scheduleID="g5ZWE0nw9llkRznXVopn"/> */}
-                        </div>
-                    </ThemeProvider>
+                        />
+                        <ThemeProvider theme={mode}>
+                            <div className="ScheduleSide">
+                                <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
+                                <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal} />
+                                <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={viewOnly} />
+                                {/* <FriendsList/> */}
+                                {/* <CopyScheduleButton scheduleID="g5ZWE0nw9llkRznXVopn"/> */}
+                            </div>
+                        </ThemeProvider>
+                    </> : <>
+                        <Friends />
+                    </>
+
+                    }
+
                 </DragDropContext>
             </div>
+
         </div>)
 }

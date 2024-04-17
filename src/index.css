@@ -26,9 +26,10 @@ code {
 
 :root {
   --background: #ffffff;
+  --backgroundSecondary: #f5f3eb;
   --textPrimary: #282c34;
   --textSecondary: #79704c;
-  --accent: #d7c494;
+  --accent: rgb(215, 196, 148);
 
   --black: #282c34;
   --dark-gray: rgb(153, 153, 153);
@@ -36,9 +37,12 @@ code {
   --main-gold: rgb(218, 170, 0);
   --light-gold: rgb(206, 184, 136);
   --error: rgb(200, 26, 26);
+  --cardBackground: rgb(244, 245, 249);
+  --listBackground: rgba(255, 255, 255, 0.8);
 }
 [data-theme='dark'] {
   --background: #282c34;
+  --backgroundSecondary: #3b3a39;
   --textPrimary: #ffffff;
   --textSecondary:#d7c494;
   --accent: #79704c;
@@ -49,4 +53,6 @@ code {
   --main-gold: rgb(218, 170, 0);
   --light-gold: rgb(206, 184, 136);
   --error: rgb(200, 26, 26);
+  --cardBackground: rgb(74, 74, 78);
+  --listBackground: rgb(74, 74, 78);
 }
