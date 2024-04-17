@@ -97,7 +97,7 @@ export default function ScheduleView({
     }
 
     const handleClickExport = (e) => {
-        (userData as LocalUserData).exportAndDownload()
+        (userData as LocalUserData).exportAndDownload();
     }
 
     const handleChange = (event) => {
