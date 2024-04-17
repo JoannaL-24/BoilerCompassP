@@ -28,8 +28,9 @@ export default function NavBar({
   setDarkmode,
   schedules,
   createNewSchedule,
-  viewOnly,
-}) {
+  setUserOwnSchedule,
+}) 
+{
   const [userType, setUserType] = useState("");
   const [scheduleInfo, setScheduleInfo] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -39,6 +40,7 @@ export default function NavBar({
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
+    setUserOwnSchedule(true);
     setAnchorEl(null);
   };
 
@@ -78,7 +80,6 @@ export default function NavBar({
     }
   }, [currentUser]);
 
-  // TODO: fix this & get back schdule list
   useEffect(() => {
     console.log("this guy is a " + userType);
     if (userType !== "student") return;
@@ -121,8 +122,8 @@ export default function NavBar({
 
         {userType === "student" && (
           <li className="navBtnList">
-            <a>
-              <h3>Groups</h3>
+            <a onClick={() => {setUserOwnSchedule(false)}}>
+              <h3>Friends</h3>
             </a>
           </li>
         )}
@@ -138,8 +139,9 @@ export default function NavBar({
               aria-haspopup="true"
               aria-expanded={homeOpen ? "true" : undefined}
               onClick={handleHomeClick}
+              style={{color: "var(--main-gold)"}}
             >
-              <HomeIcon />
+              <HomeIcon style={{color: "var(--main-gold)"}}/>
             </Button>
             <Menu
               id="home-menu"
