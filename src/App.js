@@ -1,7 +1,7 @@
 import "./App.css";
 // import CourseList from "./components/CourseList";
-import CoursePopup from './components/CoursePopup/CoursePopup'
-import React, {useState} from "react";
+import CoursePopup from "./components/CoursePopup/CoursePopup";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { Routes, Route } from "react-router-dom";
 import Welcome from "./pages/Welcome";
@@ -17,7 +17,7 @@ import AdvisorHomepage from "./components/AdvisorHomepage";
 import AdvisorHomepageFilter from "./components/AdvisorHomepageFilter";
 import DeleteAccount from "./components/DeleteAccount";
 import DraggableCourse from "./components/DraggableCourse/DraggableCourse";
-import SharedSchedule from "./components/SharedSchedules/SharedSchedule"
+import SharedSchedule from "./components/SharedSchedules/SharedSchedule";
 import { AuthProvider } from "./components/contexts/AuthContext";
 
 function App() {
@@ -31,12 +31,14 @@ function App() {
         </header> */}
         <Routes>
           <Route path="/" element={<CoverPage />} />
-          <Route path="/DegreePlanner" element={<DegreePlanner 
-            darkmode={darkmode}
-            setDarkmode={setDarkmode}/>} />
+          <Route
+            path="/DegreePlanner"
+            element={
+              <DegreePlanner darkmode={darkmode} setDarkmode={setDarkmode} />
+            }
+          />
           <Route path="/Welcome" element={<Welcome />} />
-          <Route path="/Profile" element={<Profile 
-            darkmode={darkmode}/>} />
+          <Route path="/Profile" element={<Profile darkmode={darkmode} />} />
           <Route
             path="/ProfileSetupStudent"
             element={<ProfileSetupStudent />}
@@ -45,9 +47,12 @@ function App() {
             path="/ProfileSetupAdvisor"
             element={<ProfileSetupAdvisor />}
           />
-          <Route path="/AdvisorHomePage" element={<AdvisorHomepage 
-            darkmode={darkmode}
-            setDarkmode={setDarkmode}/>} />
+          <Route
+            path="/AdvisorHomePage"
+            element={
+              <AdvisorHomepage darkmode={darkmode} setDarkmode={setDarkmode} />
+            }
+          />
           <Route path="/Settings" element={<SettingsPage />} />
           <Route path="/TestSharedSchedule" element={<SharedSchedule />} />
         </Routes>

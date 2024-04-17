@@ -1,0 +1,31 @@
+.friendsSide {
+    /* position: fixed; */
+    /* top: calc(55px + 2vh); */
+    /* height: 150vh; */
+    left: calc(100vw * 0.75);
+    width: 25%;
+    padding-top: calc(55px + 2vh);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    background-color: var(--backgroundSecondary);
+    .mediumBtn {
+        margin: 20px 0px 10px;
+        padding: 10px 5px 10px;
+    }
+}
+
+.listWindow {
+    width: 80%;
+    height: 65vh;
+    min-height: 300px;
+    max-height: 600px;
+    /* background-color: white; */
+    margin: 0px 0px 50px 0px;
+    h3 {
+        color: var(--textPrimary);
+        
+    }
+}

@@ -22,17 +22,19 @@
 }
 
 .ScheduleSide {
-    /* position: fixed; */
+    position: fixed;
     /* top: calc(55px + 2vh); */
-    /* height: 100vh; */
+    height: 100vh;
     left: calc(100vw * 0.75);
     width: 25%;
     padding-top: calc(55px + 2vh);
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     align-items: center;
     align-content: center;
     justify-content: flex-start;
+    background-color: var(--backgroundSecondary);
 
 
     .mediumBtn {
