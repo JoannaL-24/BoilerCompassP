@@ -23,15 +23,18 @@ import Button from "@material-ui/core/Button";
 import { adjustSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
 import { GPA } from "components/GPA";
 import ChangeScheduleName from "components/ChangeScheduleName";
-       
-export default function ScheduleView({ 
-    name, 
-    semesterBlocks, 
-    setParentSemesterBlocks, 
-    completed, 
-    planned, 
-    total, 
-    viewOnly
+
+export default function ScheduleView({
+    id,
+    name,
+    semesterBlocks,
+    setParentSemesterBlocks,
+    completed,
+    planned,
+    total,
+    viewOnly,
+    scheduleList,
+    setscheduleList
 }) {
     const [semesterRender, setSemesterRender] = useState([]);
     const { currentUser } = useAuth();
@@ -133,6 +136,9 @@ export default function ScheduleView({
                     {
                         (currentUser && !viewOnly) ? <>
                             <li>
+                                <ChangeScheduleName scheduleID={id} scheduleList={scheduleList} setscheduleList={setscheduleList} />
+                            </li>
+                            <li>
                                 <a className="DescrBtn" onClick={handleClickImport}
                                     style={{ cursor: 'pointer' }}><FileUploadIcon /></a>
                             </li>
@@ -202,64 +208,11 @@ export default function ScheduleView({
                             </li>
                         </> : <></>
                     }
-                    <li>
-                        <ChangeScheduleName scheduleID={id} scheduleList={scheduleList} setscheduleList={setscheduleList}/>
-                    </li>
-                
+
+
                     <li>
                         <a className="DescrBtn" href=""><AddLinkIcon /></a>
                     </li>
-                    <li>
-                        <a className="DescrBtn" onClick={() => setOpen(o => !o)}><SettingsIcon /></a>
-                        <Popup open={open} closeOnDocumentClick={false}>
-                            <div className='popupModal' style={{ minHeight: "400px", padding: "3px 20px" }}>
-                                <a className="close" onClick={closeModal}>
-                                    &times;
-                                </a>
-                                <FormControl  style={{ width: 400, display: "flex"}}>
-                                    <h3 className="Question">Your start date:</h3>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker
-                                            sx={{ mt: "1em", mb: "2em" }}
-                                            label="Select start year *"
-                                            views={["year"]}
-                                            shouldDisableYear={validStartYear}
-                                            value={scheduleDate.startTerm}
-                                            onChange={(value) => {
-                                                setScheduleDate((previous) => ({ ...previous, startTerm: value }));
-                                                setStart("");
-                                            }}
-                                            slotProps={{
-                                                textField: {
-                                                    error: start && start.length ? true : false,
-                                                    helperText: start,
-                                                },
-                                            }}
-                                        />
-                                        <h3 className="Question">Your expected graduation date:</h3>
-                                        <DatePicker
-                                            sx={{ mt: "1em", mb: "2em" }}
-                                            label="Select end year *"
-                                            views={["year"]}
-                                            shouldDisableYear={validEndYear}
-                                            value={scheduleDate.endTerm}
-                                            onChange={(value) => {
-                                                setScheduleDate((previous) => ({ ...previous, endTerm: value }));
-                                                setEnd("");
-                                            }}
-                                            slotProps={{
-                                                textField: {
-                                                    error: end && end.length ? true : false,
-                                                    helperText: end,
-                                                },
-                                            }}
-                                        />
-                                    </LocalizationProvider>
-                                </FormControl>
-                                <Box className="Btn">
-                                    <Button type="submit" onClick={editScheduleDate} variant="outlined">Edit</Button>
-                                </Box>
-
                     <li>
                         <a className="DescrBtn" href=""><HelpOutlineIcon /></a>
                     </li>
