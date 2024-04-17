@@ -26,7 +26,7 @@ import UserData from "models/UserData.ts";
 import ReqModal from "components/ReqModal";
 
 //test, added in sidebar area
-import FriendsList from "components/FriendsList.tsx";
+import FriendsList from "components/FriendsList/FriendsList.tsx";
 import CopyScheduleButton from "components/CopyScheduleButton.tsx";
 import Friends from "./FriendsSidebar/Friends.tsx";
 import ChangeScheduleName from "components/ChangeScheduleName.tsx";
@@ -247,8 +247,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const [reqModalOpen, setReqModalOpen] = useState(false);
     //schedule mode
     const [userOwnSchedule, setUserOwnSchedule] = useState(true); // true == user's own schedule, false == friend's schedule
-    const [friendSchedule, setFriendSchedule] = useState(null);
-
     const [completedCourses, setCompletedCourses] = useState([])
     const [courseGrades, setCourseGrades] = useState({})
 

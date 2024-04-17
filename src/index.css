@@ -38,7 +38,7 @@ code {
   --light-gold: rgb(206, 184, 136);
   --error: rgb(200, 26, 26);
   --cardBackground: rgb(244, 245, 249);
-  --listBackground: rgba(255, 255, 255, 0.8);
+  --listBackground: rgba(255, 255, 255, 0.85);
 }
 [data-theme='dark'] {
   --background: #282c34;
@@ -54,5 +54,5 @@ code {
   --light-gold: rgb(206, 184, 136);
   --error: rgb(200, 26, 26);
   --cardBackground: rgb(74, 74, 78);
-  --listBackground: rgb(74, 74, 78);
+  --listBackground: rgba(0, 0, 0, 0.2);
 }

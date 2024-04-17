@@ -94,6 +94,10 @@ export default function NavBar({
     }
   }, [userType, schedules.list]);
 
+  // useEffect(() => {
+  //   console.log(schedules.list);
+  // }, [schedules.list]);
+
   return (
     <div className="navBarContainer">
       <img

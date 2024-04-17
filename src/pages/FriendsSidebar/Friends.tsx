@@ -3,6 +3,7 @@ import "./Friends.css";
 import ScheduleView from "components/ScheduleView/ScheduleView";
 import { getSatisfied } from "models/BoilerCompass";
 import { CS } from "models/CS";
+import FriendsList from "components/FriendsList/FriendsList";
 
 const SCHEDULE_DATA = {
   id: "12345",
@@ -104,8 +105,7 @@ const SCHEDULE_DATA = {
 }
 
 const Friends = () => {
-  const [schedule, setSchedule] = useState(SCHEDULE_DATA);
-
+  const [schedule, setSchedule] = useState(SCHEDULE_DATA);;
 
   return (
     <>
@@ -117,19 +117,20 @@ const Friends = () => {
         viewOnly={true}
         completed={getSatisfied(CS, new Set(schedule.completed_courses))[0]}
         planned={getSatisfied(CS, new Set(schedule.planned_courses))[0]}
-        total={getSatisfied(CS, new Set(schedule.completed_courses))[1]} 
+        total={getSatisfied(CS, new Set(schedule.completed_courses))[1]}
         scheduleList={null}
         setscheduleList={null}
       />
       {/* TODO: change classname to scheduleSide if applicable */}
       <div className="friendsSide">
-        <br /><br />
         <div className="listWindow">
           <h3>Friends</h3>
-          <div className="list"></div>
+          <FriendsList setFriendSchedule={setSchedule}></FriendsList>
         </div>
+        <br /><br />
         <div className="listWindow">
           <h3>Requests</h3>
+          {/* request list */}
         </div>
       </div>
     </>
