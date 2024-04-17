@@ -28,13 +28,11 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 import "./AdvisorHomepageFilter.css";
 import app from "../models/firebase.ts";
 import { useAuth } from "../components/contexts/AuthContext";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import ScheduleView from "../components/ScheduleView/ScheduleView";
+import { isTermInPast, getSatisfied, Schedule } from "../models/BoilerCompass";
+import { CS } from "../models/CS";
+import { DragDropContext } from "react-beautiful-dnd";
+import zIndex from "@mui/material/styles/zIndex";
 
 const SEMESTER_DATA = [
   {
@@ -130,7 +128,13 @@ const SEMESTER_DATA = [
   },
 ];
 
-export const handleViewSchedule = async (selectedUser) => {
+const DisplayStudentSchedule = ({ selectedUser }) => {
+  const handleDragDrop = (result) => {
+    console.log("drag drop");
+  };
+  let name = "";
+  let sid = "";
+
   const [completedCourses, setCompletedCourses] = useState([]);
   const [semesterRender, setSemesterRender] = useState([]);
   const [semesterBlocks, setSemesterBlocks] = useState(SEMESTER_DATA);
@@ -140,45 +144,89 @@ export const handleViewSchedule = async (selectedUser) => {
     currName: "",
     list: [],
   });
-  try {
-    if (!selectedUser) {
-      console.error("No user selected");
-      return;
-    }
+  const [completed, setCompleted] = useState(0);
+  const [planned, setPlanned] = useState(0);
+  const [total, setTotal] = useState(100);
 
-    const userDocRef = doc(firestore, "users", selectedUser.uid);
-    const userDocSnapshot = await getDoc(userDocRef);
-    if (userDocSnapshot.exists()) {
-      const userData = userDocSnapshot.data();
-      const scheduleIds = userData.schedule || []; // Array of schedule IDs
-
-      // Fetch schedule data for each schedule id
-
-      let i = -1;
-      for (const id of scheduleIds) {
-        i++;
-        const scheduleDocRef = doc(firestore, "schedules", id);
-        const scheduleDocSnapshot = await getDoc(scheduleDocRef);
-        if (scheduleDocSnapshot.exists()) {
-          const scheduleData = scheduleDocSnapshot.data();
-          const name = scheduleData.name;
-          const index = i;
-          const semesterblock = scheduleData.semester_blocks;
-          setscheduleList({
-            ...scheduleList,
-            currId: index.toString(),
-            currName: name,
-          });
-          setSemesterBlocks(scheduleData.semester_blocks);
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      try {
+        if (!selectedUser) {
+          console.error("No user selected");
+          return;
         }
-      }
 
-      // display the semester blocks
-      console.log("Semester Blocks:", semesterBlocks);
-    } else {
-      console.log("User not found");
-    }
-  } catch (error) {
-    console.error("Error fetching schedule:", error);
-  }
+        const userDocRef = doc(firestore, "users", selectedUser.uid);
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          const scheduleIds = userData.schedule || []; // Array of schedule IDs
+
+          // Fetch schedule data for each schedule id
+
+          let i = -1;
+          for (const id of scheduleIds) {
+            sid = id;
+            i++;
+            const scheduleDocRef = doc(firestore, "schedules", id);
+            const scheduleDocSnapshot = await getDoc(scheduleDocRef);
+            if (scheduleDocSnapshot.exists()) {
+              const scheduleData = scheduleDocSnapshot.data();
+              setCompletedCourses(scheduleData.completed_courses);
+              let planned = getSatisfied(
+                CS,
+                new Set(scheduleData.planned_courses)
+              );
+              setPlanned(planned[0]);
+              let completed = getSatisfied(CS, new Set(completedCourses));
+              setTotal(completed[1]);
+              setCompleted(completed[0]);
+              name = scheduleData.name;
+              const index = i;
+              const semesterblock = scheduleData.semester_blocks;
+              setscheduleList({
+                ...scheduleList,
+                currId: index.toString(),
+                currName: name,
+              });
+              setSemesterBlocks(semesterblock);
+            }
+          }
+
+          console.log("user is " + selectedUser.name);
+          // display the semester blocks
+          console.log("Semester Blocks: ", semesterBlocks);
+        } else {
+          console.log("User not found");
+        }
+      } catch (error) {
+        console.error("Error fetching schedule:", error);
+      }
+    };
+
+    fetchSchedule();
+  }, [selectedUser]);
+
+  return (
+    <div>
+      <DragDropContext onDragEnd={handleDragDrop}>
+        <div style={{ height: "500px", overflowY: "auto", zIndex: "-9999" }}>
+          <ScheduleView
+            name={name}
+            id={sid}
+            semesterBlocks={semesterBlocks}
+            setParentSemesterBlocks={null}
+            viewOnly={true}
+            completed={completed}
+            planned={planned}
+            total={total}
+            scheduleList={scheduleList}
+            setscheduleList={setscheduleList}
+          />
+        </div>
+      </DragDropContext>
+    </div>
+  );
 };
+
+export default DisplayStudentSchedule;

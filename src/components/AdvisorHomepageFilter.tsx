@@ -35,9 +35,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { handleViewSchedule } from "./DisplayStudentSchedule";
+import DisplayStudentSchedule from "./DisplayStudentSchedule";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 
 function AdvisorHomepageFilter() {
+  const [viewButtonClicked, setViewButtonClicked] = useState(false);
   const [value, setValue] = useState("female");
   const [userNames, setUserNames] = useState<
     {
@@ -61,6 +64,16 @@ function AdvisorHomepageFilter() {
   const [studentEmails, setStudentEmails] = useState([""]); // store student emails
   const [currentUserGroupsLength, setCurrentUserGroupsLength] = useState(0); //length of currentUserGroups array
   const [studentSchedule, setStudentSchedule] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [scheduleInfo, setScheduleInfo] = useState(null);
+
+  const handleOpen = () => {
+    setViewButtonClicked(true);
+  };
+
+  const handleClose = () => {
+    setViewButtonClicked(false);
+  };
 
   // useEffect(() => {
   //   setCurrentUserGroupsLength(currentUserGroups.length);
@@ -640,7 +653,7 @@ function AdvisorHomepageFilter() {
           </ul>
           <Button
             variant="contained"
-            onClick={() => handleViewSchedule(selectedUser)} //VIEW SCHEDULE
+            onClick={() => setViewButtonClicked(true)} //VIEW SCHEDULE
             style={{
               marginTop: "10px",
               color: "#003fce",
@@ -649,6 +662,47 @@ function AdvisorHomepageFilter() {
           >
             View Schedule
           </Button>
+          <Modal
+            open={viewButtonClicked}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <div
+              style={{
+                position: "fixed",
+
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                //backgroundColor: "white",
+                padding: "20px",
+                borderRadius: "10px",
+                boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+
+                animation: "dropTop 0.5s linear",
+                backgroundColor: "white",
+              }}
+            >
+              <DisplayStudentSchedule selectedUser={selectedUser} />
+
+              <Button
+                onClick={handleClose}
+                style={{
+                  position: "fixed",
+                  top: "10px",
+                  right: "10px",
+                  padding: "3px 8px",
+                  borderRadius: "5px",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                {" "}
+                Close
+              </Button>
+            </div>
+          </Modal>
         </div>
       )}
       {/* Dialog for adding a student */}

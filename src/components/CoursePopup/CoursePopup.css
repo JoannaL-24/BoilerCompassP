@@ -1,60 +1,61 @@
 .popup-overlay {
-    background: rgba(0, 0, 0, 0.5);
-  }
-  [data-popup='tooltip'].popup-overlay {
-    background: transparent;
-  }
+  z-index: 9999 !important;
+  background: rgba(0, 0, 0, 0.5);
+}
+[data-popup="tooltip"].popup-overlay {
+  background: transparent;
+}
 .popupModal {
-    position: relative;
-    font-size: calc(10px + 0.4rem);
-    justify-content: center;
-    background: var(--background);
-    color: var(--textPrimary);
-    width: 40vw;
-    min-width: 500px;
-    max-width: 1000px;
-    border-radius: 10px;
-    padding: 5px 10px;
-  }
-  .popupModal > .header {
-    border-bottom: 1px solid #ceb888;
-    font-size: calc(14px + 0.4rem);
-    text-align: center;
-    /* padding: 5px; */
-  }
-  .popupModal > .content {
-    background: var(--background);
-    color: var(--textSecondary);
-    width: 100%;
-    padding: 10px 0px;
-  }
-  .popupModal > .descriptionText {
-    color: var(--textPrimary);
-    font-size: 12;
-  }
-  .popupModal > .sessionText {
-    color: var(--textSecondary);
-  }
-  .popupModal > .sessionsList {
-    border: 1px solid gray;
-    width: 85%;
-    min-height: 100px;
-    padding: 5px 0px;
-    margin: 10px;
-    text-align: center;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .popupModal > .close {
-    cursor: pointer;
-    position: absolute;
-    display: block;
-    padding: 2px 5px;
-    line-height: 20px;
-    right: -2.5%;
-    top: -5%;
-    font-size: 24px;
-    background: #ffffff;
-    border-radius: 18px;
-    border: 1px solid #cfcece;
-  }
+  position: relative;
+  font-size: calc(10px + 0.4rem);
+  justify-content: center;
+  background: var(--background);
+  color: var(--textPrimary);
+  width: 40vw;
+  min-width: 500px;
+  max-width: 1000px;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+.popupModal > .header {
+  border-bottom: 1px solid #ceb888;
+  font-size: calc(14px + 0.4rem);
+  text-align: center;
+  /* padding: 5px; */
+}
+.popupModal > .content {
+  background: var(--background);
+  color: var(--textSecondary);
+  width: 100%;
+  padding: 10px 0px;
+}
+.popupModal > .descriptionText {
+  color: var(--textPrimary);
+  font-size: 12;
+}
+.popupModal > .sessionText {
+  color: var(--textSecondary);
+}
+.popupModal > .sessionsList {
+  border: 1px solid gray;
+  width: 85%;
+  min-height: 100px;
+  padding: 5px 0px;
+  margin: 10px;
+  text-align: center;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.popupModal > .close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -2.5%;
+  top: -5%;
+  font-size: 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #cfcece;
+}
