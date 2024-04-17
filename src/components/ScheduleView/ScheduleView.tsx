@@ -20,7 +20,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Popup from "reactjs-popup";
 import Button from "@material-ui/core/Button";
-import { adjustSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
 import { GPA } from "components/GPA";
 import ChangeScheduleName from "components/ChangeScheduleName";
 
@@ -40,7 +39,7 @@ export default function ScheduleView({
     const { currentUser } = useAuth();
     const hiddenFileInput = useRef(null);
     const navigate = useNavigate();
-    const [userData, setUserData] = useState<UserData>(new LocalUserData)
+    const [userData, setUserData] = useState<UserData>(new LocalUserData);
     const remote = new RemoteUserdata();
     const [scheduleDate, setScheduleDate] = useState({
         startTerm: null,
@@ -208,11 +207,6 @@ export default function ScheduleView({
                             </li>
                         </> : <></>
                     }
-
-
-                    <li>
-                        <a className="DescrBtn" href=""><AddLinkIcon /></a>
-                    </li>
                     <li>
                         <a className="DescrBtn" href=""><HelpOutlineIcon /></a>
                     </li>

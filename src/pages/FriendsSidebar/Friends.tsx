@@ -5,6 +5,7 @@ import { getSatisfied } from "models/BoilerCompass";
 import { CS } from "models/CS";
 
 const SCHEDULE_DATA = {
+  id: "12345",
   name: "Friend Schedule",
   start_term: new Date("2022-08-19T24:00:00.000Z"),
   end_term: new Date("2026-05-03T24:00:00.000Z"),
@@ -109,13 +110,16 @@ const Friends = () => {
   return (
     <>
       <ScheduleView
+        id={undefined}
         name={schedule.name}
         semesterBlocks={schedule.semester_blocks}
         setParentSemesterBlocks={null}
         viewOnly={true}
         completed={getSatisfied(CS, new Set(schedule.completed_courses))[0]}
         planned={getSatisfied(CS, new Set(schedule.planned_courses))[0]}
-        total={getSatisfied(CS, new Set(schedule.completed_courses))[1]}
+        total={getSatisfied(CS, new Set(schedule.completed_courses))[1]} 
+        scheduleList={null}
+        setscheduleList={null}
       />
       {/* TODO: change classname to scheduleSide if applicable */}
       <div className="friendsSide">

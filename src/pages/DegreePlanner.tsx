@@ -11,8 +11,6 @@ import {
     arrayRemove,
     Timestamp,
     arrayUnion,
-    DocumentReference,
-    DocumentData,
 } from "firebase/firestore";
 import { firestore } from "../models/firebase.ts";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -35,97 +33,103 @@ import ChangeScheduleName from "components/ChangeScheduleName.tsx";
 
 // temperary data for semester_blocks in Schedule
 const SCHEDULE_DATA = {
-    name: "Schedule1",
+    id: "12345",
+    name: "Friend Schedule",
     start_term: new Date("2022-08-19T24:00:00.000Z"),
     end_term: new Date("2026-05-03T24:00:00.000Z"),
     semester_blocks: [
-        {
-            id: 0,
-            year: 2022,
-            term: "Fall",
-            course_list: [
-                {
-                    id: "1",
-                    number: "CS25200",
-                    description: "something",
-                    credit: 3,
-                },
-            ],
-        },
-        {
-            id: 1,
-            year: 2023,
-            term: "Spring",
-            course_list: [],
-        },
-        {
-            id: 2,
-            year: 2023,
-            term: "Summer",
-            course_list: [],
-        },
-        {
-            id: 3,
-            year: 2023,
-            term: "Fall",
-            course_list: [],
-        },
-        {
-            id: 4,
-            year: 2024,
-            term: "Spring",
-            course_list: [],
-        },
-        {
-            id: 5,
-            year: 2024,
-            term: "Summer",
-            course_list: [],
-        },
-        {
-            id: 6,
-            year: 2024,
-            term: "Fall",
-            course_list: [],
-        },
-        {
-            id: 7,
-            year: 2025,
-            term: "Spring",
-            course_list: [],
-        },
-        {
-            id: 8,
-            year: 2025,
-            term: "Summer",
-            course_list: [],
-        },
-        {
-            id: 9,
-            year: 2025,
-            term: "Fall",
-            course_list: [],
-        },
-        {
-            id: 10,
-            year: 2026,
-            term: "Spring",
-            course_list: [],
-        },
-        {
-            id: 11,
-            year: 2026,
-            term: "Summer",
-            course_list: [],
-        },
+      {
+        id: 0,
+        year: 2022,
+        term: "Fall",
+        credit: 4,
+        course_list: [
+          {
+            id: "24508954-e0bc-407f-a823-ff348a51ac99",
+            classId: "1842e869-5d34-410a-b3e5-3ca3de853edf",
+            course: "CS18000",
+            description: "something",
+            credit: 4,
+            meeting: null
+          },
+        ],
+      },
+      {
+        id: 1,
+        year: 2023,
+        term: "Spring",
+        course_list: [],
+      },
+      {
+        id: 2,
+        year: 2023,
+        term: "Summer",
+        course_list: [],
+      },
+      {
+        id: 3,
+        year: 2023,
+        term: "Fall",
+        course_list: [],
+      },
+      {
+        id: 4,
+        year: 2024,
+        term: "Spring",
+        course_list: [],
+      },
+      {
+        id: 5,
+        year: 2024,
+        term: "Summer",
+        course_list: [],
+      },
+      {
+        id: 6,
+        year: 2024,
+        term: "Fall",
+        course_list: [],
+      },
+      {
+        id: 7,
+        year: 2025,
+        term: "Spring",
+        course_list: [],
+      },
+      {
+        id: 8,
+        year: 2025,
+        term: "Summer",
+        course_list: [],
+      },
+      {
+        id: 9,
+        year: 2025,
+        term: "Fall",
+        course_list: [],
+      },
+      {
+        id: 10,
+        year: 2026,
+        term: "Spring",
+        course_list: [],
+      },
+      {
+        id: 11,
+        year: 2026,
+        term: "Summer",
+        course_list: [],
+      },
     ],
     majors: [
-        {
-            name: "Computer Science",
-        },
+      {
+        name: "Computer Science",
+      },
     ],
     minors: [],
-};
+    completed_courses: ["24508954-e0bc-407f-a823-ff348a51ac99"],
+    planned_courses: []
+  }
 const SEMESTER_DATA = [
     {
         id: 0,
@@ -242,7 +246,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const [planned, setPlanned] = useState(0);
     const [reqModalOpen, setReqModalOpen] = useState(false);
     //schedule mode
-    const [viewOnly, setViewOnly] = useState(false);
     const [userOwnSchedule, setUserOwnSchedule] = useState(true); // true == user's own schedule, false == friend's schedule
     const [friendSchedule, setFriendSchedule] = useState(null);
 
@@ -662,13 +665,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             }
         }
     };
-    const handleOpenReqModal = () => {
-        setReqModalOpen(true);
-    };
-
-    const handleCloseReqModal = () => {
-        setReqModalOpen(false);
-    };
 
     const createNewSchedule = () => {
         console.log("new schedule");
@@ -693,6 +689,15 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             // TODO: local
         }
     }
+
+    const handleOpenReqModal = () => {
+        setReqModalOpen(true);
+    };
+
+    const handleCloseReqModal = () => {
+        setReqModalOpen(false);
+    };
+
     return (
         <div className="DegreeOverview">
             <NavBar
@@ -721,7 +726,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                             <div className="ScheduleSide">
                                 <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
                                 <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal} />
-                                <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={viewOnly} />
+                                <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={!userOwnSchedule} />
                                 {/* <FriendsList/> */}
                                 {/* <CopyScheduleButton scheduleID="g5ZWE0nw9llkRznXVopn"/> */}
                             </div>
