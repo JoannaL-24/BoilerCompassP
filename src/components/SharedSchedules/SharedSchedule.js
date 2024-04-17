@@ -19,29 +19,33 @@ const SharedSchedule = ({ setFriendSchedule, userID, openScheduleList, setOpenSc
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    console.log("shared", userID);
+    setDone(false);
+    // console.log("shared", userID);
     if (!userID) return;
     getDoc(doc(firestore, "users", userID))
       .then((docSnapshot) => {
         let scheduleNames = docSnapshot.data().schedule;
-        // for (let s of scheduleNames) {
-        //   console.log(s);
-        //   getDoc(doc(firestore, "schedules", s))
-        //     .then((scheduleSnapshot) => {
-        //       let schedule = scheduleSnapshot.data();
-        //       schedule = {...schedule, ID: s};
-        //       setscheduleList([ ...scheduleList, schedule]);
-        //     })
-        //     .catch((error) => {
-        //       console.log(error);
-        //     })
-        // }
+      //   for (let s of scheduleNames) {
+      //     getDoc(doc(firestore, "schedules", s))
+      //       .then((scheduleSnapshot) => {
+      //         let schedule = scheduleSnapshot.data();
+      //         schedule = {...schedule, id: s};
+      //         setscheduleList([ ...scheduleList, schedule]);
+      //         console.log("schedule: ", schedule);
+      //         console.log("inner list: ", scheduleList);
+      //       })
+      //       .catch((error) => {
+      //         console.log(error);
+      //       })
+      //   }
+      // })
         const schedulePromises = scheduleNames.map(s => getDoc(doc(firestore, "schedules", s)));
         Promise.all(schedulePromises)
           .then(scheduleSnapshots => {
             const newScheduleList = scheduleSnapshots.map((scheduleSnap, index) => ({
               id: scheduleNames[index],
-              name: scheduleSnap.data().name
+              name: scheduleSnap.data().name,
+              semester_blocks: scheduleSnap.data().semester_blocks
             }));
             setscheduleList(newScheduleList);
           })
@@ -52,9 +56,9 @@ const SharedSchedule = ({ setFriendSchedule, userID, openScheduleList, setOpenSc
     setDone(true);
   }, [userID]);
 
-  useEffect(() => {
-    console.log(scheduleList);
-  }, [scheduleList]);
+  // useEffect(() => {
+  //   console.log(scheduleList);
+  // }, [scheduleList]);
 
 
   const handleClick = (schedule) => {
@@ -63,7 +67,7 @@ const SharedSchedule = ({ setFriendSchedule, userID, openScheduleList, setOpenSc
     c = getSatisfied(CS, new Set(schedule.planned_courses));
     schedule = { ...schedule, planned: c[0] };
     setFriendSchedule(schedule);
-    //console.log(schedule);
+    setOpenScheduleList(false);
   }
 
   return (
@@ -82,10 +86,10 @@ const SharedSchedule = ({ setFriendSchedule, userID, openScheduleList, setOpenSc
                 &times;
               </button>
               <div className='header'>Schedules</div>
-              <Box sx={{ width: '100%', maxWidth: 300 }} >
+              <Box sx={{ width: '100%', maxWidth: 500 }} display="flex" justifyContent="center" alignItems="center">
                 <List>
                   {scheduleList.map((s) => (
-                    <ListItem disablePadding key={s.ID}>
+                    <ListItem disablePadding key={s.id}>
                       <ListItemButton onClick={() => { handleClick(s) }}>
                         <ListItemText primary={s.name} />
                       </ListItemButton>

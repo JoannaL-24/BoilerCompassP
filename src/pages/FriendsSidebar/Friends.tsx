@@ -8,6 +8,9 @@ import FriendsList from "components/FriendsList/FriendsList";
 const SCHEDULE_DATA = {
   id: "12345",
   name: "Friend Schedule",
+  completed: 0,
+  planned: 0,
+  total: 1,
   start_term: new Date("2022-08-19T24:00:00.000Z"),
   end_term: new Date("2026-05-03T24:00:00.000Z"),
   semester_blocks: [
@@ -17,14 +20,14 @@ const SCHEDULE_DATA = {
       term: "Fall",
       credit: 4,
       course_list: [
-        {
-          id: "24508954-e0bc-407f-a823-ff348a51ac99",
-          classId: "1842e869-5d34-410a-b3e5-3ca3de853edf",
-          course: "CS18000",
-          description: "something",
-          credit: 4,
-          meeting: null
-        },
+        // {
+          // id: "24508954-e0bc-407f-a823-ff348a51ac99",
+          // classId: "1842e869-5d34-410a-b3e5-3ca3de853edf",
+          // course: "CS18000",
+          // description: "something",
+          // credit: 4,
+          // meeting: null
+        // },
       ],
     },
     {
@@ -105,7 +108,7 @@ const SCHEDULE_DATA = {
 }
 
 const Friends = () => {
-  const [schedule, setSchedule] = useState(SCHEDULE_DATA);;
+   const [schedule, setSchedule] = useState(SCHEDULE_DATA);
 
   return (
     <>
@@ -115,9 +118,12 @@ const Friends = () => {
         semesterBlocks={schedule.semester_blocks}
         setParentSemesterBlocks={null}
         viewOnly={true}
-        completed={getSatisfied(CS, new Set(schedule.completed_courses))[0]}
-        planned={getSatisfied(CS, new Set(schedule.planned_courses))[0]}
-        total={getSatisfied(CS, new Set(schedule.completed_courses))[1]}
+        // completed={getSatisfied(CS, new Set(schedule.completed_courses))[0]}
+        // planned={getSatisfied(CS, new Set(schedule.planned_courses))[0]}
+        // total={getSatisfied(CS, new Set(schedule.completed_courses))[1]}
+        completed={schedule.completed}
+        planned={schedule.planned}
+        total={schedule.total}
         scheduleList={null}
         setscheduleList={null}
       />
