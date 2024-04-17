@@ -2,16 +2,13 @@ import "./NavBar.css";
 import React, { useEffect, useState } from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { styled } from "@mui/material/styles";
 import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
-import Stack from "@mui/material/Stack";
-import SvgIcon, { SvgIconProps } from "@mui/material/SvgIcon";
 import HomeIcon from "@mui/icons-material/Home";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "models/firebase";
 
 const options = ["Schedule1", "Schedule2", "Schedule3"];
@@ -28,7 +25,7 @@ export default function NavBar({
   setDarkmode,
   schedules,
   createNewSchedule,
-  viewOnly,
+  setUserOwnSchedule,
 }) {
   const [userType, setUserType] = useState("");
   const [scheduleInfo, setScheduleInfo] = useState([]);
@@ -39,6 +36,7 @@ export default function NavBar({
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
+    setUserOwnSchedule(true);
     setAnchorEl(null);
   };
 
@@ -78,7 +76,6 @@ export default function NavBar({
     }
   }, [currentUser]);
 
-  // TODO: fix this & get back schdule list
   useEffect(() => {
     console.log("this guy is a " + userType);
     if (userType !== "student") return;
@@ -104,7 +101,7 @@ export default function NavBar({
         alt="Boiler Compass"
       ></img>
       <ul className="navBtnList">
-        {userType === "student" && (
+        {(userType === "student") ? <>
           <li className="navBtnList">
             <a
               aria-label="more"
@@ -117,15 +114,36 @@ export default function NavBar({
               <h3>Schedule</h3>
             </a>
           </li>
-        )}
-
-        {userType === "student" && (
           <li className="navBtnList">
-            <a>
-              <h3>Groups</h3>
+            <a onClick={() => { setUserOwnSchedule(false) }}>
+              <h3>Friends</h3>
             </a>
           </li>
-        )}
+          <Menu
+            id="long-menu"
+            MenuListProps={{
+              "aria-labelledby": "long-button",
+            }}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              style: {
+                maxHeight: ITEM_HEIGHT * 4.5,
+                width: "20ch",
+              },
+            }}
+          >
+            {scheduleInfo.map((name, index) => (
+              <MenuItem key={index} onClick={handleClose}>
+                {name}
+              </MenuItem>
+            ))}
+            <p>------------------------------</p>
+            <MenuItem onClick={createNewSchedule}>New Schedule +</MenuItem>
+          </Menu>
+        </> : <></>
+        }
 
         <li className="navBtnList">
           <DarkModeToggle darkmode={darkmode} setDarkmode={setDarkmode} />
@@ -138,8 +156,9 @@ export default function NavBar({
               aria-haspopup="true"
               aria-expanded={homeOpen ? "true" : undefined}
               onClick={handleHomeClick}
+              style={{ color: "var(--main-gold)" }}
             >
-              <HomeIcon />
+              <HomeIcon style={{ color: "var(--main-gold)" }} />
             </Button>
             <Menu
               id="home-menu"
@@ -172,29 +191,8 @@ export default function NavBar({
           </div>
         </li>
       </ul>
-      <Menu
-        id="long-menu"
-        MenuListProps={{
-          "aria-labelledby": "long-button",
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
-            width: "20ch",
-          },
-        }}
-      >
-        {scheduleInfo.map((name, index) => (
-          <MenuItem key={index} onClick={handleClose}>
-            {name}
-          </MenuItem>
-        ))}
-        <p>------------------------------</p>
-        <MenuItem onClick={createNewSchedule}>New Schedule +</MenuItem>
-      </Menu>
+
+
     </div>
   );
 }

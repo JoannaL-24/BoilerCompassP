@@ -38,6 +38,8 @@
         margin: 0px;
     }
     a {
+        color: var(--black);
+        text-decoration: none;
         display: inline-block;
         position: relative;
         margin: auto;
