@@ -66,7 +66,6 @@ export default function NavBar({
 
   useEffect(() => {
     if (currentUser) {
-
       getDoc(doc(firestore, "users", currentUser.uid))
         .then((userSnap) => {
           if (userSnap.exists()) {
@@ -82,6 +81,7 @@ export default function NavBar({
   }, [currentUser]);
 
   useEffect(() => {
+    console.log("this guy is a " + userType);
     if (userType !== "student") return;
     if (schedules.list.length <= 0) return;
     let newScheduleName = [];

@@ -8,7 +8,6 @@ import UserData from "models/UserData.ts";
 const CopyScheduleButton = ({scheduleID}) => {
 
   const { currentUser } = useAuth();
-  const userData: UserData = new RemoteUserdata();
   const [scheduleList, setScheduleList] = useState([]);
 
   useEffect(() => {
@@ -55,7 +54,8 @@ const CopyScheduleButton = ({scheduleID}) => {
   return (
     <div>
       <button className="mediumBtn goldBtn" onClick={copySchedule}>
-        <h3>Copy This Schedule</h3>
+      {/* <button style={{fontSize: "12px"}} onClick={copySchedule}> */}
+        Copy This Schedule
       </button>
     </div>
   )

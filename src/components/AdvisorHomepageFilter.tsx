@@ -35,6 +35,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { handleViewSchedule } from "./DisplayStudentSchedule";
 
 function AdvisorHomepageFilter() {
   const [value, setValue] = useState("female");
@@ -59,6 +60,7 @@ function AdvisorHomepageFilter() {
   const [currentUserGroups, setCurrentUserGroups] = useState<string[]>([]); //get the group of current user
   const [studentEmails, setStudentEmails] = useState([""]); // store student emails
   const [currentUserGroupsLength, setCurrentUserGroupsLength] = useState(0); //length of currentUserGroups array
+  const [studentSchedule, setStudentSchedule] = useState(null);
 
   // useEffect(() => {
   //   setCurrentUserGroupsLength(currentUserGroups.length);
@@ -319,7 +321,7 @@ function AdvisorHomepageFilter() {
       // setCurrentUserGroupsLength(
       //   currentUserGroups.length + groupsToUpdate.length
       // );
-      forceUpdate(); // Force re-render to counter async
+      //forceUpdate(); // Force re-render to counter async  //maybe not needed?
     } catch (error) {
       console.error("Error updating groups:", error);
     }
@@ -329,7 +331,7 @@ function AdvisorHomepageFilter() {
     });*/
 
     handleDialogClose();
-    //window.location.reload();
+
     currentUserGroups.forEach((u) => {
       console.log("now array has " + u); /*test */
       console.log("wtf");
@@ -636,6 +638,17 @@ function AdvisorHomepageFilter() {
               )
             )}
           </ul>
+          <Button
+            variant="contained"
+            onClick={() => handleViewSchedule(selectedUser)} //VIEW SCHEDULE
+            style={{
+              marginTop: "10px",
+              color: "#003fce",
+              backgroundColor: "#879DEB",
+            }}
+          >
+            View Schedule
+          </Button>
         </div>
       )}
       {/* Dialog for adding a student */}

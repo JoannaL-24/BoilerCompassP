@@ -101,6 +101,7 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly }) => {
                 credit={result.credit}
                 classId={result.classId}
                 meetings={result.meetings}
+                viewOnly={viewOnly}
               />
             ))}
             {provided.placeholder}
