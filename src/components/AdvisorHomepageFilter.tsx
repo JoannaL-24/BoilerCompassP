@@ -667,21 +667,33 @@ function AdvisorHomepageFilter() {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
             <div
               style={{
-                position: "fixed",
+                position: "absolute",
 
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                //backgroundColor: "white",
+                backgroundColor: "white",
                 padding: "20px",
                 borderRadius: "10px",
                 boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+                width: "80%", // Adjust width as needed
+                height: "80%", // Adjust height as needed
+                maxWidth: "600px", // Set max-width to limit the size of the modal
+                maxHeight: "800px", // Set max-height to limit the size of the modal
+                overflow: "auto", // Add overflow to enable scrolling if content exceeds modal size
 
                 animation: "dropTop 0.5s linear",
-                backgroundColor: "white",
+                // display: "flex",
+                // alignItems: "center",
+                // justifyContent: "center",
               }}
             >
               <DisplayStudentSchedule selectedUser={selectedUser} />
@@ -689,7 +701,7 @@ function AdvisorHomepageFilter() {
               <Button
                 onClick={handleClose}
                 style={{
-                  position: "fixed",
+                  position: "absolute",
                   top: "10px",
                   right: "10px",
                   padding: "3px 8px",
@@ -698,7 +710,6 @@ function AdvisorHomepageFilter() {
                   cursor: "pointer",
                 }}
               >
-                {" "}
                 Close
               </Button>
             </div>
