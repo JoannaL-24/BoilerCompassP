@@ -47,8 +47,9 @@ export default function NavBar({
   const handleHomeClose = () => {
     setHomeAnchorEl(null);
   };
-
   const { currentUser, signUserOut } = useAuth();
+
+  // logout
   const navigate = useNavigate();
   const userSignOut = () => {
     signUserOut()
@@ -60,6 +61,7 @@ export default function NavBar({
       .catch((error) => console.log(error));
   };
 
+  // get the student type
   useEffect(() => {
     if (currentUser) {
       getDoc(doc(firestore, "users", currentUser.uid))
@@ -76,8 +78,9 @@ export default function NavBar({
     }
   }, [currentUser]);
 
+
   useEffect(() => {
-    console.log("this guy is a " + userType);
+    console.log("User Type: ", userType);
     if (userType !== "student") return;
     if (schedules.list.length <= 0) return;
     let newScheduleName = [];
@@ -92,7 +95,13 @@ export default function NavBar({
           console.log(error);
         });
     }
-  }, [userType, schedules.list]);
+    // const schedulePromises = schedules.list.map(s => getDoc(doc(firestore, "schedules", s)));
+    // Promise.all(schedulePromises)
+    //   .then((scheduleSnapshot) => {
+    //     const newScheduleInfo
+    //   })
+
+  }, [userType, schedules.currName, schedules.list]);
 
   // useEffect(() => {
   //   console.log(schedules.list);

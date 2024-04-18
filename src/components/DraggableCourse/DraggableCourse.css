@@ -5,4 +5,11 @@
     background-color: var(--background);
     padding: 10px 3px;
     margin-bottom: 10px;
+
+    .courseDetailBtn { 
+        border: none;
+        color: var(--textPrimary);
+        background-color: var(--cardBackground);
+        cursor: pointer;
+    }
 }
