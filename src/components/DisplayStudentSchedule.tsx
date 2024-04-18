@@ -161,6 +161,7 @@ const SEMESTER_DATA = [
 ];
 
 const DisplayStudentSchedule = ({ selectedUser }) => {
+  const [scheduleDataArray, setscheduleDataArray] = useState([]); //stores everything of a schedule
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -169,11 +170,10 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
   const handleDragDrop = (result) => {
     console.log("drag drop");
   };
-  let name = "";
+
   let sid = "";
 
   const [completedCourses, setCompletedCourses] = useState([]);
-  const [semesterRender, setSemesterRender] = useState([]);
   const [semesterBlocks, setSemesterBlocks] = useState(SEMESTER_DATA);
   const [scheduleList, setscheduleList] = useState({
     currIndex: 0,
@@ -184,78 +184,85 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
   const [completed, setCompleted] = useState(0);
   const [planned, setPlanned] = useState(0);
   const [total, setTotal] = useState(100);
+  const [arraylen, setarraylen] = useState(0);
+  const [name, setname] = useState("");
 
-  const scheduleDataArray = []; //stores everything of a schedule
   useEffect(() => {
-    const fetchSchedule = async () => {
-      try {
-        if (!selectedUser) {
-          console.error("No user selected");
-          return;
-        }
-
-        const userDocRef = doc(firestore, "users", selectedUser.uid);
-        const userDocSnapshot = await getDoc(userDocRef);
+    if (!selectedUser) {
+      console.error("No user selected");
+      return;
+    }
+    const userDocRef = doc(firestore, "users", selectedUser.uid);
+    getDoc(userDocRef)
+      .then((userDocSnapshot) => {
         if (userDocSnapshot.exists()) {
           const userData = userDocSnapshot.data();
-          const scheduleIds = userData.schedule || []; // Array of schedule IDs
-
-          // Fetch schedule data for each schedule id
+          const scheduleIds = userData.schedule || [];
 
           let i = -1;
-          for (const id of scheduleIds) {
+
+          scheduleIds.forEach((id) => {
             sid = id;
             i++;
             const scheduleDocRef = doc(firestore, "schedules", id);
-            const scheduleDocSnapshot = await getDoc(scheduleDocRef);
-            if (scheduleDocSnapshot.exists()) {
-              const scheduleData = scheduleDocSnapshot.data();
+            getDoc(scheduleDocRef)
+              .then((scheduleDocSnapshot) => {
+                if (scheduleDocSnapshot.exists()) {
+                  const scheduleData = scheduleDocSnapshot.data();
 
-              setCompletedCourses(scheduleData.completed_courses);
-              let planned = getSatisfied(
-                CS,
-                new Set(scheduleData.planned_courses)
-              );
-              setPlanned(planned[0]);
-              let completed = getSatisfied(CS, new Set(completedCourses));
-              setTotal(completed[1]);
-              setCompleted(completed[0]);
-              name = scheduleData.name;
-              console.log("林北 " + name);
-              const index = i;
-              const semesterblock = scheduleData.semester_blocks;
-              setscheduleList({
-                ...scheduleList,
-                currId: index.toString(),
-                currName: name,
-              });
-              setSemesterBlocks(semesterblock);
+                  setCompletedCourses(scheduleData.completed_courses);
+                  let planned = getSatisfied(
+                    CS,
+                    new Set(scheduleData.planned_courses)
+                  );
+                  setPlanned(planned[0]);
+                  let completed = getSatisfied(CS, new Set(completedCourses));
+                  setTotal(completed[1]);
+                  setCompleted(completed[0]);
+                  setname(scheduleData.name);
+                  const index = i;
+                  const semesterblock = scheduleData.semester_blocks;
+                  setscheduleList({
+                    ...scheduleList,
+                    currId: index.toString(),
+                    currName: name,
+                  });
+                  setSemesterBlocks(semesterblock);
 
-              scheduleDataArray.push({
-                name: scheduleData.name,
-                sid: id,
-                semesterBlocks: scheduleData.semester_blocks,
-                setParentSemesterBlocks: null,
-                viewonly: true,
-                completed: completed[0],
-                planned: planned[0],
-                total: completed[1],
-                schedulelist: scheduleList,
-                setscheduleList: { setscheduleList },
+                  setscheduleDataArray((prevArray) => [
+                    ...prevArray,
+                    {
+                      ScheduleName: name,
+                      sid: id,
+                      semesterBlocks: scheduleData.semester_blocks,
+                      setParentSemesterBlocks: null,
+                      viewonly: true,
+                      completed: completed[0],
+                      planned: planned[0],
+                      total: completed[1],
+                      schedulelist: scheduleList,
+                      setscheduleList: { setscheduleList },
+                    },
+                  ]);
+                  setarraylen((prevArraylen) => prevArraylen + 1);
+                  console.log("array len is " + arraylen);
+                  console.log("schedule name is " + name); //these two are updated imemdiately
+                  // console.log(
+                  //   "using array to print: " + scheduleDataArray[0].ScheduleName // this is undefined
+                  // );
+                }
+              })
+              .catch((error) => {
+                console.error("Error fetching schedule:", error);
               });
-            }
-          }
-          console.log("length is " + scheduleDataArray.length);
-          console.log("user is " + selectedUser.name);
+          });
         } else {
           console.log("User not found");
         }
-      } catch (error) {
-        console.error("Error fetching schedule:", error);
-      }
-    };
-
-    fetchSchedule();
+      })
+      .catch((error) => {
+        console.error("Error fetching user:", error);
+      });
   }, [selectedUser]);
 
   return (
@@ -278,7 +285,7 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
               style={{ height: "500px", overflowY: "auto", zIndex: "-9999" }}
             >
               <ScheduleView
-                name={name}
+                name={name} //if i do scheduleDataArray[0].ScheduleName it's also undefined
                 id={sid}
                 semesterBlocks={semesterBlocks}
                 setParentSemesterBlocks={null}
@@ -295,20 +302,7 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={1}>
-        {scheduleDataArray.length > 1 && (
-          <ScheduleView
-            name={scheduleDataArray[1].name}
-            id={scheduleDataArray[1].sid}
-            semesterBlocks={scheduleDataArray[1].semesterBlocks}
-            setParentSemesterBlocks={null}
-            viewOnly={true}
-            completed={scheduleDataArray[1].completed}
-            planned={scheduleDataArray[1].planned}
-            total={scheduleDataArray[1].total}
-            scheduleList={scheduleDataArray[1].schedulelist}
-            setscheduleList={scheduleDataArray[1].setscheduleList}
-          />
-        )}
+        help
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         Item Three
