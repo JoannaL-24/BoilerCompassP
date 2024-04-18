@@ -113,7 +113,7 @@ const Friends = () => {
   return (
     <>
       <ScheduleView
-        id={undefined}
+        id={schedule.id}
         name={schedule.name}
         semesterBlocks={schedule.semester_blocks}
         setParentSemesterBlocks={null}
