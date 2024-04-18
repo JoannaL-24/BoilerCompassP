@@ -103,7 +103,7 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({
           ref={provided.innerRef}
         >
           <Popup
-            trigger={<button>{course}</button>}
+            trigger={<button className="courseDetailBtn">{course}</button>}
             modal
             nested
             onOpen={handleButtonClick}

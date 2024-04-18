@@ -54,6 +54,8 @@ export default function ScheduleView({
     const year = dayjs().get('year');
     const validStartYear = (date) => !((year - date.get('year') >= 0) && (year - date.get('year') <= 10));
     const validEndYear = (date) => !((date.get('year') - year >= 0) && (date.get('year') - year <= 10));
+    
+    // Render the semester blocks UI
     useEffect(() => {
         let newRender = [];
         for (var i = 0; i < semesterBlocks.length; i += 3) {
@@ -207,9 +209,9 @@ export default function ScheduleView({
                             </li>
                         </> : <></>
                     }
-                    <li>
+                    {/* <li>
                         <a className="DescrBtn" href=""><HelpOutlineIcon /></a>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
             <Box sx={{ display: 'flex', alignItems: 'end' }} >
