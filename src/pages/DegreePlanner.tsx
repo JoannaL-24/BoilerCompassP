@@ -247,8 +247,8 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const [reqModalOpen, setReqModalOpen] = useState(false);
     //schedule mode
     const [userOwnSchedule, setUserOwnSchedule] = useState(true); // true == user's own schedule, false == friend's schedule
-    const [completedCourses, setCompletedCourses] = useState([])
-    const [courseGrades, setCourseGrades] = useState({})
+    const [completedCourses, setCompletedCourses] = useState([]);
+    // const [courseGrades, setCourseGrades] = useState({})
 
     // get firebase data (dark mode & schedule) if the user is a firebase user
     useEffect(() => {
@@ -285,6 +285,10 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         }
     }, [scheduleList.list]);
 
+    useEffect(() => {
+        console.log(scheduleList);
+    }, [scheduleList]);
+
 
     useEffect(() => {
         if (scheduleList.currId != "1") calculateProgress();
@@ -318,7 +322,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 })
         }
     }
-
 
     var mode_str;
     if (darkmode) {

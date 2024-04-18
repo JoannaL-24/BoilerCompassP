@@ -1,6 +1,5 @@
 .Semester {
   width: calc(83% / 3);
-  z-index: 1000;
 }
 
 .SemesterDescription {
@@ -9,7 +8,6 @@
   justify-content: center;
   align-items: center;
   padding: 5px 15px 5px 5px;
-  z-index: 1000;
 
   h3 {
     margin: 8px 0px 3px;
@@ -21,6 +19,5 @@
   background-color: rgb(244, 245, 249);
   border-radius: 6px;
   padding: 10px 5px;
-  z-index: 1000;
 }
 

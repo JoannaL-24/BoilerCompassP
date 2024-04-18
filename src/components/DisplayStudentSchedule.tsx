@@ -33,6 +33,38 @@ import { isTermInPast, getSatisfied, Schedule } from "../models/BoilerCompass";
 import { CS } from "../models/CS";
 import { DragDropContext } from "react-beautiful-dnd";
 import zIndex from "@mui/material/styles/zIndex";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`schedule-tabpanel-${index}`}
+      aria-labelledby={`schedule-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `schedule-tab-${index}`,
+    "aria-controls": `schedule-tabpanel-${index}`,
+  };
+}
 
 const SEMESTER_DATA = [
   {
@@ -129,6 +161,11 @@ const SEMESTER_DATA = [
 ];
 
 const DisplayStudentSchedule = ({ selectedUser }) => {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
   const handleDragDrop = (result) => {
     console.log("drag drop");
   };
@@ -148,6 +185,7 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
   const [planned, setPlanned] = useState(0);
   const [total, setTotal] = useState(100);
 
+  const scheduleDataArray = []; //stores everything of a schedule
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
@@ -172,6 +210,7 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
             const scheduleDocSnapshot = await getDoc(scheduleDocRef);
             if (scheduleDocSnapshot.exists()) {
               const scheduleData = scheduleDocSnapshot.data();
+
               setCompletedCourses(scheduleData.completed_courses);
               let planned = getSatisfied(
                 CS,
@@ -182,6 +221,7 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
               setTotal(completed[1]);
               setCompleted(completed[0]);
               name = scheduleData.name;
+              console.log("林北 " + name);
               const index = i;
               const semesterblock = scheduleData.semester_blocks;
               setscheduleList({
@@ -190,12 +230,23 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
                 currName: name,
               });
               setSemesterBlocks(semesterblock);
+
+              scheduleDataArray.push({
+                name: scheduleData.name,
+                sid: id,
+                semesterBlocks: scheduleData.semester_blocks,
+                setParentSemesterBlocks: null,
+                viewonly: true,
+                completed: completed[0],
+                planned: planned[0],
+                total: completed[1],
+                schedulelist: scheduleList,
+                setscheduleList: { setscheduleList },
+              });
             }
           }
-
+          console.log("length is " + scheduleDataArray.length);
           console.log("user is " + selectedUser.name);
-          // display the semester blocks
-          console.log("Semester Blocks: ", semesterBlocks);
         } else {
           console.log("User not found");
         }
@@ -208,24 +259,61 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
   }, [selectedUser]);
 
   return (
-    <div>
-      <DragDropContext onDragEnd={handleDragDrop}>
-        <div style={{ height: "500px", overflowY: "auto", zIndex: "-9999" }}>
+    <Box sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
+          <Tab label="Item One" {...a11yProps(0)} />
+          <Tab label="Item Two" {...a11yProps(1)} />
+          <Tab label="Item Three" {...a11yProps(2)} />
+        </Tabs>
+      </Box>
+      <CustomTabPanel value={value} index={0}>
+        <div>
+          <DragDropContext onDragEnd={handleDragDrop}>
+            <div
+              style={{ height: "500px", overflowY: "auto", zIndex: "-9999" }}
+            >
+              <ScheduleView
+                name={name}
+                id={sid}
+                semesterBlocks={semesterBlocks}
+                setParentSemesterBlocks={null}
+                viewOnly={true}
+                completed={completed}
+                planned={planned}
+                total={total}
+                scheduleList={scheduleList}
+                setscheduleList={setscheduleList}
+              />
+            </div>
+          </DragDropContext>
+        </div>
+      </CustomTabPanel>
+
+      <CustomTabPanel value={value} index={1}>
+        {scheduleDataArray.length > 1 && (
           <ScheduleView
-            name={name}
-            id={sid}
-            semesterBlocks={semesterBlocks}
+            name={scheduleDataArray[1].name}
+            id={scheduleDataArray[1].sid}
+            semesterBlocks={scheduleDataArray[1].semesterBlocks}
             setParentSemesterBlocks={null}
             viewOnly={true}
-            completed={completed}
-            planned={planned}
-            total={total}
-            scheduleList={scheduleList}
-            setscheduleList={setscheduleList}
+            completed={scheduleDataArray[1].completed}
+            planned={scheduleDataArray[1].planned}
+            total={scheduleDataArray[1].total}
+            scheduleList={scheduleDataArray[1].schedulelist}
+            setscheduleList={scheduleDataArray[1].setscheduleList}
           />
-        </div>
-      </DragDropContext>
-    </div>
+        )}
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        Item Three
+      </CustomTabPanel>
+    </Box>
   );
 };
 
