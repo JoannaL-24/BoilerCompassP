@@ -107,7 +107,7 @@ const SCHEDULE_DATA = {
   planned_courses: []
 }
 
-const Friends = () => {
+const Friends = ({scheduleList, setscheduleList}) => {
    const [schedule, setSchedule] = useState(SCHEDULE_DATA);
 
   return (
@@ -124,8 +124,8 @@ const Friends = () => {
         completed={schedule.completed}
         planned={schedule.planned}
         total={schedule.total}
-        scheduleList={null}
-        setscheduleList={null}
+        scheduleList={scheduleList}
+        setscheduleList={setscheduleList}
       />
       {/* TODO: change classname to scheduleSide if applicable */}
       <div className="friendsSide">

@@ -136,9 +136,9 @@ export default function ScheduleView({
         const check = confirm("Are you sure you want to delete this schedule?");
         if (check) {
             //update scheduleList
-            const dup = scheduleList.list;
-            const index = dup.indexOf(id);
-            const newList = dup.splice(index, 1);
+            const newList = scheduleList.list;
+            const index = newList.indexOf(id);
+            newList.splice(index, 1);
             setscheduleList({...scheduleList, list:newList});
 
             //remove from the user's list of schedules
@@ -158,7 +158,7 @@ export default function ScheduleView({
         else {alert("Schedule Not Deleted.")}
     }
 
-    console.log(id)
+    console.log(scheduleList)
 
     return (
         <div className="ScheduleView">
@@ -243,7 +243,7 @@ export default function ScheduleView({
                             </li>
                         </> : <>
                             <li>
-                                <CopyScheduleButton scheduleID={id}/>
+                                <CopyScheduleButton scheduleID={id} scheduleList={scheduleList} setscheduleList={setscheduleList}/>
                             </li>
                         </>
                         

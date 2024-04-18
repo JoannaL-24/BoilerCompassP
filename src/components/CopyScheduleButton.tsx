@@ -6,21 +6,20 @@ import RemoteUserdata from '../models/RemoteUserData';
 import UserData from "models/UserData.ts";
 import "./ZoeyButtonStyle.css"
 
-const CopyScheduleButton = ({scheduleID}) => {
+const CopyScheduleButton = ({scheduleID, scheduleList, setscheduleList}) => {
 
   const { currentUser } = useAuth();
-  const [scheduleList, setScheduleList] = useState([]);
+  const [sList, setSList] = useState([]);
 
   useEffect(() => {
     if (currentUser) {
       const user_doc = getDoc(doc(firestore, "users", currentUser.uid))
         .then((docSnapshot) => {
-            setScheduleList(docSnapshot.data().schedule);
+            setSList(docSnapshot.data().schedule);
         });
     }
   }, [currentUser]);
 
-  
   const copySchedule = () => {
     //copy a schedule doc and put in the database for this user
     console.log(scheduleID);
@@ -31,7 +30,15 @@ const CopyScheduleButton = ({scheduleID}) => {
           addDoc(dbRef, cpy)
           .then(docRef => {
             console.log(docRef.id);
-            const copied = scheduleList;
+
+            //update scheduleList
+            console.log(scheduleList);
+            const newList = scheduleList.list;
+            newList.splice(newList.length, 1, docRef.id);
+            setscheduleList({...scheduleList, list:newList});
+
+            //update firestore
+            const copied = sList;
             copied.splice(0, 0, docRef.id);
             if (currentUser) {
               const userRef = doc(firestore, "users", currentUser.uid);
@@ -49,6 +56,8 @@ const CopyScheduleButton = ({scheduleID}) => {
       .catch((error) => {
           console.log(error);
       })
+
+
       alert("Schedule Copied!");
   };
 
