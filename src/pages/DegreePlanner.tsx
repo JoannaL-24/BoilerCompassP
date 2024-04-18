@@ -734,7 +734,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                             </div>
                         </ThemeProvider>
                     </> : <>
-                        <Friends />
+                        <Friends scheduleList={scheduleList} setscheduleList={setscheduleList}/>
                     </>
                     }
                 </DragDropContext>
