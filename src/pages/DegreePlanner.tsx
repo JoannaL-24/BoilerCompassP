@@ -721,6 +721,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                             completed={completed}
                             planned={planned}
                             total={total}
+                            completedCourses={completedCourses}
                             scheduleList={scheduleList}
                             setscheduleList={setscheduleList}
                         />

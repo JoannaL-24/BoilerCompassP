@@ -34,6 +34,7 @@ export default function ScheduleView({
     completed,
     planned,
     total,
+    completedCourses = [],
     viewOnly,
     scheduleList,
     setscheduleList
@@ -51,8 +52,7 @@ export default function ScheduleView({
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
     const [open, setOpen] = useState(false);
-    // const [completedCourses, setCompletedCourses] = useState([]);
-    // const [courseGrades, setCourseGrades] = useState({});
+    const [courseGrades, setCourseGrades] = useState({});
     const closeModal = () => setOpen(false);
     const year = dayjs().get('year');
     const validStartYear = (date) => !((year - date.get('year') >= 0) && (year - date.get('year') <= 10));
@@ -65,9 +65,9 @@ export default function ScheduleView({
             newRender.push(
                 <div key={i} className="Year">
                     <h3 style={{ padding: "150px 0px" }}>{semesterBlocks[i].year}<br />-<br />{semesterBlocks[i].year + 1}</h3>
-                    <Semester key={i} semesterInfo={semesterBlocks[i]} viewOnly={viewOnly} />
-                    <Semester key={i + 1} semesterInfo={semesterBlocks[i + 1]} viewOnly={viewOnly} />
-                    <Semester key={i + 2} semesterInfo={semesterBlocks[i + 2]} viewOnly={viewOnly} />
+                    <Semester key={i} semesterInfo={semesterBlocks[i]} viewOnly={viewOnly} onCourseGradeChange={onCourseGradeChange} />
+                    <Semester key={i + 1} semesterInfo={semesterBlocks[i + 1]} viewOnly={viewOnly} onCourseGradeChange={onCourseGradeChange}/>
+                    <Semester key={i + 2} semesterInfo={semesterBlocks[i + 2]} viewOnly={viewOnly} onCourseGradeChange={onCourseGradeChange}/>
                 </div>
             );
         }
@@ -156,6 +156,21 @@ export default function ScheduleView({
             alert("Schedule Deleted.")
         }
         else {alert("Schedule Not Deleted.")}
+    }
+
+    const onCourseGradeChange = (id, credits, points) => {
+      setCourseGrades((c) => {
+        const cc = structuredClone(c)
+        if (points == null) {
+          if (cc[id])
+            delete cc[id]
+        } else {
+          cc[id] = [credits, points]
+        }
+        userData.put("course_grades", cc)
+        userData.get("course_grades").then((x) => console.log(x))
+        return cc;
+      })
     }
 
     console.log(scheduleList)
@@ -256,7 +271,7 @@ export default function ScheduleView({
             </div>
             <Box sx={{ display: 'flex', alignItems: 'end' }} >
                 <ProgressBar completed={completed} planned={planned} total={total} />
-                {/* {!viewOnly && <GPA completed_courses={completedCourses} course_grades={courseGrades}/>} */}
+                {!viewOnly && <GPA completed_courses={completedCourses} course_grades={courseGrades}/>}
             </Box>
             <div className="SemesterYears">
                 {semesterRender}
