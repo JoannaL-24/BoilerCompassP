@@ -21,7 +21,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Popup from "reactjs-popup";
 import Button from "@material-ui/core/Button";
 import { GPA } from "components/GPA";
+import { firestore } from "models/firebase.ts";
+import {getFirestore, doc, deleteDoc, getDoc, setDoc, updateDoc, arrayRemove, arrayUnion, Timestamp, addDoc, collection } from "firebase/firestore";
 import ChangeScheduleName from "components/ChangeScheduleName";
+import CopyScheduleButton from "components/CopyScheduleButton";
 
 export default function ScheduleView({
     id,
@@ -126,6 +129,34 @@ export default function ScheduleView({
         setParentSemesterBlocks(scheduleDate.startTerm, scheduleDate.endTerm);
     }
 
+    const deleteSchedule = () => {
+        console.log("delete schedule");
+        const check = confirm("Are you sure you want to delete this schedule?");
+        if (check) {
+            //update scheduleList
+            const dup = scheduleList.list;
+            const index = dup.indexOf(id);
+            const newList = dup.splice(index, 1);
+            setscheduleList({...scheduleList, list:newList});
+
+            //remove from the user's list of schedules
+            if (currentUser) {
+                const userDoc = doc(firestore, "users", currentUser.uid);
+                updateDoc(userDoc, {
+                    schedule: newList
+                });
+            }
+
+            //remove the schedule from firestore
+            const scheduleRef = doc(firestore, "schedules", id);
+            deleteDoc(scheduleRef);
+
+            alert("Schedule Deleted.")
+        }
+        else {alert("Schedule Not Deleted.")}
+    }
+
+    console.log(id)
 
     return (
         <div className="ScheduleView">
@@ -201,12 +232,21 @@ export default function ScheduleView({
                                         <Box className="Btn">
                                             <Button type="submit" onClick={editScheduleDate} variant="outlined">Edit</Button>
                                         </Box>
+                                        <Box className="Btn">
+                                            <Button type="submit" onClick={deleteSchedule} variant="outlined">Delete This Schedule</Button>
+                                        </Box>
 
                                     </div>
                                 </Popup>
                             </li>
-                        </> : <></>
+                        </> : <>
+                            <li>
+                                <CopyScheduleButton scheduleID={id}/>
+                            </li>
+                        </>
+                        
                     }
+                    
                     <li>
                         <a className="DescrBtn" href=""><HelpOutlineIcon /></a>
                     </li>
