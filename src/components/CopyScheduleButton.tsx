@@ -4,6 +4,7 @@ import { doc, getDoc, setDoc, updateDoc, arrayRemove, arrayUnion, Timestamp, add
 import { firestore } from '../models/firebase.ts';
 import RemoteUserdata from '../models/RemoteUserData';
 import UserData from "models/UserData.ts";
+import "./ZoeyButtonStyle.css"
 
 const CopyScheduleButton = ({scheduleID}) => {
 
@@ -22,8 +23,8 @@ const CopyScheduleButton = ({scheduleID}) => {
   
   const copySchedule = () => {
     //copy a schedule doc and put in the database for this user
-    alert("Schedule Copied!");
-    const to_copy = getDoc(doc(firestore, "schedules", scheduleID))
+    console.log(scheduleID);
+    getDoc(doc(firestore, "schedules", scheduleID))
       .then((scheduleSnap) => {
           const dbRef = collection(firestore, "schedules");
           const cpy = scheduleSnap.data();
@@ -48,12 +49,12 @@ const CopyScheduleButton = ({scheduleID}) => {
       .catch((error) => {
           console.log(error);
       })
-      
+      alert("Schedule Copied!");
   };
 
   return (
     <div>
-      <button className="mediumBtn goldBtn" onClick={copySchedule}>
+      <button className="btn" onClick={copySchedule}>
       {/* <button style={{fontSize: "12px"}} onClick={copySchedule}> */}
         Copy This Schedule
       </button>

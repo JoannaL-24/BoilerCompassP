@@ -266,6 +266,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     // for nav bar schedule selection
     useEffect(() => {
         if (scheduleList.list.length > 0) {
+            console.log(scheduleList);
             getDoc(
                 doc(firestore, "schedules", scheduleList.list[scheduleList.currIndex])
             )

@@ -1,14 +1,12 @@
 import React , { useState, useEffect } from 'react'
 import { useAuth } from '../components/contexts/AuthContext.tsx'
-import { doc, getDoc, setDoc, updateDoc, arrayRemove, arrayUnion, Timestamp, addDoc, collection } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from '../models/firebase.ts';
 import RemoteUserdata from '../models/RemoteUserData';
 import UserData from "models/UserData.ts";
 import "./ZoeyButtonStyle.css"
 
 const ChangeScheduleName = ({scheduleID, scheduleList, setscheduleList}) => {
-
-  const { currentUser } = useAuth();
   
   const changeName = () => {
     let newName = prompt("Enter new name")
