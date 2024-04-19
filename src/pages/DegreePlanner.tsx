@@ -12,11 +12,13 @@ import {
     Timestamp,
     arrayUnion,
     deleteDoc,
+    addDoc,
+    collection,
 } from "firebase/firestore";
 import { firestore } from "../models/firebase.ts";
 import { DragDropContext } from "react-beautiful-dnd";
 import RemoteUserdata from "../models/RemoteUserData";
-import { isTermInPast, getSatisfied, Schedule } from "../models/BoilerCompass";
+import { isTermInPast, getSatisfied, Schedule, Semester } from "../models/BoilerCompass";
 import { CS } from "../models/CS";
 // sidebar import
 import Searchbar from "components/Searchbar.js";
@@ -781,22 +783,66 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     const createNewSchedule = () => {
         console.log("new schedule");
         if (currentUser) {
-            // userData.get
-            // let newSchedule: Schedule = {
-            //     name: "New Schedule",
-            //     start_term: ,
-            //     end_term: undefined,
-            //     semester_blocks: [],
-            //     majors: [],
-            //     minors: []
-            // };
-            // addDoc(collection(firestore, "schedules"), userinfo.schedule)
-            //   .then((document) => {
-            //     userData.put("schedule", [document.id]);
-            //   })
-            //   .catch((error) => {
-            //     console.log(error);
-            //   })
+            getDoc(doc(firestore, "users", currentUser.uid))
+                .then((docSnapshot) => {
+                    console.log(docSnapshot.data().start_term);
+                    console.log(docSnapshot.data().end_term);
+                    let startDate = docSnapshot.data().start_term.toDate() || new Date();
+                    let startYear = startDate.getFullYear();
+                    let endDate = docSnapshot.data().end_term.toDate() || new Date(startYear + 4, startDate.getMonth(), startDate.getDate());
+                    console.log(startDate);
+                    console.log(endDate);
+                    let total_semesters = (endDate.getFullYear() - startYear) * 3;
+                    let semester_blocks = [];
+                    let term = "Summer";
+                    let addYear = 0;
+                    for (let i = 0; i < total_semesters; i++) {
+                        term = "Summer";
+                        if (i % 3 == 0) {
+                            term = "Fall";
+                        }
+                        else if (i % 3 == 1) {
+                            term = "Spring";
+                            addYear++;
+                        }
+                        let semester: Semester = {
+                            id: i,
+                            year: startYear + addYear,
+                            term: term,
+                            course_list: [],
+                            credit: 0,
+                        }
+                        semester_blocks[i] = semester;
+                    }
+                    let newSchedule: Schedule = {
+                        name: "New Schedule",
+                        start_term: Timestamp.fromDate(startDate),
+                        end_term: Timestamp.fromDate(endDate),
+                        majors: docSnapshot.data().prefer_majors || [],
+                        minors: docSnapshot.data().prefer_minor || [],
+                        completed_courses: [],
+                        planned_courses: [],
+                        semester_blocks: semester_blocks,
+                    };
+                    // console.log(newSchedule);
+                    addDoc(collection(firestore, "schedules"), newSchedule)
+                        .then((document) => {
+                            const userDoc = doc(firestore, "users", currentUser.uid);
+                            updateDoc(userDoc, {
+                                schedule: arrayUnion(document.id)
+                            })
+                                .then(() => {
+                                    const dup = schedulesList;
+                                    dup.splice(schedulesList.length, 0, {id: document.id, name: "New Schedule"});
+                                    setSchedulesList(dup);
+                                    setCurrSchedule({id: document.id, name: "New Schedule"});
+                                    // setSemesterBlocks(newSchedule.semester_blocks);
+                                })
+                        })
+                })
+                .catch((error) => {
+                    console.error("Fetch Data Error:", error);
+                });
         } else {
             // TODO: local
         }
@@ -856,7 +902,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                         name: newName
                     }
                     setSchedulesList(dup);
-                    setCurrSchedule({...currSchedule, name: newName});
+                    setCurrSchedule({ ...currSchedule, name: newName });
                 })
                 .catch((e) => {
                     console.log("update schedule array error");
@@ -907,7 +953,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                         <ThemeProvider theme={mode}>
                             <div className="ScheduleSide">
                                 <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
-                                <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal}/>
+                                <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal} />
                                 <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={!userOwnSchedule} />
                                 {/* <FriendsList/> */}
                                 {/* <CopyScheduleButton scheduleID="g5ZWE0nw9llkRznXVopn"/> */}

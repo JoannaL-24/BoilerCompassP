@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore"
+
 export type Course = {
   id: string
   subject: string
@@ -41,11 +43,13 @@ export type Degree = {
 
 export type Schedule = {
   name: string
-  start_term: Date
-  end_term: Date
+  start_term: Timestamp
+  end_term: Timestamp
   semester_blocks: Semester[]
   majors: Degree[]
   minors: RequireSec[]
+  completed_courses:[]
+  planned_courses: []
 }
 
 export type Group = {
