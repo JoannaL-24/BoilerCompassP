@@ -285,7 +285,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     // get the curr schedule data
     useEffect(() => {
         if (schedulesList.length <= 0) return;
-        console.log(schedulesList);
+        // console.log(schedulesList);
         setCurrSchedule({ id: schedulesList[0].id, name: schedulesList[0].name });
     }, [schedulesList.length]);
 

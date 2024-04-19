@@ -16,17 +16,13 @@ import RemoteUserdata from "../models/RemoteUserData";
 import UserData from "models/UserData.ts";
 import "./ZoeyButtonStyle.css";
 
-const CopyScheduleButton = ({copySchedule}) => {
+const CopyScheduleButton = ({ copySchedule }) => {
 
   return (
-    userType === "student" && (
-      <div>
-        <button className="btn" onClick={copySchedule}>
-          {/* <button style={{fontSize: "12px"}} onClick={copySchedule}> */}
-          Copy This Schedule
-        </button>
-      </div>
-    )
+    <button className="btn" onClick={copySchedule}>
+      {/* <button style={{fontSize: "12px"}} onClick={copySchedule}> */}
+      Copy This Schedule
+    </button>
   );
 };
 
