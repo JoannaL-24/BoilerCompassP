@@ -162,6 +162,7 @@ const SEMESTER_DATA = [
 
 const DisplayStudentSchedule = ({ selectedUser }) => {
   const [scheduleDataArray, setscheduleDataArray] = useState([]); //stores everything of a schedule
+  const [num, setNum] = useState(0); //num is for how many schedules there are
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -172,6 +173,7 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
   };
 
   let sid = "";
+  let len = 0;
 
   const [completedCourses, setCompletedCourses] = useState([]);
   const [semesterBlocks, setSemesterBlocks] = useState(SEMESTER_DATA);
@@ -186,6 +188,7 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
   const [total, setTotal] = useState(100);
   const [arraylen, setarraylen] = useState(0);
   const [name, setname] = useState("");
+  console.log("scheduledataarray: " + scheduleDataArray.length);
 
   useEffect(() => {
     if (!selectedUser) {
@@ -198,29 +201,33 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
         if (userDocSnapshot.exists()) {
           const userData = userDocSnapshot.data();
           const scheduleIds = userData.schedule || [];
+          //len = scheduleIds.length;
+          len = userData.schedule.length;
+          console.log("len is " + len);
+          //setNum(len); can also do it here
 
           let i = -1;
-
-          scheduleIds.forEach((id) => {
+          var temp_array = new Array(len); // Temp array to store all of the schedules before setting scheduleDataArray
+          scheduleIds.map((id) => {
             sid = id;
-            i++;
+            // i++;
             const scheduleDocRef = doc(firestore, "schedules", id);
             getDoc(scheduleDocRef)
               .then((scheduleDocSnapshot) => {
                 if (scheduleDocSnapshot.exists()) {
+                  i++; // Increment iteration
                   const scheduleData = scheduleDocSnapshot.data();
 
                   setCompletedCourses(scheduleData.completed_courses);
-                  let planned = getSatisfied(
-                    CS,
-                    new Set(scheduleData.planned_courses)
+                  setPlanned(
+                    getSatisfied(CS, new Set(scheduleData.planned_courses))[0]
                   );
-                  setPlanned(planned[0]);
                   let completed = getSatisfied(CS, new Set(completedCourses));
                   setTotal(completed[1]);
                   setCompleted(completed[0]);
                   setname(scheduleData.name);
                   const index = i;
+                  console.log("i:" + i);
                   const semesterblock = scheduleData.semester_blocks;
                   setscheduleList({
                     ...scheduleList,
@@ -228,34 +235,37 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
                     currName: name,
                   });
                   setSemesterBlocks(semesterblock);
-
-                  setscheduleDataArray((prevArray) => [
-                    ...prevArray,
-                    {
-                      ScheduleName: name,
-                      sid: id,
-                      semesterBlocks: scheduleData.semester_blocks,
-                      setParentSemesterBlocks: null,
-                      viewonly: true,
-                      completed: completed[0],
-                      planned: planned[0],
-                      total: completed[1],
-                      schedulelist: scheduleList,
-                      setscheduleList: { setscheduleList },
-                    },
-                  ]);
+                  console.log("Name before setting: " + scheduleData.name);
+                  console.log("Before pushing index:" + i + temp_array);
+                  temp_array[index] = {
+                    ScheduleName: scheduleData.name,
+                    scheduleid: scheduleIds[index],
+                    semesterBlockstemp: scheduleData.semester_blocks,
+                    setParentSemesterBlocks: null,
+                    viewonly: true,
+                    completedtemp: completed[0],
+                    plannedtemp: getSatisfied(
+                      CS,
+                      new Set(scheduleData.planned_courses)
+                    )[0],
+                    totaltemp: completed[1],
+                    schedulelisttemp: scheduleList,
+                    setscheduleList: { setscheduleList },
+                  };
+                  console.log(
+                    "Temp array: " + index + " " + JSON.stringify(temp_array)
+                  );
                   setarraylen((prevArraylen) => prevArraylen + 1);
-                  console.log("array len is " + arraylen);
-                  console.log("schedule name is " + name); //these two are updated imemdiately
-                  // console.log(
-                  //   "using array to print: " + scheduleDataArray[0].ScheduleName // this is undefined
-                  // );
                 }
               })
               .catch((error) => {
                 console.error("Error fetching schedule:", error);
               });
+            setscheduleDataArray(temp_array);
+            setNum(len);
           });
+          // setscheduleDataArray(temp_array);
+          // setNum(len);
         } else {
           console.log("User not found");
         }
@@ -271,42 +281,87 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
         <Tabs
           value={value}
           onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="auto"
           aria-label="basic tabs example"
         >
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          {num === 0 ? (
+            <Tab label="Empty Schedule" />
+          ) : (
+            Array.from({ length: num }, (_, index) => (
+              <Tab
+                key={index}
+                label={
+                  scheduleDataArray[index]
+                    ? scheduleDataArray[index].ScheduleName
+                    : "nothing"
+                }
+                {...a11yProps(index)}
+              />
+            ))
+          )}
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        <div>
-          <DragDropContext onDragEnd={handleDragDrop}>
-            <div
-              style={{ height: "500px", overflowY: "auto", zIndex: "-9999" }}
-            >
-              <ScheduleView
-                name={name} //if i do scheduleDataArray[0].ScheduleName it's also undefined
-                id={sid}
-                semesterBlocks={semesterBlocks}
-                setParentSemesterBlocks={null}
-                viewOnly={true}
-                completed={completed}
-                planned={planned}
-                total={total}
-                scheduleList={scheduleList}
-                setscheduleList={setscheduleList}
-              />
-            </div>
-          </DragDropContext>
-        </div>
-      </CustomTabPanel>
 
-      <CustomTabPanel value={value} index={1}>
-        help
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        Item Three
-      </CustomTabPanel>
+      {num === 0 ? (
+        <CustomTabPanel value={value} index={0}>
+          empty
+        </CustomTabPanel>
+      ) : (
+        Array.from({ length: num }, (_, index) => (
+          <CustomTabPanel key={index} value={value} index={index}>
+            {/* Render content for each schedule */}
+            <div>
+              <DragDropContext onDragEnd={handleDragDrop}>
+                <div
+                  style={{
+                    height: "700px",
+                    overflowY: "auto",
+                    zIndex: "-9999",
+                  }}
+                >
+                  <ScheduleView
+                    name={
+                      scheduleDataArray[index]
+                        ? scheduleDataArray[index].ScheduleName
+                        : "N/A"
+                    }
+                    id={
+                      scheduleDataArray[index]
+                        ? scheduleDataArray[index].scheduleid
+                        : "233"
+                    }
+                    semesterBlocks={
+                      scheduleDataArray[index]
+                        ? scheduleDataArray[index].semesterBlockstemp
+                        : { semesterBlocks }
+                    }
+                    setParentSemesterBlocks={null}
+                    viewOnly={true}
+                    completed={
+                      scheduleDataArray[index]
+                        ? scheduleDataArray[index].completedtemp
+                        : { completed }
+                    }
+                    planned={
+                      scheduleDataArray[index]
+                        ? scheduleDataArray[index].plannedtemp
+                        : { planned }
+                    }
+                    total={
+                      scheduleDataArray[index]
+                        ? scheduleDataArray[index].totaltemp
+                        : { total }
+                    }
+                    scheduleList={scheduleList}
+                    setscheduleList={setscheduleList}
+                  />
+                </div>
+              </DragDropContext>
+            </div>
+          </CustomTabPanel>
+        ))
+      )}
     </Box>
   );
 };
