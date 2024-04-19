@@ -673,21 +673,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             }
             console.log(semester_blocks.length)
             console.log(semester_blocks);
-            // if (currSchedule.id != "1") {
-            //     const semesterRef = doc(firestore, "schedules", currSchedule.id);
-            //     updateDoc(semesterRef, {
-            //         start_term: Timestamp.fromDate(new Date(startY)),
-            //         end_term: Timestamp.fromDate(new Date(endY)),
-            //         semester_blocks: semester_blocks,
-            //     })
-            //         .then(() => {
-            //             setSemesterBlocks(semester_blocks);
-            //         })
-            //         .catch((e) => {
-            //             console.log("drag firebase update error");
-            //             console.log(e);
-            //         });
-            // }
         }
         
         //add at front
@@ -734,21 +719,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             }
 
             console.log(semester_blocks);
-            // if (currSchedule.id != "1") {
-            //     const semesterRef = doc(firestore, "schedules", currSchedule.id);
-            //     updateDoc(semesterRef, {
-            //         start_term: Timestamp.fromDate(new Date(startY)),
-            //         end_term: Timestamp.fromDate(new Date(endY)),
-            //         semester_blocks: semester_blocks,
-            //     })
-            //         .then(() => {
-            //             setSemesterBlocks(semester_blocks);
-            //         })
-            //         .catch((e) => {
-            //             console.log("drag firebase update error");
-            //             console.log(e);
-            //         });
-            // }
         }
         
          //delete at the front
@@ -772,21 +742,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 semester_blocks[i] = semester;
             }
             console.log(semester_blocks);
-            // if (currSchedule.id != "1") {
-            //     const semesterRef = doc(firestore, "schedules", currSchedule.id);
-            //     updateDoc(semesterRef, {
-            //         start_term: Timestamp.fromDate(new Date(startY)),
-            //         end_term: Timestamp.fromDate(new Date(endY)),
-            //         semester_blocks: semester_blocks,
-            //     })
-            //         .then(() => {
-            //             setSemesterBlocks(semester_blocks);
-            //         })
-            //         .catch((e) => {
-            //             console.log("drag firebase update error");
-            //             console.log(e);
-            //         });
-            // }
         }
 
         //delete at end
@@ -804,21 +759,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             }
             
             console.log(semester_blocks);
-            // if (currSchedule.id != "1") {
-            //     const semesterRef = doc(firestore, "schedules", currSchedule.id);
-            //     updateDoc(semesterRef, {
-            //         start_term: Timestamp.fromDate(new Date(startY)),
-            //         end_term: Timestamp.fromDate(new Date(endY)),
-            //         semester_blocks: semester_blocks,
-            //     })
-            //         .then(() => {
-            //             setSemesterBlocks(semester_blocks);
-            //         })
-            //         .catch((e) => {
-            //             console.log("drag firebase update error");
-            //             console.log(e);
-            //         });
-            // }
         }
 
         if (currSchedule.id != "1") {
