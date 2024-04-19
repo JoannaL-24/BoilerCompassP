@@ -10,7 +10,7 @@ import SharedSchedule from '../SharedSchedules/SharedSchedule.js';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function RequestsList ({requestList, setRequestList}) {
+export default function RequestsList({ requestList, setRequestList }) {
     const { currentUser } = useAuth();
     const userData: UserData = new RemoteUserdata();
     const [reqRender, setReqRender] = useState([]);
@@ -18,32 +18,69 @@ export default function RequestsList ({requestList, setRequestList}) {
     useEffect(() => {
         console.log("child: ", requestList);
         let newRender = [];
-        for (var i = 0; i < requestList.length; i++) {
+        for (let i = 0; i < requestList.length; i++) {
             newRender.push(
                 <div
                     key={i}
                     className='ReqListItem'
                 >
                     {requestList[i].email}
-                    <CheckIcon className='ReqItemBtn' onClick={() => acceptRequest(requestList[i].id)} />
-                    <CloseIcon className='ReqItemBtn' onClick={() => rejectRequest(requestList[i].id)} />
+                    <CheckIcon className='ReqItemBtn' onClick={() => acceptRequest(requestList[i])} />
+                    <CloseIcon className='ReqItemBtn' onClick={() => rejectRequest(requestList[i])} />
                 </div>
             );
         }
-        
+
         setReqRender(newRender);
     }, [requestList]);
 
-    const acceptRequest = (f) => {
-        console.log("accept request: ", f);
+    const acceptRequest = (user) => {
+        // console.log("accept request: ", f);
+
+        const ref = doc(firestore, "users", currentUser.uid);
+        getDoc(ref)
+            .then(async (docSnapshot) => {
+                let friends = docSnapshot.data().friends || [];
+                friends.push(user.id);
+
+                await updateDoc(ref, {
+                    friends: friends
+                });
+
+                let requests = docSnapshot.data().requests || [];
+                requests = requests.filter(function(item) {
+                    return item !== user.id
+                })
+
+                await updateDoc(ref, {
+                    requests: requests
+                });
+            })
+            .catch((error) => {
+                console.log("send request err");
+                console.log(error);
+            });
         // setuserID(id);
         // setOpenScheduleList(true);
     }
 
-    const rejectRequest = (f) => {
-        console.log("reject request: ", f);
-        // setuserID(id);
-        // setOpenScheduleList(true);
+    const rejectRequest = (user) => {
+        const ref = doc(firestore, "users", currentUser.uid);
+        getDoc(ref)
+            .then(async (docSnapshot) => {
+                let requests = docSnapshot.data().requests || [];
+                requests = requests.filter(function(item) {
+                    return item !== user.id
+                })
+
+                await updateDoc(ref, {
+                    requests: requests
+                });
+            })
+            .catch((error) => {
+                console.log("send request err");
+                console.log(error);
+            });
     }
 
     return (

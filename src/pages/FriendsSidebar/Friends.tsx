@@ -250,8 +250,8 @@ const Friends = (scheduleList, setSchedulesList) => {
           dup.splice(index, 1);
           console.log(dup);
           setRequestList(dup);
-          alert("Friend added");
           addedFriend = true;
+          alert("Friend added");
         }
 
         return addedFriend;
@@ -267,6 +267,9 @@ const Friends = (scheduleList, setSchedulesList) => {
             let friends = docSnapshot.data().friends || [];
 
             // check if request already exists
+            console.log("userSend: ", userSend.id);
+            console.log("requests: ", requests);
+            console.log("friends: ", requests);
             if (!requests.includes(currentUser.uid) && !friends.includes(currentUser.uid)) {
               requests.push(currentUser.uid);
               await updateDoc(otherUserRef, {
