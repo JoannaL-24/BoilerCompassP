@@ -20,13 +20,30 @@ const style = {
   p: 4,
   overflow: 'scroll',
 }
-export default function ReqModal({ open, handleClose }) {
+export default function ReqModal({ open, handleClose, onReqSearch }) {
   const { currentUser } = useAuth()
   const [userData, setUserData] = useState<UserData>(new LocalUserData())
-  const [majorSet, setMajorSet] = useState(new Set())
+  const [completedCourses, setCompletedCourses] = useState([])
   const remote = new RemoteUserdata()
   useEffect(() => {
-    if (currentUser) setUserData(remote)
+    userData.get('completed_courses').then((c) => {
+      setCompletedCourses(c)
+    })
+  }, [])
+
+  useEffect(() => {
+    userData.get('completed_courses').then((c) => {
+      setCompletedCourses(c)
+    })
+  }, [open])
+
+  useEffect(() => {
+    if (currentUser) {
+      setUserData(remote)
+      remote.get('completed_courses').then((c) => {
+        setCompletedCourses(c)
+      })
+    }
   }, [currentUser])
 
   return (
@@ -39,7 +56,7 @@ export default function ReqModal({ open, handleClose }) {
           Requirements Summary
         </Typography>
 
-        <RecursiveTreeView req={CS} />
+        <RecursiveTreeView req={CS} completedCourses={completedCourses} onReqSearch={onReqSearch} />
       </div>
     </Popup>
   )
