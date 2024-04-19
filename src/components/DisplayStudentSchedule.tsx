@@ -275,6 +275,7 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
         <div>
           <DragDropContext onDragEnd={handleDragDrop}>
             <div
+              className="advisorDisplaySchedule"
               style={{ height: "500px", overflowY: "auto", zIndex: "-9999" }}
             >
               <ScheduleView
@@ -288,7 +289,9 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
                 total={total}
                 scheduleList={scheduleList}
                 setscheduleList={setscheduleList}
-              />
+                deleteSchedule={undefined}
+                changeScheduleName={undefined}
+            />
             </div>
           </DragDropContext>
         </div>
@@ -306,8 +309,7 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
             planned={scheduleDataArray[1].planned}
             total={scheduleDataArray[1].total}
             scheduleList={scheduleDataArray[1].schedulelist}
-            setscheduleList={scheduleDataArray[1].setscheduleList}
-          />
+            setscheduleList={scheduleDataArray[1].setscheduleList} deleteSchedule={undefined} changeScheduleName={undefined}          />
         )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>

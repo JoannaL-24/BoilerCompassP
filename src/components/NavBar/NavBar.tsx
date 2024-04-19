@@ -23,20 +23,28 @@ type Props = {
 export default function NavBar({
   darkmode,
   setDarkmode,
-  schedules,
+  schedulesList,
   createNewSchedule,
+  setCurrSchedule,
   setUserOwnSchedule,
 }) {
   const [userType, setUserType] = useState("");
-  const [scheduleInfo, setScheduleInfo] = useState([]);
+  const [scheduleNameList, setScheduleNameList] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [homeAnchorEl, setHomeAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (event, newId, newName) => {
+    // console.log(event);
+    // console.log(newId, ": ", name);
+    if (newId === "backdropClick") {
+      setAnchorEl(null);
+      return;
+    }
     setUserOwnSchedule(true);
+    setCurrSchedule({id: newId, name: newName});
     setAnchorEl(null);
   };
 
@@ -79,29 +87,23 @@ export default function NavBar({
   }, [currentUser]);
 
 
-  useEffect(() => {
-    console.log("User Type: ", userType);
-    if (userType !== "student") return;
-    if (schedules.list.length <= 0) return;
-    let newScheduleName = [];
-    for (let i = 0; i < schedules.list.length; i++) {
-      getDoc(doc(firestore, "schedules", schedules.list[i]))
-        .then((scheduleSnap) => {
-          console.log(scheduleSnap.data());
-          newScheduleName[i] = scheduleSnap.data().name;
-          setScheduleInfo([...newScheduleName]); // Update state with new schedule names
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-    // const schedulePromises = schedules.list.map(s => getDoc(doc(firestore, "schedules", s)));
-    // Promise.all(schedulePromises)
-    //   .then((scheduleSnapshot) => {
-    //     const newScheduleInfo
-    //   })
-
-  }, [userType, schedules.currName, schedules.list]);
+  // useEffect(() => {
+  //   console.log("User Type: ", userType);
+  //   if (userType !== "student") return;
+  //   if (schedules.list.length <= 0) return;
+  //   const schedulePromises = schedules.list.map(s => getDoc(doc(firestore, "schedules", s)));
+  //   Promise.all(schedulePromises)
+  //     .then((scheduleSnapshot) => {
+  //       const newScheduleNameList = scheduleSnapshot.map((scheduleSnap, index) => ({
+  //         id: schedules.list[index],
+  //         name: scheduleSnap.data().name
+  //       }));
+  //       setScheduleNameList(newScheduleNameList);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, [userType, schedules.currName, schedules.list]);
 
   // useEffect(() => {
   //   console.log(schedules.list);
@@ -147,9 +149,9 @@ export default function NavBar({
               },
             }}
           >
-            {scheduleInfo.map((name, index) => (
-              <MenuItem key={index} onClick={handleClose}>
-                {name}
+            {schedulesList.map((schedule, index) => (
+              <MenuItem key={index} onClick={(event) => {handleClose(event, schedule.id, schedule.name)}}>
+                {schedule.name}
               </MenuItem>
             ))}
             <p>------------------------------</p>
