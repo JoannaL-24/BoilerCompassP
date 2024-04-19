@@ -2,10 +2,10 @@
     width: 100%;
     height: calc(100% - 30px);
     background-color: var(--listBackground);
-    /* background-color: var(--listBackground); */
-    /* border-top: 2px solid black; */
     border-radius: 5px;
     padding-top: 3px;
+    overflow-y: scroll;
+    scrollbar-color: var(--textSecondary) var(--listBackground);
 }
 
 .listItem {
@@ -19,6 +19,7 @@
     align-items: center;
     justify-content: space-between;
 }
+
 .listItem:hover {
     background-color: var(--accent);
 }
