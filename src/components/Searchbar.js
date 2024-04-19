@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 import DraggableCourse from "./DraggableCourse/DraggableCourse";
 import { Droppable } from "react-beautiful-dnd";
 import "./Searchbar.css";
@@ -13,7 +14,7 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly, filterCourses, 
 
   useEffect(() => {
     if (filterCourses && filterCourses.length > 0 && filterName) {
-      handleSearch(filterName);
+      handleSearch("");
     } else {
       setResults([]);
       setFilterName("");
@@ -49,32 +50,30 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly, filterCourses, 
     if (currentSearchId !== activeSearchId.current) return;
 
     try {
-      const courseIds = filterCourses.map(courseId => `Id eq ${courseId}`).join(' or ');
-      const courseIdFilter = courseIds ? `(${courseIds})` : "";
-
-      const searchFilters = [];
-      if (courseIdFilter) searchFilters.push(courseIdFilter);
-      
-      const subjectFilter = `startswith(Subject/Abbreviation, '${subject}')`;
-      const numberFilter = `startswith(Number, '${number}')`;
-      
-      if (subject) searchFilters.push(subjectFilter);
-      if (number) searchFilters.push(numberFilter);
-
-      const combinedFilters = searchFilters.join(' and ');
-
-      console.log("Combined filters:", combinedFilters);
-
-      const oHandler = o(purdueApiUrl);
-      let entities = await oHandler.get("Courses").query({
-        $top: 15,
-        $orderby: `Number`,
-        $expand: `Classes($filter=Campus/Code eq 'PWL';$orderby=Term/Code desc;$top=1),Subject`,
-        $filter: combinedFilters,
-      });
-
       if (currentSearchId === activeSearchId.current) {
-        // console.log("Entites:", entities);
+        const courseIds = filterCourses.map(courseId => `Id eq ${courseId}`).join(' or ');
+        const courseIdFilter = courseIds ? `(${courseIds})` : "";
+
+        const searchFilters = [];
+        if (courseIdFilter) searchFilters.push(courseIdFilter);
+
+        const subjectFilter = `(startswith(Subject/Abbreviation, '${subject}'))`;
+        const numberFilter = `(startswith(Number, '${number}'))`;
+
+        if (subject) searchFilters.push(subjectFilter);
+        if (number) searchFilters.push(numberFilter);
+
+        const combinedFilters = searchFilters.join(' and ');
+
+        console.log("Combined filters:", combinedFilters);
+
+        const oHandler = o(purdueApiUrl);
+        let entities = await oHandler.get("Courses").query({
+          $top: 15,
+          $orderby: `Number`,
+          $expand: `Classes($filter=Campus/Code eq 'PWL';$orderby=Term/Code desc;$top=1),Subject`,
+          $filter: combinedFilters,
+        });
 
         // remove entities with no classes
         entities = entities.filter(entity => entity.Classes.length > 0);
@@ -97,14 +96,20 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly, filterCourses, 
     }
   }, 500);
 
+  const clearFilter = () => {
+    setFilterCourses([]);
+    setFilterName("");
+  };
+
   return (
     <div className="searchDisplay">
       <div className="filter">
-        {/* display filterName text, don't display if none */}
-        {/* add an x button to remove filter */}
         {filterName && (
           <>
-            <div className="filterName">{filterName}</div>
+            <div className="filterName">
+              {filterName}
+              <Button onClick={clearFilter}>X</Button>
+            </div>
             <br />
           </>
         )}
