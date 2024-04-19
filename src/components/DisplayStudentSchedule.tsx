@@ -305,7 +305,7 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
 
       {num === 0 ? (
         <CustomTabPanel value={value} index={0}>
-          empty
+          <h3>No result because there is no schedule</h3>
         </CustomTabPanel>
       ) : (
         Array.from({ length: num }, (_, index) => (
