@@ -723,7 +723,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                         planned_courses: [],
                         semester_blocks: semester_blocks,
                     };
-                    console.log(newSchedule);
+                    // console.log(newSchedule);
                     addDoc(collection(firestore, "schedules"), newSchedule)
                         .then((document) => {
                             const userDoc = doc(firestore, "users", currentUser.uid);
