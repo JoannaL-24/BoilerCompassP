@@ -1,0 +1,19 @@
+.ReqListItem {
+    color: var(--textPrimary);
+    padding: 5px 10px 5px 20px;
+    margin: 3px 0px;
+    cursor:default;
+    transition: ease 0.4s;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.ReqItemBtn{
+    cursor: pointer;
+    transition: ease 0.4s;
+}
+
+.ReqItemBtn:hover {
+    background-color: var(--accent);
+}

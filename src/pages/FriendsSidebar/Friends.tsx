@@ -9,6 +9,7 @@ import { TextField, Autocomplete, CircularProgress } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import { collection, getDocs, doc, getDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "models/firebase";
+import RequestsList from "components/RequestsList/RequestsList";
 
 const SCHEDULE_DATA = {
   id: "12345",
@@ -115,7 +116,9 @@ const SCHEDULE_DATA = {
 const Friends = (scheduleList, setSchedulesList) => {
   const { currentUser } = useAuth();
   const [schedule, setSchedule] = useState(SCHEDULE_DATA);
-  const [userSend, setUserSend] = useState({ id: null, email: "" });
+  const [userSend, setUserSend] = useState({ id: null, email: "", name: "" });
+  const [friendsList, setFriendsIdList] = useState([]);
+  const [requestList, setRequestList] = useState([]);
   const [openSearchFriend, setOpenSearchFriend] = useState(false);
   const [searchFriendOpt, setSearchFriendOpt] = useState([]);
   const loading = open && searchFriendOpt.length === 0;
@@ -125,13 +128,6 @@ const Friends = (scheduleList, setSchedulesList) => {
     if (!loading)
       return undefined;
 
-    // (async () => {
-    //   await sleep(1e3); // For demo purposes.
-
-    //   if (active) {
-    //     setSearchFriendOpt([...topFilms]);
-    //   }
-    // })();
     const studentUsers = [];
     getDocs(collection(firestore, "users"))
       .then((docsSnapshot) => {
@@ -140,14 +136,15 @@ const Friends = (scheduleList, setSchedulesList) => {
           if (userData.user_type === "student") {
             studentUsers.push({
               id: doc.id,
+              name: userData.name,
               email: userData.purdue_email
             });
           }
         });
         if (active)
-          console.log(studentUsers);
-        // setSearchFriendOpt([...topFilms]);
-        setSearchFriendOpt(studentUsers);
+          // console.log(studentUsers);
+          // setSearchFriendOpt([...topFilms]);
+          setSearchFriendOpt(studentUsers);
       })
 
     return () => {
@@ -160,6 +157,50 @@ const Friends = (scheduleList, setSchedulesList) => {
       setSearchFriendOpt([]);
     }
   }, [open]);
+
+  useEffect(() => {
+    if (!currentUser) return;
+    getDoc(doc(firestore, "users", currentUser.uid))
+      .then((docSnapshot) => {
+        let friends = docSnapshot.data().friends;
+        const friendPromises = friends.map(f => getDoc(doc(firestore, "users", f)));
+        Promise.all(friendPromises)
+          .then(friendSnapshots => {
+            const newFriendsList = friendSnapshots.map((friendSnap, index) => ({
+              id: friends[index],
+              name: friendSnap.data().name
+            }));
+            setFriendsIdList(newFriendsList);
+          })
+      })
+      .catch((error) => {
+        console.log("friendlist err");
+        console.log(error);
+      });
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (!currentUser) return;
+    getDoc(doc(firestore, "users", currentUser.uid))
+      .then((docSnapshot) => {
+        let friends = docSnapshot.data().requests;
+        const friendPromises = friends.map(f => getDoc(doc(firestore, "users", f)));
+        Promise.all(friendPromises)
+          .then(friendSnapshots => {
+            const newRequestList = friendSnapshots.map((friendSnap, index) => ({
+              id: friends[index],
+              name: friendSnap.data().name,
+              email: friendSnap.data().purdue_email
+            }));
+            setRequestList(newRequestList);
+          })
+      })
+      .catch((error) => {
+        console.log("requestList err");
+        console.log(error);
+      });
+  }, [currentUser]);
+
 
   const sendFriendRequest = async () => {
     event.preventDefault();
@@ -194,8 +235,22 @@ const Friends = (scheduleList, setSchedulesList) => {
             friends: newFriends,
             requests: newRequests
           });
+          // update friend list state
+          const newFriendList = [...friendsList];
+          newFriendList.push({
+            id: userSend.id,
+            name: userSend.name
+          });
+          setFriendsIdList(newFriendList);
+          // update request state
+          const dup = [...requestList];
+          const isId = (f) => f.id === userSend.id;
+          const index = dup.findIndex(isId);
+          console.log("delete request: ", index);
+          dup.splice(index, 1);
+          console.log(dup);
+          setRequestList(dup);
           alert("Friend added");
-
           addedFriend = true;
         }
 
@@ -233,6 +288,7 @@ const Friends = (scheduleList, setSchedulesList) => {
       });
   }
 
+
   return (
     <>
       <ScheduleView
@@ -252,7 +308,7 @@ const Friends = (scheduleList, setSchedulesList) => {
       <div className="friendsSide">
         <div className="listWindow">
           <h3>Friends</h3>
-          <FriendsList setFriendSchedule={setSchedule}></FriendsList>
+          <FriendsList friendsList={friendsList} setFriendSchedule={setSchedule}></FriendsList>
         </div>
         <br />
         <div className="listWindow">
@@ -260,7 +316,7 @@ const Friends = (scheduleList, setSchedulesList) => {
           <div>Send Friend Request</div>
           <br />
           <form
-            style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}
+            style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", margin: "0px 0px 30px" }}
             onSubmit={sendFriendRequest}
           >
             <Autocomplete
@@ -303,7 +359,7 @@ const Friends = (scheduleList, setSchedulesList) => {
               <SendIcon />
             </button>
           </form>
-          {/* TODO: add request list */}
+          <RequestsList requestList={requestList} setRequestList={setRequestList} />
         </div>
       </div>
     </>
@@ -311,61 +367,3 @@ const Friends = (scheduleList, setSchedulesList) => {
 }
 
 export default Friends
-
-function sleep(duration: number): Promise<void> {
-  return new Promise<void>((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, duration);
-  });
-}
-
-const topFilms = [
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-  { title: 'The Dark Knight', year: 2008 },
-  { title: '12 Angry Men', year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: 'Pulp Fiction', year: 1994 },
-  {
-    title: 'The Lord of the Rings: The Return of the King',
-    year: 2003,
-  },
-  { title: 'The Good, the Bad and the Ugly', year: 1966 },
-  { title: 'Fight Club', year: 1999 },
-  {
-    title: 'The Lord of the Rings: The Fellowship of the Ring',
-    year: 2001,
-  },
-  {
-    title: 'Star Wars: Episode V - The Empire Strikes Back',
-    year: 1980,
-  },
-  { title: 'Forrest Gump', year: 1994 },
-  { title: 'Inception', year: 2010 },
-  {
-    title: 'The Lord of the Rings: The Two Towers',
-    year: 2002,
-  },
-  { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
-  { title: 'Goodfellas', year: 1990 },
-  { title: 'The Matrix', year: 1999 },
-  { title: 'Seven Samurai', year: 1954 },
-  {
-    title: 'Star Wars: Episode IV - A New Hope',
-    year: 1977,
-  },
-  { title: 'City of God', year: 2002 },
-  { title: 'Se7en', year: 1995 },
-  { title: 'The Silence of the Lambs', year: 1991 },
-  { title: "It's a Wonderful Life", year: 1946 },
-  { title: 'Life Is Beautiful', year: 1997 },
-  { title: 'The Usual Suspects', year: 1995 },
-  { title: 'Léon: The Professional', year: 1994 },
-  { title: 'Spirited Away', year: 2001 },
-  { title: 'Saving Private Ryan', year: 1998 },
-  { title: 'Once Upon a Time in the West', year: 1968 },
-  { title: 'American History X', year: 1998 },
-  { title: 'Interstellar', year: 2014 },
-];
