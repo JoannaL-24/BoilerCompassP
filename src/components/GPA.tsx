@@ -30,16 +30,15 @@ export function GPA({ completed_courses, course_grades }: GPAProps) {
   let total_credits = 0
   let completed_credits = 0
   Object.keys(course_grades).forEach(id => {
-    let points = course_grades[id]
-    getCreditHours(id).then((credits) => {
-      total_credits += credits
-      total_weighted += points * credits
+    let [credits, points] = course_grades[id]
+    // console.log(id)
+    total_credits += credits
+    total_weighted += points * credits
 
-      if (completed_set.has(id)) {
-        completed_credits += credits
-        cumu_weighted += points * credits
-      }
-    })
+    if (completed_set.has(id)) {
+      completed_credits += credits
+      cumu_weighted += points * credits
+    }
   })
 
   let cumu_str = "Cumul. GPA: " + (

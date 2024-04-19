@@ -3,7 +3,7 @@ import { Droppable } from "react-beautiful-dnd";
 import DraggableCourse from "components/DraggableCourse/DraggableCourse";
 import "./Semester.css";
 
-const Semester = ({ semesterInfo, viewOnly }) => {
+const Semester = ({ semesterInfo, viewOnly, onCourseGradeChange = (a, b, c) => {} }) => {
   return (
     <div className="Semester">
       <div className="SemesterDescription">
@@ -28,6 +28,7 @@ const Semester = ({ semesterInfo, viewOnly }) => {
                 credit={course.credit}
                 classId={course.classId}
                 viewOnly={viewOnly}
+                onCourseGradeChange={onCourseGradeChange}
               />
             ))}
             {provided.placeholder}
