@@ -1,5 +1,5 @@
 .popup-overlay {
-  z-index: 9999 !important;
+  z-index: 999 !important;
   background: rgba(0, 0, 0, 0.5);
 }
 [data-popup="tooltip"].popup-overlay {

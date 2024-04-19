@@ -25,6 +25,7 @@ import { firestore } from "models/firebase.ts";
 import {getFirestore, doc, deleteDoc, getDoc, setDoc, updateDoc, arrayRemove, arrayUnion, Timestamp, addDoc, collection } from "firebase/firestore";
 import ChangeScheduleName from "components/ChangeScheduleName";
 import CopyScheduleButton from "components/CopyScheduleButton";
+import zIndex from "@mui/material/styles/zIndex";
 
 export default function ScheduleView({
     id,
@@ -210,7 +211,7 @@ export default function ScheduleView({
                                             <h3 className="Question">Your start date:</h3>
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DatePicker
-                                                    sx={{ mt: "1em", mb: "2em" }}
+                                                    sx={{ mt: "1em", mb: "2em", zIndex: 9999 }}
                                                     label="Select start year *"
                                                     views={["year"]}
                                                     shouldDisableYear={validStartYear}
