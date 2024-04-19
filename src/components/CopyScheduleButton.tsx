@@ -1,20 +1,37 @@
-import React , { useState, useEffect } from 'react'
-import { useAuth } from '../components/contexts/AuthContext.tsx'
-import { doc, getDoc, setDoc, updateDoc, arrayRemove, arrayUnion, Timestamp, addDoc, collection } from "firebase/firestore";
-import { firestore } from '../models/firebase.ts';
-import RemoteUserdata from '../models/RemoteUserData';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../components/contexts/AuthContext.tsx";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  arrayRemove,
+  arrayUnion,
+  Timestamp,
+  addDoc,
+  collection,
+} from "firebase/firestore";
+import { firestore } from "../models/firebase.ts";
+import RemoteUserdata from "../models/RemoteUserData";
 import UserData from "models/UserData.ts";
-import "./ZoeyButtonStyle.css"
+
+
+import "./ZoeyButtonStyle.css";
 
 const CopyScheduleButton = ({scheduleID, scheduleList, setscheduleList}) => {
 
+
+const CopyScheduleButton = ({ scheduleID }) => {
   const { currentUser } = useAuth();
   const [sList, setSList] = useState([]);
+
+  let userType = "";
 
   useEffect(() => {
     if (currentUser) {
       const user_doc = getDoc(doc(firestore, "users", currentUser.uid))
         .then((docSnapshot) => {
+          userType = docSnapshot.data().user_type;
             setSList(docSnapshot.data().schedule);
         });
     }
@@ -62,13 +79,15 @@ const CopyScheduleButton = ({scheduleID, scheduleList, setscheduleList}) => {
   };
 
   return (
-    <div>
-      <button className="btn" onClick={copySchedule}>
-      {/* <button style={{fontSize: "12px"}} onClick={copySchedule}> */}
-        Copy This Schedule
-      </button>
-    </div>
-  )
-}
+    userType === "student" && (
+      <div>
+        <button className="btn" onClick={copySchedule}>
+          {/* <button style={{fontSize: "12px"}} onClick={copySchedule}> */}
+          Copy This Schedule
+        </button>
+      </div>
+    )
+  );
+};
 
-export default CopyScheduleButton
+export default CopyScheduleButton;
