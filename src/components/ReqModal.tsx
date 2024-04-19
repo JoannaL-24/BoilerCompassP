@@ -50,7 +50,7 @@ export default function ReqModal({ open, handleClose, onReqSearch }) {
     <Popup open={open} onClose={handleClose}>
       <div
         className='popupModal'
-        style={{ minHeight: '400px', padding: '10px 20px' }}
+        style={{overflow: 'scroll', maxHeight: '600px', height: '600px', padding: '10px 20px' }}
       >
         <Typography id='modal-modal-title' variant='h4' component='h2'>
           Requirements Summary

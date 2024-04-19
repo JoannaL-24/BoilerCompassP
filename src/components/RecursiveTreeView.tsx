@@ -59,7 +59,7 @@ function ListFolder({
   completedCourses,
   onReqSearch,
 }: ListFolderProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(true)
   const [done, total] = getSatisfied(req, new Set(completedCourses))
   const [showSearch, setShowSearch] = useState(false)
   const completion = ((done / total) * 100).toFixed(2)
@@ -93,6 +93,7 @@ function ListFolder({
       </div>
       <ul
         style={{
+          marginTop: 0,
           display: isCollapsed ? 'none' : 'block',
           borderLeft: '1px dotted black',
         }}
