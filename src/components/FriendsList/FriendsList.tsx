@@ -14,58 +14,12 @@ import SharedSchedule from '../SharedSchedules/SharedSchedule.js';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 // const FriendsList = () => {
-const FriendsList = ({ setFriendSchedule }) => {
+  export default function FriendsList ({ friendsList, setFriendSchedule}) {
   const { currentUser } = useAuth();
-  const [friendsList, setFriendsIdList] = useState([]);
-  const [friendsNameList, setFriendsNameList] = useState([]);
-  const [listAnchorEl, setListAnchorEl] = useState<null | HTMLElement>(null);
   const userData: UserData = new RemoteUserdata();
 
   const [userID, setuserID] = useState(null); // this will be passed in
   const [openScheduleList, setOpenScheduleList] = useState(false);
-
-  const friendsOpen = Boolean(listAnchorEl);
-  const handleFriendsClick = (event: React.MouseEvent<HTMLElement>) => {
-    setListAnchorEl(event.currentTarget);
-  };
-  const handleFriendsClose = () => {
-    setListAnchorEl(null);
-  };
-
-  useEffect(() => {
-    if (!currentUser) return;
-    getDoc(doc(firestore, "users", currentUser.uid))
-      .then((docSnapshot) => {
-        let friends = docSnapshot.data().friends;
-        const friendPromises = friends.map(f => getDoc(doc(firestore, "users", f)));
-        Promise.all(friendPromises)
-          .then(friendSnapshots => {
-            const newFriendsList = friendSnapshots.map((friendSnap, index) => ({
-              id: friends[index],
-              name: friendSnap.data().name
-            }));
-            setFriendsIdList(newFriendsList);
-          })
-      })
-      .catch((error) => {
-        console.log("friendlist err");
-        console.log(error);
-      });
-  }, [currentUser]);
-
-  useEffect(() => {
-    console.log(friendsList);
-  }, [friendsList]);
-
-  // useEffect(() => {
-  //   console.log(friendsNameList);
-  // }, [friendsNameList]);
-
-  // const names = [];
-  // friendsList.forEach((element) => {
-  //   names.push(element.name);
-  // });
-  // console.log(names)
 
   const handleClick = (id) => {
     console.log("friend click: ", id);
@@ -90,5 +44,3 @@ const FriendsList = ({ setFriendSchedule }) => {
     </div>
   )
 }
-
-export default FriendsList

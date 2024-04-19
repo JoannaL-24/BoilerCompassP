@@ -261,31 +261,41 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
   const [filterCourses, setFilterCourses] = useState([]);
   const [filterName, setFilterName] = useState("");
 
-  // get firebase data (dark mode & schedule) if the user is a firebase user
   useEffect(() => {
-    if (currentUser) {
-      getDoc(doc(firestore, "users", currentUser.uid))
-        .then((docSnapshot) => {
-          setDarkmode(docSnapshot.data().dark_mode);
-          let scheduleArr = docSnapshot.data().schedule;
-          if (scheduleArr.length > 0) {
-            const schedulePromises = scheduleArr.map(s => getDoc(doc(firestore, "schedules", s)));
-            Promise.all(schedulePromises)
-              .then((scheduleSnapshot) => {
-                const newScheduleList = scheduleSnapshot.map((scheduleSnap, index) => ({
-                  id: scheduleArr[index],
-                  name: scheduleSnap.data().name
-                }));
-                setSchedulesList(newScheduleList);
-              })
-          }
-          setCompletedCourses(docSnapshot.data().completed_courses);
-        })
-        .catch((error) => {
-          console.error("Fetch Data Error:", error);
-        });
-    }
-  }, [currentUser]);
+        if (currentUser) {
+            getDoc(doc(firestore, "users", currentUser.uid))
+                .then((docSnapshot) => {
+                    setDarkmode(docSnapshot.data().dark_mode);
+                    setCompletedCourses(docSnapshot.data().completed_courses);
+                })
+                .catch((error) => {
+                    console.error("Fetch Data Error:", error);
+                });
+        }
+    }, [currentUser]);
+
+    useEffect(() => {
+        if (currentUser) {
+            getDoc(doc(firestore, "users", currentUser.uid))
+                .then((docSnapshot) => {
+                    let scheduleArr = docSnapshot.data().schedule;
+                    if (scheduleArr.length > 0) {
+                        const schedulePromises = scheduleArr.map(s => getDoc(doc(firestore, "schedules", s)));
+                        Promise.all(schedulePromises)
+                            .then((scheduleSnapshot) => {
+                                const newScheduleList = scheduleSnapshot.map((scheduleSnap, index) => ({
+                                    id: scheduleArr[index],
+                                    name: scheduleSnap.data().name
+                                }));
+                                setSchedulesList(newScheduleList);
+                            })
+                    }
+                })
+                .catch((error) => {
+                    console.error("Fetch Data Error:", error);
+                });
+        }
+    }, [currentUser]);
 
   // get the curr schedule data
   useEffect(() => {
@@ -762,7 +772,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
       for (let i = 0; i < total_semesters; i++) {
         semester_blocks.pop();
       }
-
       console.log(semester_blocks);
     }
 
@@ -961,21 +970,40 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
               changeScheduleName={changeScheduleName}
               completedCourses={completedCourses}
             />
-            <ThemeProvider theme={mode}>
-              <div className="ScheduleSide">
-                <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
-                <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal} onReqSearch={onReqSearch} />
-                <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={!userOwnSchedule}
-                  filterCourses={filterCourses} setFilterCourses={setFilterCourses} filterName={filterName} setFilterName={setFilterName} />
-                {/* <FriendsList/> */}
-                {/* <CopyScheduleButton scheduleID="g5ZWE0nw9llkRznXVopn"/> */}
-              </div>
-            </ThemeProvider>
-          </> : <>
-            <Friends scheduleList={schedulesList} setscheduleList={setSchedulesList} />
-          </>
-          }
-        </DragDropContext>
-      </div>
-    </div>)
+
+            <div className="DegreeContent">
+                <DragDropContext onDragEnd={handleDragDrop}>
+                    {userOwnSchedule ? <>
+                        <ScheduleView
+                            id={currSchedule.id}
+                            name={currSchedule.name}
+                            semesterBlocks={semesterBlocks}
+                            setParentSemesterBlocks={adjustSemesterBlocks}
+                            viewOnly={!userOwnSchedule}
+                            completed={completed}
+                            planned={planned}
+                            total={total}
+                            scheduleList={schedulesList}
+                            setscheduleList={setSchedulesList}
+                            deleteSchedule={deleteSchedule}
+                            changeScheduleName={changeScheduleName}
+                            completedCourses={completedCourses}
+                        />
+                        <ThemeProvider theme={mode}>
+                            <div className="ScheduleSide">
+                                <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
+                                <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal} />
+                                <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={!userOwnSchedule} />
+                                {/* <FriendsList/> */}
+                                {/* <CopyScheduleButton scheduleID="g5ZWE0nw9llkRznXVopn"/> */}
+                            </div>
+                        </ThemeProvider>
+                    </> :
+                        <ThemeProvider theme={mode}>
+                            <Friends scheduleList={schedulesList} setscheduleList={setSchedulesList} />
+                        </ThemeProvider>
+                    }
+                </DragDropContext>
+            </div>
+        </div >)
 };
