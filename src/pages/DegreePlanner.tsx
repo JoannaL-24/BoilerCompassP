@@ -988,4 +988,4 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 </DragDropContext>
             </div>
         </div >)
-};
+
