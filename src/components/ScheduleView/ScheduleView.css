@@ -47,3 +47,7 @@
     justify-content: space-evenly;
     text-align: center;
 }
+
+.react-datedpicker-popper {
+    /* z-index: 9999 !important */
+}
