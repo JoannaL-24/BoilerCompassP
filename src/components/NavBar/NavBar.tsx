@@ -154,8 +154,7 @@ export default function NavBar({
                 {schedule.name}
               </MenuItem>
             ))}
-            <p>------------------------------</p>
-            <MenuItem onClick={createNewSchedule}>New Schedule +</MenuItem>
+            <MenuItem sx={{backgroundColor: "#ceb888"}} onClick={createNewSchedule}>Add Schedule +</MenuItem>
           </Menu>
         </> : <></>
         }

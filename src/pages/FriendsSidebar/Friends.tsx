@@ -151,7 +151,7 @@ const Friends = (scheduleList, setSchedulesList) => {
     return () => {
       active = false;
     };
-  }, [loading]);
+  }, [loading, open]);
 
   React.useEffect(() => {
     if (!open) {
@@ -235,7 +235,7 @@ const Friends = (scheduleList, setSchedulesList) => {
               <SendIcon />
             </button>
           </form>
-          
+          {/* TODO: add request list */}
         </div>
       </div>
     </>
