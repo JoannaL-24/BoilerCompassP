@@ -264,6 +264,18 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             getDoc(doc(firestore, "users", currentUser.uid))
                 .then((docSnapshot) => {
                     setDarkmode(docSnapshot.data().dark_mode);
+                    setCompletedCourses(docSnapshot.data().completed_courses);
+                })
+                .catch((error) => {
+                    console.error("Fetch Data Error:", error);
+                });
+        }
+    }, [currentUser]);
+
+    useEffect(() => {
+        if (currentUser) {
+            getDoc(doc(firestore, "users", currentUser.uid))
+                .then((docSnapshot) => {
                     let scheduleArr = docSnapshot.data().schedule;
                     if (scheduleArr.length > 0) {
                         const schedulePromises = scheduleArr.map(s => getDoc(doc(firestore, "schedules", s)));
@@ -276,7 +288,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                                 setSchedulesList(newScheduleList);
                             })
                     }
-                    setCompletedCourses(docSnapshot.data().completed_courses);
                 })
                 .catch((error) => {
                     console.error("Fetch Data Error:", error);
@@ -676,7 +687,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             console.log(semester_blocks.length)
             console.log(semester_blocks);
         }
-        
+
         //add at front
         if (semester_blocks[0].year - startY.$y > 0) {
             let orgStart = semester_blocks[0].year;
@@ -722,8 +733,8 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
 
             console.log(semester_blocks);
         }
-        
-         //delete at the front
+
+        //delete at the front
         if (startY.$y - semester_blocks[0].year > 0) {
             let removeYear = startY.$y - semester_blocks[0].year;
             console.log("remove year", removeYear);
@@ -759,7 +770,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             for (let i = 0; i < total_semesters; i++) {
                 semester_blocks.pop();
             }
-            
+
             console.log(semester_blocks);
         }
 
@@ -833,9 +844,9 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                             })
                                 .then(() => {
                                     const dup = schedulesList;
-                                    dup.splice(schedulesList.length, 0, {id: document.id, name: "New Schedule"});
+                                    dup.splice(schedulesList.length, 0, { id: document.id, name: "New Schedule" });
                                     setSchedulesList(dup);
-                                    setCurrSchedule({id: document.id, name: "New Schedule"});
+                                    setCurrSchedule({ id: document.id, name: "New Schedule" });
                                     // setSemesterBlocks(newSchedule.semester_blocks);
                                 })
                         })
@@ -959,11 +970,12 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                                 {/* <CopyScheduleButton scheduleID="g5ZWE0nw9llkRznXVopn"/> */}
                             </div>
                         </ThemeProvider>
-                    </> : <>
-                        <Friends scheduleList={schedulesList} setscheduleList={setSchedulesList} />
-                    </>
+                    </> :
+                        <ThemeProvider theme={mode}>
+                            <Friends scheduleList={schedulesList} setscheduleList={setSchedulesList} />
+                        </ThemeProvider>
                     }
                 </DragDropContext>
             </div>
-        </div>)
+        </div >)
 };
