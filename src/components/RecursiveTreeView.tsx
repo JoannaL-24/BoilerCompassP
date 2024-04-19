@@ -74,6 +74,7 @@ function ListFolder({
         else rec(crit.requirement.criteria)
       })
     }
+    rec(req.criteria)
     onReqSearch(name, [...s])
   }
   return (
@@ -110,6 +111,7 @@ function ListFolder({
             <ListItem
               course={crit.course}
               completed={new Set(completedCourses).has(crit.course.id)}
+              onReqSearch={onReqSearch}
             />
           ),
         )}

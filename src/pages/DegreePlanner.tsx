@@ -925,6 +925,14 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     setReqModalOpen(false);
   };
 
+  const onReqSearch = (name, courses) => {
+    // console.log(name)
+    // console.log(courses)
+    setFilterName(name)
+    setFilterCourses(courses)
+    setReqModalOpen(false);
+  }
+
   return (
     <div className="DegreeOverview">
       <NavBar
@@ -956,7 +964,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             <ThemeProvider theme={mode}>
               <div className="ScheduleSide">
                 <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
-                <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal} />
+                <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal} onReqSearch={onReqSearch} />
                 <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={!userOwnSchedule}
                   filterCourses={filterCourses} setFilterCourses={setFilterCourses} filterName={filterName} setFilterName={setFilterName} />
                 {/* <FriendsList/> */}
