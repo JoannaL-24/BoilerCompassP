@@ -110,11 +110,6 @@ const SCHEDULE_DATA = {
 const Friends = (scheduleList, setSchedulesList) => {
   const [schedule, setSchedule] = useState(SCHEDULE_DATA);
 
-  // useEffect(() => {
-  //   console.log("setting new curr schedule");
-  //   console.log(scheduleList);
-  // }, [scheduleList]);
-
   return (
     <>
       <ScheduleView

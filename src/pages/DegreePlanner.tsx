@@ -801,11 +801,12 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                             setscheduleList={setSchedulesList}
                             deleteSchedule={deleteSchedule}
                             changeScheduleName={changeScheduleName}
+                            completedCourses={completedCourses}
                         />
                         <ThemeProvider theme={mode}>
                             <div className="ScheduleSide">
                                 <button className="mediumBtn goldBtn" onClick={handleOpenReqModal}><h3>Requirement</h3></button>
-                                <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal} />
+                                <ReqModal open={reqModalOpen} handleClose={handleCloseReqModal}/>
                                 <Searchbar parentSearch={searchResult} updateParentSearch={setSearchResult} viewOnly={!userOwnSchedule} />
                                 {/* <FriendsList/> */}
                                 {/* <CopyScheduleButton scheduleID="g5ZWE0nw9llkRznXVopn"/> */}

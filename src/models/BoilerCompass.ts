@@ -99,6 +99,7 @@ export interface RequirementCriterion {
  * equal to the size of the list of criteria.
  */
 export interface Requirement {
+  name: string
   numNeeded: number
   criteria: (CourseCriterion | RequirementCriterion)[]
 }

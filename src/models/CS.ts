@@ -220,6 +220,7 @@ export const courses = {
 }
 
 export const CSCoreReq: Requirement = {
+  name: 'CS Core',
   numNeeded: 6,
   criteria: [
     { type: 'course', course: courses.CS180 },
@@ -232,11 +233,13 @@ export const CSCoreReq: Requirement = {
 }
 
 export const CalcReq: Requirement = {
+  name: 'Calculus',
   numNeeded: 2,
   criteria: [
     {
       type: 'requirement',
       requirement: {
+        name: 'Calculus I',
         numNeeded: 1,
         criteria: [
           { type: 'course', course: courses.MA161 },
@@ -247,6 +250,7 @@ export const CalcReq: Requirement = {
     {
       type: 'requirement',
       requirement: {
+        name: 'Calculus II',
         numNeeded: 1,
         criteria: [
           { type: 'course', course: courses.MA162 },
@@ -258,6 +262,7 @@ export const CalcReq: Requirement = {
 }
 
 export const StatReq: Requirement = {
+  name: 'Statistics',
   numNeeded: 1,
   criteria: [
     {
@@ -272,12 +277,14 @@ export const StatReq: Requirement = {
 }
 
 export const SWETrack: Requirement = {
+  name: 'Software Engineering Track',
   numNeeded: 6,
   criteria: [
     { type: 'course', course: courses.CS307 },
     {
       type: 'requirement',
       requirement: {
+        name: 'OS and Compilers',
         numNeeded: 1,
         criteria: [
           { type: 'course', course: courses.CS352 },
@@ -291,6 +298,7 @@ export const SWETrack: Requirement = {
     {
       type: 'requirement',
       requirement: {
+        name: 'Software Engineering Elective',
         numNeeded: 1,
         criteria: [
           { type: 'course', course: courses.CS348 },
@@ -316,17 +324,20 @@ export const SWETrack: Requirement = {
 }
 
 export const LinAlgReq: Requirement = {
-    numNeeded: 1,
-    criteria: [{ type: 'course', course: courses.MA265 }]
+  name: 'Linear Algebra',
+  numNeeded: 1,
+  criteria: [{ type: 'course', course: courses.MA265 }],
 }
 
 // only swe track for now
 export const TracksReq: Requirement = {
+  name: 'CS Tracks',
   numNeeded: 1,
   criteria: [{ type: 'requirement', requirement: SWETrack }],
 }
 
 export const CS: Requirement = {
+  name: 'B.S. Computer Science',
   numNeeded: 5,
   criteria: [
     { type: 'requirement', requirement: CSCoreReq },

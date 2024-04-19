@@ -25,6 +25,7 @@ import { firestore } from "models/firebase.ts";
 import { getFirestore, doc, deleteDoc, getDoc, setDoc, updateDoc, arrayRemove, arrayUnion, Timestamp, addDoc, collection } from "firebase/firestore";
 import ChangeScheduleName from "components/ChangeScheduleName";
 import CopyScheduleButton from "components/CopyScheduleButton";
+import zIndex from "@mui/material/styles/zIndex";
 
 export default function ScheduleView({
     id,
@@ -34,6 +35,7 @@ export default function ScheduleView({
     completed,
     planned,
     total,
+    completedCourses = [],
     viewOnly,
     scheduleList,
     setscheduleList,
@@ -54,8 +56,7 @@ export default function ScheduleView({
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
     const [open, setOpen] = useState(false);
-    // const [completedCourses, setCompletedCourses] = useState([]);
-    // const [courseGrades, setCourseGrades] = useState({});
+    const [courseGrades, setCourseGrades] = useState({});
     const closeModal = () => setOpen(false);
     const year = dayjs().get('year');
     const validStartYear = (date) => !((year - date.get('year') >= 0) && (year - date.get('year') <= 10));
@@ -68,9 +69,9 @@ export default function ScheduleView({
             newRender.push(
                 <div key={i} className="Year">
                     <h3 style={{ padding: "150px 0px" }}>{semesterBlocks[i].year}<br />-<br />{semesterBlocks[i].year + 1}</h3>
-                    <Semester key={i} semesterInfo={semesterBlocks[i]} viewOnly={viewOnly} />
-                    <Semester key={i + 1} semesterInfo={semesterBlocks[i + 1]} viewOnly={viewOnly} />
-                    <Semester key={i + 2} semesterInfo={semesterBlocks[i + 2]} viewOnly={viewOnly} />
+                    <Semester key={i} semesterInfo={semesterBlocks[i]} viewOnly={viewOnly} onCourseGradeChange={onCourseGradeChange} />
+                    <Semester key={i + 1} semesterInfo={semesterBlocks[i + 1]} viewOnly={viewOnly} onCourseGradeChange={onCourseGradeChange}/>
+                    <Semester key={i + 2} semesterInfo={semesterBlocks[i + 2]} viewOnly={viewOnly} onCourseGradeChange={onCourseGradeChange}/>
                 </div>
             );
         }
@@ -177,6 +178,50 @@ export default function ScheduleView({
             })
         alert("Schedule Copied!");
     };
+      
+    const deleteSchedule = () => {
+        console.log("delete schedule");
+        const check = confirm("Are you sure you want to delete this schedule?");
+        if (check) {
+            //update scheduleList
+            const newList = scheduleList.list;
+            const index = newList.indexOf(id);
+            newList.splice(index, 1);
+            setscheduleList({...scheduleList, list:newList});
+
+            //remove from the user's list of schedules
+            if (currentUser) {
+                const userDoc = doc(firestore, "users", currentUser.uid);
+                updateDoc(userDoc, {
+                    schedule: newList
+                });
+            }
+
+            //remove the schedule from firestore
+            const scheduleRef = doc(firestore, "schedules", id);
+            deleteDoc(scheduleRef);
+
+            alert("Schedule Deleted.")
+        }
+        else {alert("Schedule Not Deleted.")}
+    }
+
+    const onCourseGradeChange = (id, credits, points) => {
+      setCourseGrades((c) => {
+        const cc = structuredClone(c)
+        if (points == null) {
+          if (cc[id])
+            delete cc[id]
+        } else {
+          cc[id] = [credits, points]
+        }
+        userData.put("course_grades", cc)
+        userData.get("course_grades").then((x) => console.log(x))
+        return cc;
+      })
+    }
+
+    console.log(scheduleList)
 
     return (
         <div className="ScheduleView">
@@ -213,7 +258,7 @@ export default function ScheduleView({
                                             <h3 className="Question">Your start date:</h3>
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DatePicker
-                                                    sx={{ mt: "1em", mb: "2em" }}
+                                                    sx={{ mt: "1em", mb: "2em", zIndex: 9999 }}
                                                     label="Select start year *"
                                                     views={["year"]}
                                                     shouldDisableYear={validStartYear}
@@ -272,7 +317,7 @@ export default function ScheduleView({
             </div>
             <Box sx={{ display: 'flex', alignItems: 'end' }} >
                 <ProgressBar completed={completed} planned={planned} total={total} />
-                {/* {!viewOnly && <GPA completed_courses={completedCourses} course_grades={courseGrades}/>} */}
+                {!viewOnly && <GPA completed_courses={completedCourses} course_grades={courseGrades}/>}
             </Box>
             <div className="SemesterYears">
                 {semesterRender}
