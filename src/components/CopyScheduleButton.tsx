@@ -14,69 +14,9 @@ import {
 import { firestore } from "../models/firebase.ts";
 import RemoteUserdata from "../models/RemoteUserData";
 import UserData from "models/UserData.ts";
-
-
 import "./ZoeyButtonStyle.css";
 
-const CopyScheduleButton = ({scheduleID, scheduleList, setscheduleList}) => {
-
-
-const CopyScheduleButton = ({ scheduleID }) => {
-  const { currentUser } = useAuth();
-  const [sList, setSList] = useState([]);
-
-  let userType = "";
-
-  useEffect(() => {
-    if (currentUser) {
-      const user_doc = getDoc(doc(firestore, "users", currentUser.uid))
-        .then((docSnapshot) => {
-          userType = docSnapshot.data().user_type;
-            setSList(docSnapshot.data().schedule);
-        });
-    }
-  }, [currentUser]);
-
-  const copySchedule = () => {
-    //copy a schedule doc and put in the database for this user
-    console.log(scheduleID);
-    getDoc(doc(firestore, "schedules", scheduleID))
-      .then((scheduleSnap) => {
-          const dbRef = collection(firestore, "schedules");
-          const cpy = scheduleSnap.data();
-          addDoc(dbRef, cpy)
-          .then(docRef => {
-            console.log(docRef.id);
-
-            //update scheduleList
-            console.log(scheduleList);
-            const newList = scheduleList.list;
-            newList.splice(newList.length, 1, docRef.id);
-            setscheduleList({...scheduleList, list:newList});
-
-            //update firestore
-            const copied = sList;
-            copied.splice(0, 0, docRef.id);
-            if (currentUser) {
-              const userRef = doc(firestore, "users", currentUser.uid);
-              updateDoc(userRef, {
-                  "schedule": copied
-              })
-              .catch((e) => {
-                  console.log("update schedule array error");
-                  console.log(e);
-              })
-            }
-           
-          })
-      })
-      .catch((error) => {
-          console.log(error);
-      })
-
-
-      alert("Schedule Copied!");
-  };
+const CopyScheduleButton = ({copySchedule}) => {
 
   return (
     userType === "student" && (

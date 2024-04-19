@@ -314,6 +314,7 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
             <div>
               <DragDropContext onDragEnd={handleDragDrop}>
                 <div
+                  className="advisorDisplaySchedule"
                   style={{
                     height: "700px",
                     overflowY: "auto",
@@ -355,6 +356,8 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
                     }
                     scheduleList={scheduleList}
                     setscheduleList={setscheduleList}
+                    deleteSchedule={undefined}
+                    changeScheduleName={undefined}
                   />
                 </div>
               </DragDropContext>

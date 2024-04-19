@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Friends.css";
 import ScheduleView from "components/ScheduleView/ScheduleView";
 import { getSatisfied } from "models/BoilerCompass";
@@ -21,12 +21,12 @@ const SCHEDULE_DATA = {
       credit: 4,
       course_list: [
         // {
-          // id: "24508954-e0bc-407f-a823-ff348a51ac99",
-          // classId: "1842e869-5d34-410a-b3e5-3ca3de853edf",
-          // course: "CS18000",
-          // description: "something",
-          // credit: 4,
-          // meeting: null
+        // id: "24508954-e0bc-407f-a823-ff348a51ac99",
+        // classId: "1842e869-5d34-410a-b3e5-3ca3de853edf",
+        // course: "CS18000",
+        // description: "something",
+        // credit: 4,
+        // meeting: null
         // },
       ],
     },
@@ -107,8 +107,8 @@ const SCHEDULE_DATA = {
   planned_courses: []
 }
 
-const Friends = ({scheduleList, setscheduleList}) => {
-   const [schedule, setSchedule] = useState(SCHEDULE_DATA);
+const Friends = (scheduleList, setSchedulesList) => {
+  const [schedule, setSchedule] = useState(SCHEDULE_DATA);
 
   return (
     <>
@@ -125,7 +125,8 @@ const Friends = ({scheduleList, setscheduleList}) => {
         planned={schedule.planned}
         total={schedule.total}
         scheduleList={scheduleList}
-        setscheduleList={setscheduleList}
+        setscheduleList={setSchedulesList}
+        deleteSchedule={undefined}
       />
       {/* TODO: change classname to scheduleSide if applicable */}
       <div className="friendsSide">

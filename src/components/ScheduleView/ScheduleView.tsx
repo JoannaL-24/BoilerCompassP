@@ -22,7 +22,7 @@ import Popup from "reactjs-popup";
 import Button from "@material-ui/core/Button";
 import { GPA } from "components/GPA";
 import { firestore } from "models/firebase.ts";
-import {getFirestore, doc, deleteDoc, getDoc, setDoc, updateDoc, arrayRemove, arrayUnion, Timestamp, addDoc, collection } from "firebase/firestore";
+import { getFirestore, doc, deleteDoc, getDoc, setDoc, updateDoc, arrayRemove, arrayUnion, Timestamp, addDoc, collection } from "firebase/firestore";
 import ChangeScheduleName from "components/ChangeScheduleName";
 import CopyScheduleButton from "components/CopyScheduleButton";
 import zIndex from "@mui/material/styles/zIndex";
@@ -38,8 +38,11 @@ export default function ScheduleView({
     completedCourses = [],
     viewOnly,
     scheduleList,
-    setscheduleList
+    setscheduleList,
+    deleteSchedule,
+    changeScheduleName
 }) {
+    const [userType, setUserType] = useState("");
     const [semesterRender, setSemesterRender] = useState([]);
     const { currentUser } = useAuth();
     const hiddenFileInput = useRef(null);
@@ -58,7 +61,7 @@ export default function ScheduleView({
     const year = dayjs().get('year');
     const validStartYear = (date) => !((year - date.get('year') >= 0) && (year - date.get('year') <= 10));
     const validEndYear = (date) => !((date.get('year') - year >= 0) && (date.get('year') - year <= 10));
-    
+
     // Render the semester blocks UI
     useEffect(() => {
         let newRender = [];
@@ -78,6 +81,17 @@ export default function ScheduleView({
     useEffect(() => {
         if (currentUser)
             setUserData(remote);
+        getDoc(doc(firestore, "users", currentUser.uid))
+            .then((userSnap) => {
+                if (userSnap.exists()) {
+                    setUserType(userSnap.data().user_type);
+                } else {
+                    console.log("User data not found");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     }, [currentUser])
 
     // useEffect(() => {
@@ -132,6 +146,39 @@ export default function ScheduleView({
         setParentSemesterBlocks(scheduleDate.startTerm, scheduleDate.endTerm);
     }
 
+    const copySchedule = () => {
+        //copy a schedule doc and put in the database for this user
+        console.log(id);
+        if (id === "1" || id === null) return;
+        getDoc(doc(firestore, "schedules", id))
+            .then((scheduleSnap) => {
+                const dbRef = collection(firestore, "schedules");
+                const cpy = scheduleSnap.data();
+                addDoc(dbRef, cpy)
+                    .then(docRef => {
+                        console.log(docRef.id);
+                        // const copied = scheduleList;
+                        // copied.splice(0, 0, docRef.id);
+                        if (currentUser) {
+                            updateDoc(doc(firestore, "users", currentUser.uid), {
+                                schedule: arrayUnion(docRef.id)
+                            })
+                                .then(() => {
+                                    // TODO: fix this part
+                                    console.log(scheduleList.scheduleList);
+                                    const newScheduleList = [...scheduleList.scheduleList];
+                                    newScheduleList.push({ id: docRef.id, name: name });
+                                    scheduleList.setscheduleList(newScheduleList);
+                                })
+                        }
+                    })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        alert("Schedule Copied!");
+    };
+      
     const deleteSchedule = () => {
         console.log("delete schedule");
         const check = confirm("Are you sure you want to delete this schedule?");
@@ -184,7 +231,7 @@ export default function ScheduleView({
                     {
                         (currentUser && !viewOnly) ? <>
                             <li>
-                                <ChangeScheduleName scheduleID={id} scheduleList={scheduleList} setscheduleList={setscheduleList} />
+                                <ChangeScheduleName changeScheduleName={changeScheduleName} />
                             </li>
                             <li>
                                 <a className="DescrBtn" onClick={handleClickImport}
@@ -251,18 +298,16 @@ export default function ScheduleView({
                                             <Button type="submit" onClick={editScheduleDate} variant="outlined">Edit</Button>
                                         </Box>
                                         <Box className="Btn">
-                                            <Button type="submit" onClick={deleteSchedule} variant="outlined">Delete This Schedule</Button>
+                                            <Button type="submit" onClick={() => { deleteSchedule(id); closeModal(); }} variant="outlined">Delete This Schedule</Button>
                                         </Box>
 
                                     </div>
                                 </Popup>
                             </li>
-                        </> : <>
-                            <li>
-                                <CopyScheduleButton scheduleID={id} scheduleList={scheduleList} setscheduleList={setscheduleList}/>
-                            </li>
-                        </>
-                        
+                        </> : <></>
+                    }
+                    { (viewOnly && userType === "student") ?
+                        <ChangeScheduleName changeScheduleName={changeScheduleName}/> : <></>
                     }
 
                     {/* <li>
