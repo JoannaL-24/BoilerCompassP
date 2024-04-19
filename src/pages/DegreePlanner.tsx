@@ -624,11 +624,16 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             endY.$y == semesterBlocks[semesterBlocks.length - 1].year
         )
             return;
-        let needYear = endY.$y - semesterBlocks[semesterBlocks.length - 1].year;
-        console.log("need year", needYear);
-        if (needYear > 0) {
+
+        //add at the end
+        if (endY.$y - semesterBlocks[semesterBlocks.length - 1].year > 0) {
+            let needYear = endY.$y - semesterBlocks[semesterBlocks.length - 1].year;
+            console.log("need year", needYear);
             let total_semesters = needYear * 3;
             const semester_blocks = [...semesterBlocks];
+
+            console.log(semester_blocks.length)
+
             let term = "Summer";
             let addYear = 0;
             let ind = semesterBlocks.length;
@@ -648,6 +653,137 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                     credit: 0,
                 };
                 semester_blocks[ind + i] = semester;
+            }
+            console.log(semester_blocks.length)
+            console.log(semester_blocks);
+            if (scheduleList.currId != "1") {
+                const semesterRef = doc(firestore, "schedules", scheduleList.currId);
+                updateDoc(semesterRef, {
+                    start_term: Timestamp.fromDate(new Date(startY)),
+                    end_term: Timestamp.fromDate(new Date(endY)),
+                    semester_blocks: semester_blocks,
+                })
+                setSemesterBlocks(semester_blocks);
+                    // .then(() => {
+                    //     setSemesterBlocks(semester_blocks);
+                    // })
+                    // .catch((e) => {
+                    //     console.log("drag firebase update error");
+                    //     console.log(e);
+                    // });
+            }
+        }
+        
+        //add at front
+        if (semesterBlocks[0].year - startY.$y > 0) {
+            let orgStart = semesterBlocks[0].year;
+            let needYear = semesterBlocks[0].year - startY.$y;
+            console.log("need year", needYear);
+            let total_semesters = needYear * 3;
+            const semester_blocks = [...semesterBlocks];
+
+            console.log(semester_blocks.length)
+
+            let term = "Summer";
+            let minusYear = 0;
+            for (let i = 0; i < total_semesters; i++) {
+                term = "Summer";
+                if (i % 3 == 0) {
+                    term = "Fall";
+                } else if (i % 3 == 1) {
+                    term = "Spring";
+                    minusYear++;
+                }
+                let semester = {
+                    id: i,
+                    year: orgStart - minusYear,
+                    term: term,
+                    course_list: [],
+                    credit: 0,
+                };
+                // semester_blocks[ind + i] = semester;
+                semester_blocks.unshift(semester);
+            }
+
+            console.log(semester_blocks.length)
+
+            for (let i = 0; i < semester_blocks.length; i++) {
+                let semester = {
+                    id: i,
+                    year: semester_blocks[i].year,
+                    term: semester_blocks[i].term,
+                    course_list: semester_blocks[i].course_list,
+                    credit: semester_blocks[i].credit,
+                };
+                semester_blocks[i] = semester;
+            }
+
+            console.log(semester_blocks);
+            if (scheduleList.currId != "1") {
+                const semesterRef = doc(firestore, "schedules", scheduleList.currId);
+                updateDoc(semesterRef, {
+                    start_term: Timestamp.fromDate(new Date(startY)),
+                    end_term: Timestamp.fromDate(new Date(endY)),
+                    semester_blocks: semester_blocks,
+                })
+                    .then(() => {
+                        setSemesterBlocks(semester_blocks);
+                    })
+                    .catch((e) => {
+                        console.log("drag firebase update error");
+                        console.log(e);
+                    });
+            }
+        }
+        
+         //delete at the end
+         if (startY.$y - semesterBlocks[0].year > 0) {
+            let removeYear = startY.$y - semesterBlocks[0].year;
+            console.log("remove year", removeYear);
+            let total_semesters = removeYear * 3;
+            const semester_blocks = [...semesterBlocks];
+            for (let i = 0; i < total_semesters; i++) {
+                semester_blocks.shift();
+            }
+            for (let i = 0; i < semester_blocks.length; i++) {
+
+            }
+            console.log(semester_blocks);
+            if (scheduleList.currId != "1") {
+                const semesterRef = doc(firestore, "schedules", scheduleList.currId);
+                updateDoc(semesterRef, {
+                    start_term: Timestamp.fromDate(new Date(startY)),
+                    end_term: Timestamp.fromDate(new Date(endY)),
+                    semester_blocks: semester_blocks,
+                })
+                    .then(() => {
+                        setSemesterBlocks(semester_blocks);
+                    })
+                    .catch((e) => {
+                        console.log("drag firebase update error");
+                        console.log(e);
+                    });
+            }
+        }
+
+        //delete at front
+        if (semesterBlocks[semesterBlocks.length - 1].year - endY.$y > 0) {
+            let removeYear = semesterBlocks[semesterBlocks.length - 1].year - endY.$y;
+            console.log("remove year", removeYear);
+            let total_semesters = removeYear * 3;
+            const semester_blocks = [...semesterBlocks];
+            for (let i = 0; i < total_semesters; i++) {
+                semester_blocks.shift();
+            }
+            for (let i = 0; i < semester_blocks.length; i++) {
+                let semester = {
+                    id: i,
+                    year: semester_blocks[i].year,
+                    term: semester_blocks[i].term,
+                    course_list: semester_blocks[i].course_list,
+                    credit: semester_blocks[i].credit,
+                };
+                semester_blocks[i] = semester;
             }
             console.log(semester_blocks);
             if (scheduleList.currId != "1") {

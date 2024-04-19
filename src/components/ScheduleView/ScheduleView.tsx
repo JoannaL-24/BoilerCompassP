@@ -25,7 +25,7 @@ import { firestore } from "models/firebase.ts";
 import {getFirestore, doc, deleteDoc, getDoc, setDoc, updateDoc, arrayRemove, arrayUnion, Timestamp, addDoc, collection } from "firebase/firestore";
 import ChangeScheduleName from "components/ChangeScheduleName";
 import CopyScheduleButton from "components/CopyScheduleButton";
-import zIndex from "@mui/material/styles/zIndex";
+
 
 export default function ScheduleView({
     id,
@@ -130,6 +130,16 @@ export default function ScheduleView({
         }
         if (!go) return;
         setParentSemesterBlocks(scheduleDate.startTerm, scheduleDate.endTerm);
+
+        const userRef = doc(firestore, "schedules", id);
+            updateDoc(userRef, {
+                "start_term": scheduleDate.startTerm.$d,
+                "end_term": scheduleDate.endTerm.$d
+            })
+            .catch((e) => {
+                console.log("update schedule start end error");
+                console.log(e);
+            })
     }
 
     const deleteSchedule = () => {
