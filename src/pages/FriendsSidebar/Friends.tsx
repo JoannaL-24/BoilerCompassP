@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./Friends.css";
+import { useAuth } from 'components/contexts/AuthContext'
 import ScheduleView from "components/ScheduleView/ScheduleView";
 import { getSatisfied } from "models/BoilerCompass";
 import { CS } from "models/CS";
 import FriendsList from "components/FriendsList/FriendsList";
 import { TextField, Autocomplete, CircularProgress } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "models/firebase";
 
 const SCHEDULE_DATA = {
@@ -112,8 +113,9 @@ const SCHEDULE_DATA = {
 }
 
 const Friends = (scheduleList, setSchedulesList) => {
+  const { currentUser } = useAuth();
   const [schedule, setSchedule] = useState(SCHEDULE_DATA);
-  const [userSend, setUserSend] = useState("");
+  const [userSend, setUserSend] = useState({ id: null, email: "" });
   const [openSearchFriend, setOpenSearchFriend] = useState(false);
   const [searchFriendOpt, setSearchFriendOpt] = useState([]);
   const loading = open && searchFriendOpt.length === 0;
@@ -132,7 +134,7 @@ const Friends = (scheduleList, setSchedulesList) => {
     // })();
     const studentUsers = [];
     getDocs(collection(firestore, "users"))
-      .then ((docsSnapshot) => {
+      .then((docsSnapshot) => {
         docsSnapshot.forEach((doc) => {
           const userData = doc.data();
           if (userData.user_type === "student") {
@@ -144,10 +146,10 @@ const Friends = (scheduleList, setSchedulesList) => {
         });
         if (active)
           console.log(studentUsers);
-          // setSearchFriendOpt([...topFilms]);
-          setSearchFriendOpt(studentUsers);
+        // setSearchFriendOpt([...topFilms]);
+        setSearchFriendOpt(studentUsers);
       })
-    
+
     return () => {
       active = false;
     };
@@ -159,12 +161,76 @@ const Friends = (scheduleList, setSchedulesList) => {
     }
   }, [open]);
 
-  const sentFriendRequest = () => {
+  const sendFriendRequest = async () => {
     event.preventDefault();
     console.log("submit");
-    if (userSend === null) return;
-    console.log(userSend.id);
-    // TODO: add the request in firebase
+
+    console.log(userSend);
+
+    if (userSend === null || userSend.id === null) {
+      alert("No such user");
+      return;
+    }
+
+    // first check if user is in own requests, if so, add each other to friends
+    if (!currentUser) return;
+    const userRef = doc(firestore, "users", currentUser.uid);
+
+    getDoc(userRef)
+      .then(async (docSnapshot) => {
+        let requests = docSnapshot.data().requests || [];
+        let addedFriend = false;
+
+        if (requests.includes(userSend.id)) {
+          // add to friends
+          let newFriends = docSnapshot.data().friends || [];
+          newFriends.push(userSend.id);
+
+          // remove from requests
+          const newRequests = requests.filter((id) => id !== userSend.id);
+
+          // update user
+          await updateDoc(userRef, {
+            friends: newFriends,
+            requests: newRequests
+          });
+          alert("Friend added");
+
+          addedFriend = true;
+        }
+
+        return addedFriend;
+      })
+      .then((addedFriend) => {
+        if (addedFriend) return;
+
+        // else add request to other user
+        const otherUserRef = doc(firestore, "users", userSend.id);
+        getDoc(otherUserRef)
+          .then(async (docSnapshot) => {
+            let requests = docSnapshot.data().requests || [];
+            let friends = docSnapshot.data().friends || [];
+
+            // check if request already exists
+            if (!requests.includes(currentUser.uid) && !friends.includes(currentUser.uid)) {
+              requests.push(currentUser.uid);
+              await updateDoc(otherUserRef, {
+                requests: requests
+              });
+              alert("Request sent");
+            } else {
+              alert("Request already exists");
+            }
+          })
+          .catch((error) => {
+            console.log("send request err");
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log("send request err");
+        console.log(error);
+      });
   }
 
   return (
@@ -191,9 +257,11 @@ const Friends = (scheduleList, setSchedulesList) => {
         <br />
         <div className="listWindow">
           <h3>Requests</h3>
+          <div>Send Friend Request</div>
+          <br />
           <form
             style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}
-            onSubmit={sentFriendRequest}
+            onSubmit={sendFriendRequest}
           >
             <Autocomplete
               id="searchUser"
