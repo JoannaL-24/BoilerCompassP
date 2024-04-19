@@ -634,18 +634,26 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
         )
             return;
 
+        const semester_blocks = [...semesterBlocks];
+        console.log(semester_blocks.length)
+
         //add at the end
-        if (endY.$y - semesterBlocks[semesterBlocks.length - 1].year > 0) {
-            let needYear = endY.$y - semesterBlocks[semesterBlocks.length - 1].year;
+        if (endY.$y - semester_blocks[semester_blocks.length - 1].year > 0) {
+
+            console.log("sem block: ", semester_blocks[semester_blocks.length - 1].year)
+            console.log("new: ", endY.$y)
+
+            let needYear = endY.$y - semester_blocks[semester_blocks.length - 1].year;
             console.log("need year", needYear);
             let total_semesters = needYear * 3;
-            const semester_blocks = [...semesterBlocks];
+            // const semester_blocks = [...semesterBlocks];
 
             console.log(semester_blocks.length)
 
             let term = "Summer";
+            let orgEnd = semester_blocks[semester_blocks.length - 1].year;
             let addYear = 0;
-            let ind = semesterBlocks.length;
+            let ind = semester_blocks.length;
             for (let i = 0; i < total_semesters; i++) {
                 term = "Summer";
                 if (i % 3 == 0) {
@@ -656,7 +664,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 }
                 let semester = {
                     id: ind + i,
-                    year: semesterBlocks[semesterBlocks.length - 1].year + addYear,
+                    year: orgEnd + addYear,
                     term: term,
                     course_list: [],
                     credit: 0,
@@ -665,31 +673,15 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             }
             console.log(semester_blocks.length)
             console.log(semester_blocks);
-            if (scheduleList.currId != "1") {
-                const semesterRef = doc(firestore, "schedules", scheduleList.currId);
-                updateDoc(semesterRef, {
-                    start_term: Timestamp.fromDate(new Date(startY)),
-                    end_term: Timestamp.fromDate(new Date(endY)),
-                    semester_blocks: semester_blocks,
-                })
-                setSemesterBlocks(semester_blocks);
-                    // .then(() => {
-                    //     setSemesterBlocks(semester_blocks);
-                    // })
-                    // .catch((e) => {
-                    //     console.log("drag firebase update error");
-                    //     console.log(e);
-                    // });
-            }
         }
         
         //add at front
-        if (semesterBlocks[0].year - startY.$y > 0) {
-            let orgStart = semesterBlocks[0].year;
-            let needYear = semesterBlocks[0].year - startY.$y;
+        if (semester_blocks[0].year - startY.$y > 0) {
+            let orgStart = semester_blocks[0].year;
+            let needYear = semester_blocks[0].year - startY.$y;
             console.log("need year", needYear);
             let total_semesters = needYear * 3;
-            const semester_blocks = [...semesterBlocks];
+            // const semester_blocks = [...semesterBlocks];
 
             console.log(semester_blocks.length)
 
@@ -710,7 +702,6 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                     course_list: [],
                     credit: 0,
                 };
-                // semester_blocks[ind + i] = semester;
                 semester_blocks.unshift(semester);
             }
 
@@ -728,59 +719,15 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             }
 
             console.log(semester_blocks);
-            if (scheduleList.currId != "1") {
-                const semesterRef = doc(firestore, "schedules", scheduleList.currId);
-                updateDoc(semesterRef, {
-                    start_term: Timestamp.fromDate(new Date(startY)),
-                    end_term: Timestamp.fromDate(new Date(endY)),
-                    semester_blocks: semester_blocks,
-                })
-                    .then(() => {
-                        setSemesterBlocks(semester_blocks);
-                    })
-                    .catch((e) => {
-                        console.log("drag firebase update error");
-                        console.log(e);
-                    });
-            }
         }
         
-         //delete at the end
-         if (startY.$y - semesterBlocks[0].year > 0) {
-            let removeYear = startY.$y - semesterBlocks[0].year;
+         //delete at the front
+        if (startY.$y - semester_blocks[0].year > 0) {
+            let removeYear = startY.$y - semester_blocks[0].year;
             console.log("remove year", removeYear);
             let total_semesters = removeYear * 3;
-            const semester_blocks = [...semesterBlocks];
-            for (let i = 0; i < total_semesters; i++) {
-                semester_blocks.shift();
-            }
-            for (let i = 0; i < semester_blocks.length; i++) {
-
-            }
-            console.log(semester_blocks);
-            if (scheduleList.currId != "1") {
-                const semesterRef = doc(firestore, "schedules", scheduleList.currId);
-                updateDoc(semesterRef, {
-                    start_term: Timestamp.fromDate(new Date(startY)),
-                    end_term: Timestamp.fromDate(new Date(endY)),
-                    semester_blocks: semester_blocks,
-                })
-                    .then(() => {
-                        setSemesterBlocks(semester_blocks);
-                    })
-                    .catch((e) => {
-                        console.log("drag firebase update error");
-                        console.log(e);
-                    });
-            }
-        }
-
-        //delete at front
-        if (semesterBlocks[semesterBlocks.length - 1].year - endY.$y > 0) {
-            let removeYear = semesterBlocks[semesterBlocks.length - 1].year - endY.$y;
-            console.log("remove year", removeYear);
-            let total_semesters = removeYear * 3;
-            const semester_blocks = [...semesterBlocks];
+            console.log("total semesters", total_semesters)
+            // const semester_blocks = [...semesterBlocks];
             for (let i = 0; i < total_semesters; i++) {
                 semester_blocks.shift();
             }
@@ -795,21 +742,39 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 semester_blocks[i] = semester;
             }
             console.log(semester_blocks);
-            if (currSchedule.id != "1") {
-                const semesterRef = doc(firestore, "schedules", currSchedule.id);
-                updateDoc(semesterRef, {
-                    start_term: Timestamp.fromDate(new Date(startY)),
-                    end_term: Timestamp.fromDate(new Date(endY)),
-                    semester_blocks: semester_blocks,
-                })
-                    .then(() => {
-                        setSemesterBlocks(semester_blocks);
-                    })
-                    .catch((e) => {
-                        console.log("drag firebase update error");
-                        console.log(e);
-                    });
+        }
+
+        //delete at end
+        if (semester_blocks[semester_blocks.length - 1].year - endY.$y > 0) {
+
+            console.log("sem block: ", semester_blocks[semester_blocks.length - 1].year)
+            console.log("new: ", endY.$y)
+
+            let removeYear = semester_blocks[semester_blocks.length - 1].year - endY.$y;
+            console.log("remove year", removeYear);
+            let total_semesters = removeYear * 3;
+            // const semester_blocks = [...semesterBlocks];
+            for (let i = 0; i < total_semesters; i++) {
+                semester_blocks.pop();
             }
+            
+            console.log(semester_blocks);
+        }
+
+        if (currSchedule.id != "1") {
+            const semesterRef = doc(firestore, "schedules", currSchedule.id);
+            updateDoc(semesterRef, {
+                start_term: Timestamp.fromDate(new Date(startY)),
+                end_term: Timestamp.fromDate(new Date(endY)),
+                semester_blocks: semester_blocks,
+            })
+                .then(() => {
+                    setSemesterBlocks(semester_blocks);
+                })
+                .catch((e) => {
+                    console.log("drag firebase update error");
+                    console.log(e);
+                });
         }
     };
 
