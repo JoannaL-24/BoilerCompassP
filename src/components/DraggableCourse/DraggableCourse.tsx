@@ -140,7 +140,7 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({
   useEffect(() => {
     userData.get('course_grades').then((s) => {
       // console.log(s)
-      if (s[id]) {
+      if (s && s[id]) {
         const g = s[id][1]
         setGrade(g)
         // console.log(pointOptions[gradeToOption(g)])
@@ -155,7 +155,7 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({
     if (currentUser) {
       setUserData(remote)
       remote.get('course_grades').then((s) => {
-        if (s[id]) {
+        if (s && s[id]) {
           const g = s[id][1]
           setGrade(g)
           setGradeValue(pointOptions[gradeToOption(g)])
