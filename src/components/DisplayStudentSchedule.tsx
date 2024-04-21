@@ -48,6 +48,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
   return (
     <div
+      className="tab-box"
       role="tabpanel"
       hidden={value !== index}
       id={`schedule-tabpanel-${index}`}
@@ -276,7 +277,7 @@ const DisplayStudentSchedule = ({ selectedUser }) => {
   }, [selectedUser]);
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box className="schedule-box" sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
