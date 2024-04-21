@@ -41,6 +41,7 @@ import Typography from "@mui/material/Typography";
 
 function AdvisorHomepageFilter() {
   const [viewButtonClicked, setViewButtonClicked] = useState(false);
+  const [animateScheduleBox, setAnimateScheduleBox] = useState(false);
   const [value, setValue] = useState("female");
   const [userNames, setUserNames] = useState<
     {
@@ -72,7 +73,11 @@ function AdvisorHomepageFilter() {
   };
 
   const handleClose = () => {
-    setViewButtonClicked(false);
+    setAnimateScheduleBox(true); // Trigger animation
+    setTimeout(() => {
+      setViewButtonClicked(false); // Close the box after the animation completes
+    }, 500); // Adjust timing to match the animation duration
+    //setViewButtonClicked(false);
   };
 
   // useEffect(() => {
@@ -186,6 +191,17 @@ function AdvisorHomepageFilter() {
     fetchUserNames();
   }, []);
 
+  useEffect(() => {
+    if (animateScheduleBox) {
+      const schedulebox = document.querySelector(
+        ".real-schedule-box"
+      ) as HTMLElement;
+      if (schedulebox) {
+        schedulebox.style.animation = "dropBottom 0.5s linear";
+      }
+    }
+  }, [animateScheduleBox]);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     setSortingOption(event.target.value); // Set the sorting option
@@ -296,8 +312,6 @@ function AdvisorHomepageFilter() {
     setStudentEmails([""]); // Reset student emails to one empty field
   };
 
-  const forceUpdate = useReducer((bool) => !bool, false)[1];
-
   // Function to handle adding a student
   const handleAddStudent = async () => {
     const emails = studentEmails.filter((email) => email.trim() !== "");
@@ -334,7 +348,6 @@ function AdvisorHomepageFilter() {
       // setCurrentUserGroupsLength(
       //   currentUserGroups.length + groupsToUpdate.length
       // );
-      //forceUpdate(); // Force re-render to counter async  //maybe not needed?
     } catch (error) {
       console.error("Error updating groups:", error);
     }
@@ -653,7 +666,10 @@ function AdvisorHomepageFilter() {
           </ul>
           <Button
             variant="contained"
-            onClick={() => setViewButtonClicked(true)} //VIEW SCHEDULE
+            onClick={() => {
+              setAnimateScheduleBox(false);
+              setViewButtonClicked(true); //VIEW SCHEDULE
+            }}
             style={{
               marginTop: "10px",
               color: "#003fce",
@@ -663,6 +679,7 @@ function AdvisorHomepageFilter() {
             View Schedule
           </Button>
           <Modal
+            className="whereisit"
             open={viewButtonClicked}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
@@ -674,6 +691,7 @@ function AdvisorHomepageFilter() {
             }}
           >
             <div
+              className="real-schedule-box"
               style={{
                 position: "absolute",
 
@@ -699,7 +717,11 @@ function AdvisorHomepageFilter() {
               <DisplayStudentSchedule selectedUser={selectedUser} />
 
               <Button
-                onClick={handleClose}
+                //onClick={handleClose}
+                onClick={() => {
+                  setAnimateScheduleBox(true);
+                  handleClose();
+                }}
                 style={{
                   position: "absolute",
                   top: "10px",
