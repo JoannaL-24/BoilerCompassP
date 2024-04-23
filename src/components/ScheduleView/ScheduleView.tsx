@@ -25,6 +25,7 @@ import { firestore } from "models/firebase.ts";
 import { getFirestore, doc, deleteDoc, getDoc, setDoc, updateDoc, arrayRemove, arrayUnion, Timestamp, addDoc, collection } from "firebase/firestore";
 import ChangeScheduleName from "components/ChangeScheduleName";
 import CopyScheduleButton from "components/CopyScheduleButton";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 
 export default function ScheduleView({
@@ -40,7 +41,8 @@ export default function ScheduleView({
     scheduleList,
     setscheduleList,
     deleteSchedule,
-    changeScheduleName
+    changeScheduleName,
+    darkmode
 }) {
     const [userType, setUserType] = useState("");
     const [semesterRender, setSemesterRender] = useState([]);
@@ -61,6 +63,18 @@ export default function ScheduleView({
     const year = dayjs().get('year');
     const validStartYear = (date) => !((year - date.get('year') >= 0) && (year - date.get('year') <= 10));
     const validEndYear = (date) => !((date.get('year') - year >= 0) && (date.get('year') - year <= 10));
+
+    var mode_str;
+    if (darkmode) {
+      mode_str = "dark";
+    } else {
+      mode_str = "light";
+    }
+    const mode = createTheme({
+      palette: {
+        mode: mode_str,
+      },
+    });
 
     // Render the semester blocks UI
     useEffect(() => {
@@ -231,11 +245,13 @@ export default function ScheduleView({
                             </li>
                             <li>
                                 <a className="DescrBtn" onClick={() => setOpen(o => !o)}><SettingsIcon /></a>
+                               
                                 <Popup open={open} closeOnDocumentClick={false}>
                                     <div className='popupModal' style={{ minHeight: "400px", padding: "3px 20px" }}>
-                                        <a className="close" onClick={closeModal}>
+                                        <button className="close" onClick={closeModal}>
                                             &times;
-                                        </a>
+                                        </button>
+                                        <ThemeProvider  theme={mode}>
                                         <FormControl style={{ width: 400, display: "flex" }}>
                                             <h3 className="Question">Your start date:</h3>
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -276,15 +292,16 @@ export default function ScheduleView({
                                                 />
                                             </LocalizationProvider>
                                         </FormControl>
-                                        <Box className="Btn">
+                                        </ThemeProvider>
+                                        <Box className="Btn" style={{borderRadius: 20,backgroundColor: "#d7c494"}}>
                                             <Button type="submit" onClick={editScheduleDate} variant="outlined">Edit</Button>
                                         </Box>
-                                        <Box className="Btn">
-                                            <Button type="submit" onClick={() => { deleteSchedule(id); closeModal(); }} variant="outlined">Delete This Schedule</Button>
+                                        <Box className="Btn" style={{borderRadius: 20,backgroundColor: "#d7c494"}}>
+                                            <Button type="submit" onClick={() => { deleteSchedule(id); closeModal(); }}>Delete This Schedule</Button>
                                         </Box>
-
                                     </div>
                                 </Popup>
+                                
                             </li>
                         </> : <></>
                     }

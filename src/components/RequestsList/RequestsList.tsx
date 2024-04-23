@@ -16,7 +16,6 @@ export default function RequestsList({ requestList, addFromReq, deleteFromReq })
     const [reqRender, setReqRender] = useState([]);
 
     const acceptRequest = (user) => {
-
         const ref = doc(firestore, "users", currentUser.uid);
         getDoc(ref)
             .then(async (docSnapshot) => {
