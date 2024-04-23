@@ -550,7 +550,7 @@ function AdvisorHomepageFilter() {
                           <AccountCircle
                             sx={{ color: "action.active", fontSize: "40px" }}
                           />
-                          <span style={{ marginTop: "5px" }}>{user.name}</span>{" "}
+                          <span style={{ marginTop: "5px"}}>{user.name}</span>{" "}
                         </a>
                       ))
                   : filteredUserNames
@@ -594,7 +594,7 @@ function AdvisorHomepageFilter() {
                           <AccountCircle
                             sx={{ color: "action.active", fontSize: "40px" }}
                           />
-                          <span style={{ marginTop: "5px" }}>{user.name}</span>{" "}
+                          <div style={{ marginTop: "5px", color: "#d7c494"}}>{user.name}</div>{" "}
                         </a>
                       ))}
               </React.Fragment>
