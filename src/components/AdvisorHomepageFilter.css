@@ -10,6 +10,20 @@
   justify-content: space-between;
   background: var(--background);
   color: var(--textPrimary);
+
+  .popup-window {
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--background);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+    animation: dropTop 0.5s linear
+  }
 }
 
 .studentSearching {
@@ -42,6 +56,7 @@
     transform: translateY(-50%) translateX(-50%) scale(0);
     opacity: 0;
   }
+
   100% {
     transform: translateY(-50%) translateX(-50%) scale(1);
     opacity: 1;
@@ -53,6 +68,7 @@
     transform: translateY(-50%) translateX(-50%) scale(1);
     opacity: 1;
   }
+
   100% {
     transform: translateY(0) translateX(-50%) scale(0.5);
     opacity: 0;
@@ -65,8 +81,8 @@
 
 .radio-group-shadow:focus-within,
 .radio-group-shadow:hover {
-  box-shadow: 0 0 30px rgb(237, 148, 6);
-  background-color: #ffe1359a;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+  background-color: var(--backgroundSecondary);
   color: #333;
   /* //padding: 8px 12px; */
   font-size: 16px;
@@ -79,4 +95,26 @@
   .ScheduleView {
     width: 100% !important;
   }
+}
+
+.studentCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 20px;
+  width: 160px;
+  padding: 10px;
+  margin-right: 50px;
+  margin-bottom: 10px;
+  transition: transform 0.5s ease;
+  background-color: var(--cardBackground);
+  border: none;
+  color: var(--textSecondary);
+}
+
+.studentCard:hover {
+  transform: scale(1.15);
+  /* background-color: var(--light-gold); */
+  box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.2);
 }

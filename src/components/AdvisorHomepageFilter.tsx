@@ -401,7 +401,7 @@ function AdvisorHomepageFilter() {
             <br />
             <FormControl
               sx={{
-                border: "2px solid var(--textPrimary)",
+                border: "1.5px solid var(--textPrimary)",
                 borderRadius: "5px",
                 padding: "10px",
               }}
@@ -489,7 +489,8 @@ function AdvisorHomepageFilter() {
               variant="contained"
               style={{
                 marginTop: "20px", // Adjust margin top for spacing
-                backgroundColor: "#1976d2",
+                color: "var(--textPrimary)",
+                backgroundColor: "var(--accent)",
               }}
               onClick={handleDialogOpen}
             >
@@ -514,38 +515,11 @@ function AdvisorHomepageFilter() {
                       .map((user, index) => (
                         <a
                           key={index}
+                          className="studentCard"
                           href="#"
                           onClick={() => handleUserClick(user)}
                           onMouseEnter={() => setHoveredUser(user)}
                           onMouseLeave={() => setHoveredUser(null)}
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            textDecoration: "none",
-                            borderRadius: "20px",
-                            width: "160px",
-                            padding: "10px",
-                            marginRight: "50px",
-                            marginBottom: "10px",
-                            transform: `${
-                              clickedUser === user ? "scale(0.3)" : "scale(1)"
-                            } ${
-                              hoveredUser === user ? "scale(1.2)" : "scale(1)"
-                            }`,
-                            transition: "transform 0.5s ease",
-                            backgroundColor:
-                              hoveredUser === user ? "#87ceeb" : "",
-                            color: hoveredUser === user ? "white" : "",
-                            boxShadow:
-                              hoveredUser === user
-                                ? "10px 10px 20px rgba(128, 229, 216, 1)"
-                                : "",
-                            border:
-                              hoveredUser === user
-                                ? "1px solid white"
-                                : "1px solid var(--textPrimary)",
-                          }}
                         >
                           <AccountCircle
                             sx={{ color: "action.active", fontSize: "40px" }}
@@ -558,43 +532,16 @@ function AdvisorHomepageFilter() {
                       .map((user, index) => (
                         <a
                           key={index}
+                          className="studentCard"
                           href="#"
                           onClick={() => handleUserClick(user)}
                           onMouseEnter={() => setHoveredUser(user)}
                           onMouseLeave={() => setHoveredUser(null)}
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            textDecoration: "none",
-                            borderRadius: "20px",
-                            width: "160px",
-                            padding: "10px",
-                            marginRight: "50px",
-                            marginBottom: "10px",
-                            transform: `${
-                              clickedUser === user ? "scale(0.3)" : "scale(1)"
-                            } ${
-                              hoveredUser === user ? "scale(1.2)" : "scale(1)"
-                            }`,
-                            transition: "transform 0.5s ease",
-                            backgroundColor:
-                              hoveredUser === user ? "#87ceeb" : "",
-                            color: hoveredUser === user ? "white" : "",
-                            boxShadow:
-                              hoveredUser === user
-                                ? "10px 10px 20px rgba(128, 229, 216, 1)"
-                                : "",
-                            border:
-                              hoveredUser === user
-                                ? "1px solid white"
-                                : "1px solid var(--textPrimary)",
-                          }}
                         >
                           <AccountCircle
                             sx={{ color: "action.active", fontSize: "40px" }}
                           />
-                          <div style={{ marginTop: "5px", color: "#d7c494"}}>{user.name}</div>{" "}
+                          <div style={{ marginTop: "5px"}}>{user.name}</div>{" "}
                         </a>
                       ))}
               </React.Fragment>
@@ -607,20 +554,6 @@ function AdvisorHomepageFilter() {
       {selectedUser && (
         <div
           className="popup-window"
-          style={{
-            position: "fixed",
-
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            //backgroundColor: "white",
-            padding: "20px",
-            borderRadius: "10px",
-            boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
-
-            animation: "dropTop 0.5s linear",
-            backgroundColor: "#87ceeb",
-          }}
         >
           <button
             onClick={() => {
@@ -637,12 +570,14 @@ function AdvisorHomepageFilter() {
               top: "10px",
               right: "10px",
               padding: "3px 8px",
-              borderRadius: "5px",
+              borderRadius: "10px",
               border: "none",
               cursor: "pointer",
+              color: "var(--textPrimary)",
+              backgroundColor: "var(--accent)",
             }}
           >
-            Close
+            x
           </button>
           <h2 style={{ paddingTop: "20px" }}>User Details</h2>
           <p>Name: {selectedUser.name}</p>
@@ -672,8 +607,8 @@ function AdvisorHomepageFilter() {
             }}
             style={{
               marginTop: "10px",
-              color: "#003fce",
-              backgroundColor: "#879DEB",
+              color: "var(--textPrimary)",
+              backgroundColor: "var(--accent)",
             }}
           >
             View Schedule

@@ -142,8 +142,9 @@ export default function NavBar({
               aria-haspopup="true"
               aria-expanded={homeOpen ? "true" : undefined}
               onClick={handleHomeClick}
+              style={{ color: "var(--main-gold)" }}
             >
-              <HomeIcon />
+              <HomeIcon style={{ color: "var(--main-gold)" }} />
             </Button>
             <Menu
               id="home-menu"
