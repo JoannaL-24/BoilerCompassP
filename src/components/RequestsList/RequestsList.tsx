@@ -10,34 +10,12 @@ import SharedSchedule from '../SharedSchedules/SharedSchedule.js';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function RequestsList({ requestList, setRequestList }) {
+export default function RequestsList({ requestList, addFromReq, deleteFromReq }) {
     const { currentUser } = useAuth();
     const userData: UserData = new RemoteUserdata();
     const [reqRender, setReqRender] = useState([]);
 
-    useEffect(() => {
-        console.log("child: ", requestList);
-        let newRender = [];
-        for (let i = 0; i < requestList.length; i++) {
-            newRender.push(
-                <div
-                    key={i}
-                    className='ReqListItem'
-                >
-                    {requestList[i].email}
-                    <CheckIcon className='ReqItemBtn' onClick={() => acceptRequest(requestList[i])} />
-                    <CloseIcon className='ReqItemBtn' onClick={() => rejectRequest(requestList[i])} />
-                </div>
-            );
-        }
-
-        setReqRender(newRender);
-    }, [requestList]);
-
     const acceptRequest = (user) => {
-        // console.log("accept request: ", f);
-        console.log("user", user);
-
         const ref = doc(firestore, "users", currentUser.uid);
         getDoc(ref)
             .then(async (docSnapshot) => {
@@ -49,20 +27,23 @@ export default function RequestsList({ requestList, setRequestList }) {
                 });
 
                 let requests = docSnapshot.data().requests || [];
-                requests = requests.filter(function(item) {
+                requests = requests.filter(function (item) {
                     return item !== user.id
                 })
 
                 await updateDoc(ref, {
                     requests: requests
                 });
+                await updateDoc(doc(firestore, "users", user.id), {
+                    friends: arrayUnion(currentUser.uid),
+                });
+
+                addFromReq(user.id);
             })
             .catch((error) => {
                 console.log("send request err");
                 console.log(error);
             });
-        // setuserID(id);
-        // setOpenScheduleList(true);
     }
 
     const rejectRequest = (user) => {
@@ -70,13 +51,14 @@ export default function RequestsList({ requestList, setRequestList }) {
         getDoc(ref)
             .then(async (docSnapshot) => {
                 let requests = docSnapshot.data().requests || [];
-                requests = requests.filter(function(item) {
+                requests = requests.filter(function (item) {
                     return item !== user.id
                 })
 
                 await updateDoc(ref, {
                     requests: requests
                 });
+                deleteFromReq(user.id);
             })
             .catch((error) => {
                 console.log("send request err");
@@ -86,17 +68,17 @@ export default function RequestsList({ requestList, setRequestList }) {
 
     return (
         <div className="list">
-            {/* {requestList.map((friend, index) => (
+            {requestList.map((friend, index) => (
                 <div
                     key={index}
                     className='ReqListItem'
                 >
                     {friend.email}
-                    <CheckIcon className='ReqItemBtn' onClick={() => acceptRequest(friend.id)} />
-                    <CloseIcon className='ReqItemBtn' onClick={() => rejectRequest(friend.id)} />
+                    <CheckIcon className='ReqItemBtn' onClick={() => acceptRequest(friend)} />
+                    <CloseIcon className='ReqItemBtn' onClick={() => rejectRequest(friend)} />
                 </div>
-            ))} */}
-            {reqRender}
+            ))}
+            {/* {reqRender} */}
         </div>
     )
 }
