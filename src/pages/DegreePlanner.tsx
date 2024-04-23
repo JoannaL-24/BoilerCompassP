@@ -32,13 +32,7 @@ import "../components/Searchbar.css";
 import { ThemeProvider, createTheme } from "@mui/material";
 import UserData from "models/UserData.ts";
 import ReqModal from "components/ReqModal";
-
-//test, added in sidebar area
-import FriendsList from "components/FriendsList/FriendsList.tsx";
-import CopyScheduleButton from "components/CopyScheduleButton.tsx";
 import Friends from "./FriendsSidebar/Friends.tsx";
-import ChangeScheduleName from "components/ChangeScheduleName.tsx";
-import { KeyboardReturnOutlined } from "@mui/icons-material";
 
 // temperary data for semester_blocks in Schedule
 const SCHEDULE_DATA = {
@@ -996,6 +990,7 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
                 deleteSchedule={deleteSchedule}
                 changeScheduleName={changeScheduleName}
                 completedCourses={completedCourses}
+                darkmode={darkmode}
               />
               <ThemeProvider theme={mode}>
                 <div className="ScheduleSide">

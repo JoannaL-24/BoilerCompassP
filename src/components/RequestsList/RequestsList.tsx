@@ -36,6 +36,7 @@ export default function RequestsList({ requestList, setRequestList }) {
 
     const acceptRequest = (user) => {
         // console.log("accept request: ", f);
+        console.log("user", user);
 
         const ref = doc(firestore, "users", currentUser.uid);
         getDoc(ref)
