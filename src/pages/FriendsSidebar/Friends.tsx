@@ -7,7 +7,7 @@ import { CS } from "models/CS";
 import FriendsList from "components/FriendsList/FriendsList";
 import { TextField, Autocomplete, CircularProgress } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
-import { collection, getDocs, doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { firestore } from "models/firebase";
 import RequestsList from "components/RequestsList/RequestsList";
 
@@ -235,6 +235,10 @@ const Friends = (scheduleList, setSchedulesList) => {
             friends: newFriends,
             requests: newRequests
           });
+          // update the new friend
+          await updateDoc(doc(firestore, "users", userSend.id), {
+            friends: arrayUnion(currentUser.uid),
+          });
           // update friend list state
           const newFriendList = [...friendsList];
           newFriendList.push({
@@ -289,6 +293,34 @@ const Friends = (scheduleList, setSchedulesList) => {
         console.log("send request err");
         console.log(error);
       });
+  }
+
+  const addFromReq = (id) => {
+    if (!currentUser) return;
+    if (id === undefined) return;
+    const newReqList = [...requestList];
+    const isId = (e) => e.id === id;
+    const index = newReqList.findIndex(isId);
+    if (index == -1) return;
+    const [deletedFriend] = newReqList.splice(index, 1);
+    if (deletedFriend.id === null) return;
+
+    const newFriendList = [...friendsList];
+    newFriendList.splice(0, 0, { id: deletedFriend.id, name: deletedFriend.name });
+
+    setRequestList(newReqList);
+    setFriendsIdList(newFriendList);
+  }
+
+  const deleteFromReq = (id) => {
+    if (!currentUser) return;
+    if (id === undefined) return;
+    const newReqList = [...requestList];
+    const isId = (e) => e.id === id;
+    const index = newReqList.findIndex(isId);
+    if (index == -1) return;
+    newReqList.splice(index, 1);
+    setRequestList(newReqList);
   }
 
 
@@ -362,7 +394,7 @@ const Friends = (scheduleList, setSchedulesList) => {
               <SendIcon />
             </button>
           </form>
-          <RequestsList requestList={requestList} setRequestList={setRequestList} />
+          <RequestsList requestList={requestList} addFromReq={addFromReq} deleteFromReq={deleteFromReq} />
         </div>
       </div>
     </>
