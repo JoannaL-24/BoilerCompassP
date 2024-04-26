@@ -1,9 +1,9 @@
 .AddsivorHomePageFilter {
   width: 100vw;
-  min-height: calc(98vh - 55px);
+  /* min-height: calc(98vh - 55px); */
   position: absolute;
   top: calc(55px + 2vh);
-  padding: 30px 30px 0px;
+  padding: 30px 0px 0px;
   display: flex;
   align-items: flex-start;
   flex-direction: row;
@@ -28,11 +28,13 @@
 
 .studentSearching {
   width: 20%;
+  padding-left: 30px;
   display: flex;
   flex-direction: column;
 }
 
 .searchResult {
+  padding-right: 30px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

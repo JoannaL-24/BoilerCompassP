@@ -230,20 +230,6 @@ export default function ScheduleView({
                                 <ChangeScheduleName changeScheduleName={changeScheduleName} />
                             </li>
                             <li>
-                                <a className="DescrBtn" onClick={handleClickImport}
-                                    style={{ cursor: 'pointer' }}><FileUploadIcon /></a>
-                            </li>
-                            <input
-                                type="file"
-                                ref={hiddenFileInput}
-                                onChange={handleChange}
-                                style={{ display: 'none' }}
-                            />
-                            <li>
-                                <a className="DescrBtn" onClick={handleClickExport}
-                                    style={{ cursor: 'pointer' }}><FileDownloadIcon /></a>
-                            </li>
-                            <li>
                                 <a className="DescrBtn" onClick={() => setOpen(o => !o)}><SettingsIcon /></a>
                                
                                 <Popup open={open} closeOnDocumentClick={false}>
@@ -305,6 +291,25 @@ export default function ScheduleView({
                             </li>
                         </> : <></>
                     }
+                    {
+                        (!currentUser && !viewOnly) ? <>
+                            <li>
+                                <a className="DescrBtn" onClick={handleClickImport}
+                                    style={{ cursor: 'pointer' }}><FileUploadIcon /></a>
+                            </li>
+                            <input
+                                type="file"
+                                ref={hiddenFileInput}
+                                onChange={handleChange}
+                                style={{ display: 'none' }}
+                            />
+                            <li>
+                                <a className="DescrBtn" onClick={handleClickExport}
+                                    style={{ cursor: 'pointer' }}><FileDownloadIcon /></a>
+                            </li>
+                        </>: <></>
+                    }
+                    
                     {(viewOnly && userType === "student") ?
                         <CopyScheduleButton copySchedule={() => { copySchedule() }} /> : <></>
                     }

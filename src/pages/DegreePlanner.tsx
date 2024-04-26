@@ -350,6 +350,12 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
             CS,
             new Set(docSnapshot.data().completed_courses)
           );
+          
+          if (docSnapshot.data().completed_courses) {
+            setCompletedCourses(docSnapshot.data().completed_courses)
+            userData.put("completed_courses", docSnapshot.data().completed_courses)
+          }
+            
           setCompleted(completed[0]);
           setTotal(completed[1]);
         }

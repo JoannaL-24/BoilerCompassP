@@ -3,4 +3,5 @@
     flex-direction: "column";
     background: var(--background);
     color: var(--textPrimary);
+    /* width: 100vw; */
 }
