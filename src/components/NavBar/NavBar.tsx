@@ -10,10 +10,14 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "models/firebase";
+import RemoteUserdata from "models/RemoteUserData";
+import LocalUserData from "models/LocalUserData";
+import UserData from "models/UserData";
 
 const options = ["Schedule1", "Schedule2", "Schedule3"];
 
 const ITEM_HEIGHT = 48;
+
 
 type Props = {
   darkmode: boolean;
@@ -36,6 +40,14 @@ export default function NavBar({
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const { currentUser, signUserOut } = useAuth();
+const remote = new RemoteUserdata();
+const [userData, setUserData] = useState<UserData>(remote);
+useEffect(() => {
+  if (currentUser)
+    setUserData(remote)
+}, [currentUser])
+
   const handleClose = (event, newId, newName) => {
     // console.log(event);
     // console.log(newId, ": ", name);
@@ -43,9 +55,12 @@ export default function NavBar({
       setAnchorEl(null);
       return;
     }
-    setUserOwnSchedule(true);
-    setCurrSchedule({id: newId, name: newName});
-    setAnchorEl(null);
+    
+    userData.put("completed_courses", []).then(() => {
+      setUserOwnSchedule(true);
+      setCurrSchedule({id: newId, name: newName});
+      setAnchorEl(null);
+    })
   };
 
   const homeOpen = Boolean(homeAnchorEl);
@@ -55,8 +70,7 @@ export default function NavBar({
   const handleHomeClose = () => {
     setHomeAnchorEl(null);
   };
-  const { currentUser, signUserOut } = useAuth();
-
+  
   // logout
   const navigate = useNavigate();
   const userSignOut = () => {

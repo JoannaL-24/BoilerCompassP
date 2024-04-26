@@ -123,14 +123,14 @@ function AdvisorHomepageFilter() {
     left: "35%",
     //transform: "translate(-50%, -50%)",
     zIndex: "999",
-    overflow: "scroll",
+    overflow: "hidden",
     fontSize: "3rem",
   };
 
   const codeDivStyle = {
     marginTop: "2em",
     padding: "1px 1em",
-    overflow: "scroll",
+    overflow: "hidden",
     fontSize: "2rem",
   };
 
