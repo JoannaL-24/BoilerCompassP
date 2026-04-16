@@ -27,9 +27,14 @@ code {
 :root {
   --background: #ffffff;
   --backgroundSecondary: #f5f3eb;
-  --textPrimary: #282c34;
+  --textPrimary: ##362424;
   --textSecondary: #79704c;
   --accent: #d7c494;
+  --accentText: #282c34;
+  --accentHover: rgb(206, 184, 136);
+  --settingsButtonBackground: rgba(225, 225, 225, 0.388);
+  --settingsButtonIcon: rgb(187, 187, 187);
+  --settingsButtonHover: rgb(187, 187, 187);
 
   --black: #282c34;
   --dark-gray: rgb(153, 153, 153);
@@ -46,6 +51,11 @@ code {
   --textPrimary: #ffffff;
   --textSecondary:#d7c494;
   --accent: #79704c;
+  --accentText: #ffffff;
+  --accentHover: #8f845c;
+  --settingsButtonBackground: rgba(255, 255, 255, 0.12);
+  --settingsButtonIcon: #d1d1d1;
+  --settingsButtonHover: rgba(255, 255, 255, 0.2);
 
   --black: #282c34;
   --dark-gray: rgb(153, 153, 153);

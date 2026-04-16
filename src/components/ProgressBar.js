@@ -22,7 +22,9 @@ const LinearProgressWithLabel = (props) => {
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex', alignItems: 'center' }} >
         <Box sx={{ display: 'flex', minWidth: 125 }}>
-          <Typography className="label" variant="body2" color="#CEB888">Degree Progress:</Typography>
+          <Typography className="label" variant="body2" color="#CEB888" fontWeight="700">
+            Degree Progress:
+          </Typography>
         </Box>
         <Box sx={{ width: '100%', mr: 1 }}>
           <LinearProgress
@@ -35,8 +37,12 @@ const LinearProgressWithLabel = (props) => {
           }}}/>
         </Box>
         <Box sx={{ marginLeft: "0.3em", display: 'flex', minWidth: 250 }}>
-          <Typography className="label" variant="body2" color="#CEB888">{`Completed: ${Math.round(props.value,)}%`}</Typography>
-          <Typography className="label" variant="body2" color="#CEB888" marginLeft="1em">{`Planned+Completed: ${Math.round(props.valueBuffer,)}%`}</Typography>
+          <Typography className="label" variant="body2" color="#CEB888" fontWeight="700">
+            {`Completed: ${Math.round(props.value,)}%`}
+          </Typography>
+          <Typography className="label" variant="body2" color="#CEB888" marginLeft="1em" fontWeight="700">
+            {`Planned+Completed: ${Math.round(props.valueBuffer,)}%`}
+          </Typography>
         </Box>
       </Box>
     </ThemeProvider>

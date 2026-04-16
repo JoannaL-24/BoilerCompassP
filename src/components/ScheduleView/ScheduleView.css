@@ -21,8 +21,8 @@
     }
 
     a:hover {
-        color: white;
-        background-color: var(--main-gold);
+        color: var(--accentText);
+        background-color: var(--settingsButtonHover);
     }
     
 }
@@ -31,10 +31,12 @@
     display: flex;
     align-items: center;
     padding: 6px;
-    color: var(--main-gold);
-    background-color: rgba(225, 225, 225, 0.388);
+    color: var(--accentText);
+    background-color: var(--accent);
     border-radius: 20px;
     transition: 200ms;
+    margin-left: 1vw;
+    margin-top: 3px;
 }
 
 .Year{

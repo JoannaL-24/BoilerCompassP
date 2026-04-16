@@ -51,7 +51,7 @@ export function GPA({ completed_courses, course_grades }: GPAProps) {
 
   return (
     <Box sx={{ marginLeft: '0.3em', marginRight: '5em', display: 'flex', minWidth: 100 }}>
-      <Typography className='label' variant='body2' color='#CEB888'>
+      <Typography className='label' variant='body2' color='#CEB888' fontWeight="700">
         {cumu_str}
       </Typography>
       <Typography
@@ -59,6 +59,7 @@ export function GPA({ completed_courses, course_grades }: GPAProps) {
         variant='body2'
         color='#CEB888'
         marginLeft='1em'
+        fontWeight="700"
       >
         {exp_str}
       </Typography>
