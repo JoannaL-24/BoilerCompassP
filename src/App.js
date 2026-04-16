@@ -1,4 +1,4 @@
-import "./App.css";
+// import "./App.css";
 // import CourseList from "./components/CourseList";
 import CoursePopup from "./components/CoursePopup/CoursePopup";
 import React, { useState } from "react";

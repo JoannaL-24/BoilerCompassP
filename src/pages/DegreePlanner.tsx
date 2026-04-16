@@ -438,7 +438,9 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     // delete the course from semester
     if (!destination && source.droppableId !== "ROOT") {
       console.log("Semester to Null");
-      const newSourceCourses = semesterBlocks[source.droppableId].course_list;
+      const newSourceCourses = [
+        ...semesterBlocks[source.droppableId].course_list,
+      ];
 
       const [deletedCourse] = newSourceCourses.splice(source.index, 1);
 
@@ -493,9 +495,10 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     // from the search result to semester
     if (source.droppableId === "ROOT" && searchResult.length > 0) {
       console.log("Root to Semester");
-      const newSourceCourses = searchResult;
-      const newDestinationCourses =
-        semesterBlocks[destination.droppableId].course_list;
+      const newSourceCourses = [...searchResult];
+      const newDestinationCourses = [
+        ...semesterBlocks[destination.droppableId].course_list,
+      ];
 
       const [deletedCourse] = newSourceCourses.splice(source.index, 1);
       newDestinationCourses.splice(destination.index, 0, deletedCourse);
@@ -552,9 +555,12 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     // from semester to another semester
     else if (source.droppableId != destination.droppableId) {
       console.log("Semester to Semester");
-      const newSourceCourses = semesterBlocks[source.droppableId].course_list;
-      const newDestinationCourses =
-        semesterBlocks[destination.droppableId].course_list;
+      const newSourceCourses = [
+        ...semesterBlocks[source.droppableId].course_list,
+      ];
+      const newDestinationCourses = [
+        ...semesterBlocks[destination.droppableId].course_list,
+      ];
 
       const [deletedCourse] = newSourceCourses.splice(source.index, 1);
       newDestinationCourses.splice(destination.index, 0, deletedCourse);
@@ -629,7 +635,9 @@ export default function DegreePlanner({ darkmode, setDarkmode }: Props) {
     // change within semester
     else if (source.droppableId == destination.droppableId) {
       console.log("Within Semester");
-      const newCourses = semesterBlocks[destination.droppableId].course_list;
+      const newCourses = [
+        ...semesterBlocks[destination.droppableId].course_list,
+      ];
 
       const [deletedCourse] = newCourses.splice(source.index, 1);
       newCourses.splice(destination.index, 0, deletedCourse);

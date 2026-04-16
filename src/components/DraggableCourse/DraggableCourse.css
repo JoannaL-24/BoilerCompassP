@@ -5,11 +5,15 @@
     background-color: var(--background);
     padding: 10px 3px;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
 
     .courseDetailBtn { 
         border: none;
         color: var(--textPrimary);
         background-color: var(--cardBackground);
         cursor: pointer;
+        width: 100%;
+        text-align: center;
     }
 }

@@ -10,6 +10,7 @@ import { o } from 'odata';
 
 const Searchbar = ({ parentSearch, updateParentSearch, viewOnly, filterCourses, setFilterCourses, filterName, setFilterName }) => {
   const [results, setResults] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
   const activeSearchId = useRef(0);
 
   useEffect(() => {
@@ -17,6 +18,7 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly, filterCourses, 
       handleSearch("");
     } else {
       setResults([]);
+      setHasSearched(false);
       setFilterName("");
     }
   }, [filterCourses, filterName]);
@@ -29,6 +31,7 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly, filterCourses, 
 
     if (searchString === "" && filterCourses.length === 0) {
       setResults([]);
+      setHasSearched(false);
       return;
     }
 
@@ -57,7 +60,7 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly, filterCourses, 
         const searchFilters = [];
         if (courseIdFilter) searchFilters.push(courseIdFilter);
 
-        const subjectFilter = `(startswith(Subject/Abbreviation, '${subject}'))`;
+        const subjectFilter = `(Subject/Abbreviation eq '${subject}')`;
         const numberFilter = `(startswith(Number, '${number}'))`;
 
         if (subject) searchFilters.push(subjectFilter);
@@ -69,14 +72,13 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly, filterCourses, 
 
         const oHandler = o(purdueApiUrl);
         let entities = await oHandler.get("Courses").query({
-          $top: 15,
           $orderby: `Number`,
-          $expand: `Classes($filter=Campus/Code eq 'PWL';$orderby=Term/Code desc;$top=1),Subject`,
+          $expand: `Classes($filter=Campus/Code eq 'PWL';$orderby=Term/Code desc),Subject`,
           $filter: combinedFilters,
         });
 
         // remove entities with no classes
-        entities = entities.filter(entity => entity.Classes.length > 0);
+        entities = entities.filter(entity => entity.Classes.length > 0).slice(0, 1);
 
         const results = entities.map(entity => ({
           id: entity.Id,
@@ -89,10 +91,14 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly, filterCourses, 
 
         // console.log("Results:", results);
         setResults(results);
+        setHasSearched(true);
         updateParentSearch(results);
       }
     } catch (error) {
       console.error("Error:", error);
+      setResults([]);
+      setHasSearched(true);
+      updateParentSearch([]);
     }
   }, 500);
 
@@ -132,9 +138,10 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly, filterCourses, 
           <div className="searchResults" {...provided.droppableProps} ref={provided.innerRef}>
             {results.map((result, index) => (
               <DraggableCourse
-                key={index}
+                key={result.id}
                 index={index}
                 id={result.id}
+                draggableId={`search-${result.id}`}
                 course={result.course}
                 description={result.description}
                 credit={result.credit}
@@ -143,6 +150,9 @@ const Searchbar = ({ parentSearch, updateParentSearch, viewOnly, filterCourses, 
                 viewOnly={viewOnly}
               />
             ))}
+            {hasSearched && results.length === 0 && (
+              <div className="noResults">No result found</div>
+            )}
             {provided.placeholder}
           </div>
         )}

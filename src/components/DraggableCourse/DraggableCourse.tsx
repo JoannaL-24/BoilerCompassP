@@ -29,6 +29,7 @@ type Meeting = {
 type DraggableCourseProps = {
   index: number
   id: string
+  draggableId?: string
   course: string
   description: string
   credit: number
@@ -59,7 +60,6 @@ async function queryMeetings(classId: string): Promise<Meeting[]> {
   const oHandler = o(purdueApiUrl)
   try {
     const entities = await oHandler.get('Classes').query({
-      $top: 1,
       $expand: `Sections($filter=Type eq 'Lecture';$expand=Meetings($expand=Instructors,Room($expand=Building)))`,
       $filter: `id eq ${classId}`,
     })
@@ -116,6 +116,7 @@ const gradeToOption = (grade) => {
 const DraggableCourse: React.FC<DraggableCourseProps> = ({
   index,
   id,
+  draggableId,
   course,
   description,
   credit,
@@ -182,8 +183,7 @@ const DraggableCourse: React.FC<DraggableCourseProps> = ({
   return (
     <Draggable
       style={{ zIndex: 9999 }}
-      key={id}
-      draggableId={id}
+      draggableId={draggableId || id}
       index={index}
       isDragDisabled={viewOnly}
     >

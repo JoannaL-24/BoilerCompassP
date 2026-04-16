@@ -20,10 +20,11 @@ const Semester = ({ semesterInfo, viewOnly, onCourseGradeChange = (a, b, c) => {
           >
             {semesterInfo.course_list.map((course, index) => (
               <DraggableCourse
-                key={index}
+                key={`${semesterInfo.id}-${course.id}-${index}`}
                 index={index}
                 course={course.course}
                 id={course.id}
+                draggableId={`semester-${semesterInfo.id}-${course.id}-${index}`}
                 description={course.description}
                 credit={course.credit}
                 classId={course.classId}

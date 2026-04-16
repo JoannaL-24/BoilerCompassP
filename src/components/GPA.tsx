@@ -16,11 +16,10 @@ type GPAProps = {
 const getCreditHours = async (id: string) => {
   const oHandler = o(purdueApiUrl)
   let course = await oHandler.get('Courses').query({
-    $top: 1,
-    $expand: `Classes($filter=Campus/Code eq 'PWL';$top=1)`,
+    $expand: `Classes($filter=Campus/Code eq 'PWL')`,
     $filter: `id eq ${id}`,
   })
-  return course.CreditHours
+  return course[0]?.CreditHours
 }
 
 export function GPA({ completed_courses, course_grades }: GPAProps) {
