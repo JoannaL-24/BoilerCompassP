@@ -6,12 +6,12 @@ The product is built around a simple goal: make academic planning easier to unde
 
 ## Table of Contents
 
-- [Live Website](#live-website)
+- [Live Demo Website](#live-website)
 - [Product Overview](#product-overview)
-- [Who It Serves](#who-it-serves)
-- [Key Capabilities](#key-capabilities)
-- [Product Value](#product-value)
-- [Current Product Scope](#current-product-scope)
+- [Prodict Details](#product-details)
+    - [Who It Serves](#who-it-serves)
+    - [Key Capabilities](#key-capabilities)
+    - [Product Value](#product-value)
 - [Getting Started](#getting-started)
 - [Available Commands](#available-commands)
 - [Deployment](#deployment)
@@ -33,9 +33,10 @@ Academic planning often requires students to balance degree requirements, course
 
 Students can build and adjust schedules visually. Advisors can review student information and schedules in a centralized view. Together, the experience reduces confusion around course planning and gives both sides a clearer picture of progress toward graduation.
 
-## Who It Serves
+## Product Details
+### Who It Serves
 
-### Students
+#### Students
 
 BoilerCompass helps students:
 
@@ -47,7 +48,7 @@ BoilerCompass helps students:
 - Estimate GPA outcomes based on planned grades.
 - Share schedules with friends for comparison and collaboration.
 
-### Advisors
+#### Advisors
 
 BoilerCompass helps advisors:
 
@@ -57,41 +58,41 @@ BoilerCompass helps advisors:
 - View student schedules during advising conversations.
 - Support more informed course planning decisions.
 
-## Key Capabilities
+### Key Capabilities
 
-### Guided Onboarding
+#### Guided Onboarding:
 
 New users can create an account, choose their role, and complete a profile tailored to either the student or advisor experience. Students provide academic planning information such as major, minor, start year, and expected graduation year. Advisors provide department and college information.
 
-### Student Degree Planning
+#### Student Degree Planning:
 
 Students can create academic schedules that span their time at Purdue. Courses can be added to semester blocks, moved between terms, and adjusted as plans change.
 
-### Purdue Course Search
+#### Purdue Course Search:
 
 The planner includes course search so students can find Purdue courses while building their schedule. This keeps planning focused inside the product instead of requiring users to jump between multiple tools.
 
-### Progress Tracking
+#### Progress Tracking:
 
 BoilerCompass summarizes progress toward degree requirements and separates completed coursework from planned coursework. This gives students a quick understanding of where they stand and what still needs attention.
 
-### GPA Support
+#### GPA Support:
 
 Students can enter grade information to view cumulative and expected GPA estimates. This supports better planning around workload, performance goals, and future semesters.
 
-### Schedule Sharing
+#### Schedule Sharing:
 
 Students can connect with friends, send and accept requests, view shared schedules, and copy schedules when useful. This supports peer planning and makes it easier to compare academic paths.
 
-### Advisor Dashboard
+#### Advisor Dashboard:
 
 Advisors can search for students, organize student lists, and view student details and schedules. This helps make advising sessions more focused and productive.
 
-### Profile and Account Management
+#### Profile and Account Management:
 
 Users can update profile information, upload a profile picture, switch between light and dark mode, sign out, and manage account data.
 
-## Product Value
+### Product Value
 
 BoilerCompass provides value by:
 
