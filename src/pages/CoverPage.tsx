@@ -282,14 +282,16 @@ export default function CoverPage() {
                 Password
               </label>
             </div>
-            <p className="errMsg">&nbsp;{errLogin.errDetail}</p>
+            <p className="errMsg" style={{ margin: "0px 0px 8px" }}>&nbsp;{errLogin.errDetail}</p>
             <button className="mediumBtn goldBtn" type="submit">
               <h3>Log in</h3>
             </button>
           </form>
           <Popup
             trigger={
-              <button className="forgetPasswordLink">Forget Password?</button>
+              <a className="forgetPasswordLink">
+                Forget Password?
+              </a>
             }
             onClose={() => setErrResetPassword({ flag: 0, errDetail: "" })}
             modal
